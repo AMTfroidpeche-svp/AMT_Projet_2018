@@ -29,18 +29,19 @@ public class DatabaseUtil {
         try {
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, u.getUsername());
+            preparedStatement.setString(1, u.getEmail());
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
-                String sqlAdd = "INSERT INTO users VALUES(?,?,?,?,?,?);";
+                String sqlAdd = "INSERT INTO users VALUES(?,?,?,?,?,?,?);";
                 preparedStatementAdd = connection.prepareStatement(sqlAdd);
-                preparedStatementAdd.setString(1, u.getUsername());
+                preparedStatementAdd.setString(1, u.getEmail());
                 preparedStatementAdd.setString(2, u.getPassword());
-                preparedStatementAdd.setString(3, u.getMail());
-                preparedStatementAdd.setInt(4, u.getPermissionsLevel());
-                preparedStatementAdd.setInt(5, u.getIDQuestion());
-                preparedStatementAdd.setString(6, u.getResponseQuestion());
+                preparedStatementAdd.setString(3, u.getFirstName());
+                preparedStatementAdd.setString(4, u.getLastName());
+                preparedStatementAdd.setInt(5, u.getPermissionsLevel());
+                preparedStatementAdd.setInt(6, u.getIDQuestion());
+                preparedStatementAdd.setString(7, u.getResponseQuestion());
                 preparedStatementAdd.executeUpdate();
 
                 result = 1;
