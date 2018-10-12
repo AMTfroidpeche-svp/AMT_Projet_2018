@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-public class AuthCheck {
+public class AuthChecker {
 
-    private DatabaseUtil db = new DatabaseUtil();
+    private static DatabaseUtil db = new DatabaseUtil();
 
-    public boolean checkPassword(String username, String password){
+    public static boolean checkPassword(String username, String password){
         try {
             db.initConnection();
         } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class AuthCheck {
         return false;
     }
 
-    public byte[] sha2Generator(String password) throws NoSuchAlgorithmException {
+    public static byte[] sha2Generator(String password) throws NoSuchAlgorithmException {
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
         byte[] passwordBytes = password.getBytes();
         byte[] digest = sha256.digest(passwordBytes);
