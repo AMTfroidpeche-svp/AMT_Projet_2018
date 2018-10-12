@@ -36,6 +36,10 @@ public class User {
         return IDQuestion;
     }
 
+    public int getPermissionsLevel() {
+        return permissionsLevel;
+    }
+
     public String getResponseQuestion() {
         return responseQuestion;
     }

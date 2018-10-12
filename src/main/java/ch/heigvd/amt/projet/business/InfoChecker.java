@@ -4,15 +4,6 @@ import ch.heigvd.amt.projet.model.User;
 public class InfoChecker {
 
     public boolean checkinfo(User u){
-        return !u.getUsername().isEmpty() && !u.getPassword().isEmpty() && checkMail(u.getMail()));
+        return !u.getUsername().isEmpty() && !u.getPassword().isEmpty() && !u.getMail().isEmpty() && !u.getResponseQuestion().isEmpty();
     }
-
-    public boolean checkNotEmpty (String s){
-        return !s.isEmpty();
-    }
-
-    public boolean checkMail (String s){
-        return s.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" );
-    }
-
 }
