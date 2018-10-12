@@ -1,5 +1,6 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.business.AuthChecker;
 import ch.heigvd.amt.projet.model.User;
 
 import javax.servlet.ServletConfig;
@@ -11,9 +12,10 @@ import java.io.IOException;
 
 public class Login extends javax.servlet.http.HttpServlet {
 
-    public static final String CREATE_ACCOUNT_VIEW = "";
+    public static final String CREATE_ACCOUNT_VIEW = "/WEB-INF/.jsp";
     public static final String LOGIN_VIEW = "/WEB-INF/login.jsp";
-    public static final String PASSWORD_FORGOTTEN_VIEW = "";
+    public static final String PASSWORD_FORGOTTEN_VIEW = "/WEB-INF/.jsp";
+    public static final String HOMEPAGE_VIEW = "/WEB-INF/profile.htm";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -34,16 +36,15 @@ public class Login extends javax.servlet.http.HttpServlet {
         if (req.getParameter("login") != null) {
             // Verify in DB if email/password are valid
 
-            //////// IF VALID ////////
-            if (true) {
-                // Create the user with data fetched from DB
-                //User user = getUserFromDB();
-                //req.setAttribute("user", user);
-                HttpSession session = req.getSession();
+            /**** IF VALID ****/
+            if (AuthChecker.checkPassword(email, password)) {
 
-                this.getServletContext().getRequestDispatcher("/WEB-INF/.jsp").forward(req, resp);
+                //req.setAttribute("user", email);
+                HttpSession session = req.getSession();
+                session.setAttribute("user", email);
+                this.getServletContext().getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
             }
-            //////// IF INVALID ////////
+            /**** IF INVALID ****/
             else {
                 this.getServletContext().getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }
