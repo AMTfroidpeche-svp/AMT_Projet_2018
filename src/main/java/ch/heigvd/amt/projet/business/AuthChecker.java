@@ -11,15 +11,14 @@ public class AuthChecker {
 
     private static DatabaseUtil db = new DatabaseUtil();
 
-    public static String checkPassword(String email, String password){
+    public static boolean checkPassword(String email, String password){
         try {
             db.initConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String sql = "SELECT email, hashpass FROM users WHERE ID = ?;";
+        String sql = "SELECT hashpass FROM users WHERE ID = ?;";
         ResultSet resultSet = null;
-        int result = 0;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementAdd = null;
 
@@ -30,15 +29,12 @@ public class AuthChecker {
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
-                return null;
+                return false;
             }
             else{
                 resultSet.beforeFirst();
                 try {
-                    if(Arrays.equals(resultSet.getBytes(1), sha2Generator(password))){
-                        return resultSet.getString(0);
-                    }
-                    return null;
+                    return Arrays.equals(resultSet.getBytes(0), sha2Generator(password));
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
@@ -56,7 +52,7 @@ public class AuthChecker {
                 e.printStackTrace();
             }
         }
-        return null;
+        return false;
     }
 
     public static byte[] sha2Generator(String password) throws NoSuchAlgorithmException {
