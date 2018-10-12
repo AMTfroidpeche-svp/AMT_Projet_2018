@@ -11,13 +11,13 @@ public class AuthChecker {
 
     private static DatabaseUtil db = new DatabaseUtil();
 
-    public static String checkPassword(String username, String password){
+    public static String checkPassword(String email, String password){
         try {
             db.initConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String sql = "SELECT ID, hashpass FROM users WHERE ID = ?;";
+        String sql = "SELECT email, hashpass FROM users WHERE ID = ?;";
         ResultSet resultSet = null;
         int result = 0;
         PreparedStatement preparedStatement    = null;
@@ -26,7 +26,7 @@ public class AuthChecker {
         try {
             preparedStatement = DatabaseUtil.getConnection().prepareStatement(sql);
 
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {

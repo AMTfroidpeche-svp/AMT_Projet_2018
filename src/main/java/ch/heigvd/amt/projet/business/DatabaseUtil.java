@@ -20,7 +20,7 @@ public class DatabaseUtil {
      *         1,       l'utilisateur est ajouté à la base de données
      */
     public static int addUserIfNotExists(User u) {
-        String sql = "SELECT ID FROM users WHERE ID = ?;";
+        String sql = "SELECT email FROM users WHERE ID = ?;";
         ResultSet resultSet = null;
         int result = 0;
         PreparedStatement preparedStatement    = null;

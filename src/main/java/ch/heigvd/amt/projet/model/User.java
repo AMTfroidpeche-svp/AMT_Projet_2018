@@ -3,33 +3,39 @@ package ch.heigvd.amt.projet.model;
 import java.util.Date;
 
 public class User {
-    private String username;
+    private String email;
+    private String firstName;
+    private String lastName;
     private String password;
-    private String mail;
     private int IDQuestion;
     private String responseQuestion;
     private int permissionsLevel = 0;
     private String token = "";
     private Date tokenGeneration;
 
-    public User(String username, String password, String mail, int IDQuestion, String responseQuestion) {
-        this.username = username;
+    public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
-        this.mail = mail;
+        this.email = email;
         this.IDQuestion = IDQuestion;
         this.responseQuestion = responseQuestion;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
     public int getIDQuestion() {
@@ -61,8 +67,8 @@ public class User {
         this.password = password;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setMail(String email) {
+        this.email = email;
     }
 
     public void setToken(String token) {
