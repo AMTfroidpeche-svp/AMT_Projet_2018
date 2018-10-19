@@ -12,10 +12,10 @@ import java.io.IOException;
 
 public class Login extends javax.servlet.http.HttpServlet {
 
-    public static final String CREATE_ACCOUNT_VIEW = "/WEB-INF/.jsp";
-    public static final String LOGIN_VIEW = "/WEB-INF/login.jsp";
-    public static final String PASSWORD_FORGOTTEN_VIEW = "/WEB-INF/.jsp";
-    public static final String HOMEPAGE_VIEW = "/WEB-INF/profile.htm";
+    public static final String CREATE_ACCOUNT_VIEW = ".jsp";
+    public static final String LOGIN_VIEW = "login.jsp";
+    public static final String PASSWORD_FORGOTTEN_VIEW = ".jsp";
+    public static final String HOMEPAGE_VIEW = "profile.jsp";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
