@@ -9,9 +9,9 @@
 <body>
 
   <nav>
-      <a href="profile.htm">Profile</a> 
-      <a href="applications.htm">Applications</a>
-      <a href="login.htm">Log out</a>
+      <a href="profile.jsp">Profile</a>
+      <a href="applications.jsp">Applications</a>
+      <a href="login.jsp">Log out</a>
   </nav>
 
   <!-- on va peut etre pas garder cette div-->
