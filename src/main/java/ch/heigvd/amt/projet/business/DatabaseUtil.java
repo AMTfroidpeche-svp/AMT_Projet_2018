@@ -29,13 +29,13 @@ public class DatabaseUtil {
         try {
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, u.getEmail());
+            preparedStatement.setString(1, u.getMail());
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
                 String sqlAdd = "INSERT INTO users VALUES(?,?,?,?,?,?,?);";
                 preparedStatementAdd = connection.prepareStatement(sqlAdd);
-                preparedStatementAdd.setString(1, u.getEmail());
+                preparedStatementAdd.setString(1, u.getMail());
                 preparedStatementAdd.setString(2, u.getPassword());
                 preparedStatementAdd.setString(3, u.getFirstName());
                 preparedStatementAdd.setString(4, u.getLastName());

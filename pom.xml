@@ -17,7 +17,7 @@
   </dependencies>
   <packaging>war</packaging>
 
-  <name>AMT_PROJET_2018</name>
+  <name>AMT_Projet_2018</name>
 
   <distributionManagement>
     <site>
