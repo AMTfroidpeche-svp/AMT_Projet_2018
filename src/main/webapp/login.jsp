@@ -19,7 +19,7 @@
               <a href="#" name="password_forgotten">Password forgotten?</a>
             </p>
             <p>
-              <a href="register_account">Create a dev account</a>
+              <a href="registration" name="register_account">Create a dev account</a>
             </p>
         </fieldset>
     </form>
