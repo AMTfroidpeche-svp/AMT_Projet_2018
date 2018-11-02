@@ -8,7 +8,7 @@ public class DatabaseUtil {
 
     private static Connection connection;
     public void initConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/amt_project?user=root&password=root";
+        String url = "jdbc:mysql://localhost:3306/amt_project?user=root&password=srlx3341";
         connection = DriverManager.getConnection(url);
     }
 

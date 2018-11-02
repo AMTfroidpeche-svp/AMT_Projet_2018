@@ -6,6 +6,7 @@ public class ManageApp {
 
     public boolean createApp(String name, String appName, String description){
         Application App = new Application(name, appName, description);
+        return false;
     }
 
 }
