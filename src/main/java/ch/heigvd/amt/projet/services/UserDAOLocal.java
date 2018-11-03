@@ -8,4 +8,6 @@ public interface UserDAOLocal {
 
     public boolean addUser(User user);
 
+    public boolean checkPassword(String email, String password);
+
 }
