@@ -9,21 +9,15 @@ import java.util.Arrays;
 
 public class AuthChecker {
 
-    private static DatabaseUtil db = new DatabaseUtil();
 
     public static boolean checkPassword(String email, String password){
-        try {
-            db.initConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         String sql = "SELECT hashpass FROM users WHERE ID = ?;";
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementAdd = null;
 
         try {
-            preparedStatement = DatabaseUtil.getConnection().prepareStatement(sql);
+            //preparedStatement = DatabaseUtil.getConnection().prepareStatement(sql);
 
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();

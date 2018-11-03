@@ -2,7 +2,9 @@ package ch.heigvd.amt.projet.presentation;
 
 import ch.heigvd.amt.projet.business.AuthChecker;
 import ch.heigvd.amt.projet.model.User;
+import ch.heigvd.amt.projet.services.UserDAOLocal;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,9 @@ public class Login extends javax.servlet.http.HttpServlet {
     public final String LOGIN_VIEW = "login.jsp";
     public final String PASSWORD_FORGOTTEN_VIEW = ".jsp";
     public final String HOMEPAGE_VIEW = "application.jsp";
+
+    @EJB
+    UserDAOLocal userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -35,7 +40,7 @@ public class Login extends javax.servlet.http.HttpServlet {
         /************** LOGIN **************/
         if (req.getParameter("login") != null) {
             // Verify in DB if email/password are valid
-
+            userDAO.addUser(new User("toto", "tutu", "tata", "toto@tutu.tata", 10, "tototututata"));
             /**** IF VALID ****/
             if (AuthChecker.checkPassword(email, password)) {
 

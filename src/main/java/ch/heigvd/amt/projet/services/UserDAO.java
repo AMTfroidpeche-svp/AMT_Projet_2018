@@ -21,7 +21,7 @@ public class UserDAO implements UserDAOLocal {
 
     @Override
     public boolean addUser(User user){
-        String sql = "SELECT email FROM users WHERE ID = ?;";
+        String sql = "SELECT email FROM users WHERE email = ?;";
         ResultSet resultSet = null;
         boolean result = false;
         PreparedStatement preparedStatement    = null;
@@ -30,13 +30,13 @@ public class UserDAO implements UserDAOLocal {
         try (Connection connection = dataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, user.getMail());
+            preparedStatement.setString(1, user.getEmail());
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
-                String sqlAdd = "INSERT INTO users VALUES(?,?,?,?,?,?,?);";
+                String sqlAdd = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion) VALUES(?,?,?,?,?,?,?);";
                 preparedStatementAdd = connection.prepareStatement(sqlAdd);
-                preparedStatementAdd.setString(1, user.getMail());
+                preparedStatementAdd.setString(1, user.getEmail());
                 preparedStatementAdd.setString(2, user.getPassword());
                 preparedStatementAdd.setString(3, user.getFirstName());
                 preparedStatementAdd.setString(4, user.getLastName());
