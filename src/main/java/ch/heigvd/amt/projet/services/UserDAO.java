@@ -59,6 +59,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         return result;
     }
 
+    @Override
+    public User getUser() {
+        return null;
+    }
+
     public boolean checkPassword(String email, String password){
         String sql = "SELECT hashpass FROM users WHERE email = ?;";
         ResultSet resultSet = null;
@@ -87,6 +92,21 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         } finally {
             cleanUp(preparedStatement);
         }
+        return false;
+    }
+
+    @Override
+    public boolean changePermissions(String email, int newPermissionLevel) {
+        return false;
+    }
+
+    @Override
+    public boolean changePassword(String email, String newPassword) {
+        return false;
+    }
+
+    @Override
+    public boolean resetPassword(String email) {
         return false;
     }
 

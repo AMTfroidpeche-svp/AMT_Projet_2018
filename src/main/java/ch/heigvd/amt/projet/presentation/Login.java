@@ -1,6 +1,6 @@
 package ch.heigvd.amt.projet.presentation;
 
-import ch.heigvd.amt.projet.business.AuthChecker;
+import ch.heigvd.amt.projet.business.CipherUtil;
 import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
 
@@ -42,7 +42,7 @@ public class Login extends javax.servlet.http.HttpServlet {
             // Verify in DB if email/password are valid
             userDAO.addUser(new User("toto", "tutu", "tata", "toto@tutu.tata", 10, "tototututata"));
             /**** IF VALID ****/
-            if (AuthChecker.checkPassword(email, password)) {
+            if (userDAO.checkPassword(email, password)) {
 
                 //req.setAttribute("user", email);
                 HttpSession session = req.getSession();
