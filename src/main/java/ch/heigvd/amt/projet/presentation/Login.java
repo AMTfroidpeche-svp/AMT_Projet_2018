@@ -41,6 +41,7 @@ public class Login extends javax.servlet.http.HttpServlet {
         if (req.getParameter("login") != null) {
             // Verify in DB if email/password are valid
             userDAO.addUser(new User("toto", "tutu", "tata", "toto@tutu.tata", 10, "tototututata"));
+            userDAO.resetPassword("toto@tutu.tata", "tototututata");
             /**** IF VALID ****/
             if (userDAO.checkPassword(email, password)) {
 

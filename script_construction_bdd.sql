@@ -6,25 +6,25 @@ use amt_project;
 SET FOREIGN_KEY_CHECKS=0;
 create table users(
 	email varchar(60), 
-    hashPass varbinary(256) NOT NULL, 
+    hashPass varchar(64) NOT NULL, 
     firstName varchar(60) NOT NULL,
     lastName varchar(60) NOT NULL,
-    permissonLevel INT NOT NULL,
+    permissionLevel INT NOT NULL,
     IDQuestion int,
     responseQuestion varchar(60), 
-    TOKEN varbinary(256),
-    tokenDate DateTime,
+    TOKEN varchar(64),
+    tokenDate varchar(20),
     PRIMARY KEY (email),
     FOREIGN KEY (IDQuestion) REFERENCES questions(ID)
 );
 
 create table applications(
-    app_owner varchar(60) NOT NULL,
-    app_name varchar(60) NOT NULL,
+    appOwner varchar(60) NOT NULL,
+    appName varchar(60) NOT NULL,
     description varchar(300),
-	API_TOKEN varchar(36) NOT NULL UNIQUE,
-    API_KEY varchar(36) NOT NULL UNIQUE,
-    foreign key (app_owner) references users(email)
+	APIToken varchar(36) NOT NULL UNIQUE,
+    APISecret varchar(36) NOT NULL UNIQUE,
+    foreign key (appOwner) references users(email)
 );
 
 create table Questions(
@@ -33,5 +33,6 @@ create table Questions(
     primary key (ID)
 );
 
+insert into Questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
 
 SET FOREIGN_KEY_CHECKS=1;

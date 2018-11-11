@@ -14,9 +14,13 @@ public interface UserDAOLocal {
 
     public boolean changePermissions(String email, int newPermissionLevel);
 
-    public boolean changePassword(String email, String newPassword);
+    public boolean changePassword(String email, String token, String newPassword);
 
-    public boolean resetPassword(String email);
+    public boolean changePasswordAdmin(String email, String newPassword);
+
+    public int RetrieveSecretQuestion(String email);
+
+    public boolean resetPassword(String email, String Response);
 
 
 
