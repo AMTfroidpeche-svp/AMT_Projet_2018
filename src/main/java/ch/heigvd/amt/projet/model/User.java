@@ -16,6 +16,10 @@ public class User {
     private String token = "";
     private Date tokenGeneration;
 
+    public User() {
+
+    }
+
     public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -70,6 +74,10 @@ public class User {
         this.password = password;
     }
 
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -86,4 +94,5 @@ public class User {
         this.IDQuestion = IDQuestion;
     }
 
+    public void setResponseQuestion(String responseQuestion) { this.responseQuestion = responseQuestion; }
 }
