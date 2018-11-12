@@ -1,23 +1,23 @@
 package ch.heigvd.amt.projet.presentation;
 
-import ch.heigvd.amt.projet.business.CipherUtil;
 import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class Login extends javax.servlet.http.HttpServlet {
+public class Login extends HttpServlet {
 
     private static final String CREATE_ACCOUNT_VIEW = "WEB-INF/pages/register.jsp";
     private static final String LOGIN_VIEW = "WEB-INF/pages/login.jsp";
     private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
-    private static final String HOMEPAGE_VIEW = "WEB-INF/pages/application.jsp";
+    private static final String HOMEPAGE_VIEW = "/app";
     private static final String USER_SESSION = "userSession";
 
     @EJB
