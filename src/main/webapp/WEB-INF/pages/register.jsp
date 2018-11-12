@@ -7,16 +7,15 @@
 </head>
 
 <body>
-  <!-- on va peut etre pas garder cette div-->
   <div class="main">
     <form action="" method="post">
         <fieldset>
             <p>Register a dev account</p>
-            <input type="text" name="firstname" placeholder="Firstname" required autofocus> <br />
-            <input type="text" name="lastname" placeholder="Lastname" required> <br />
+            <input type="text" name="Fistname" placeholder="Firstname" required autofocus> <br />
+            <input type="text" name="Lastname" placeholder="Lastname" required> <br />
             <input type="email" name="email" placeholder="Email Address" required><br />
             <input type="password" name="password" placeholder="Password" required><br />
-            <input type="password" name="passwordConfirmation" placeholder="Confirm Password" required><br />
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required><br />
             <select name="secret_question" required>
                 <option value="life">Is my life fucked up?</option>
                 <option value="studies">Where did you study?</option>

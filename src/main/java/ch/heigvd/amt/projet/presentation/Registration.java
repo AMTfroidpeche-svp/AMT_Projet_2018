@@ -26,13 +26,13 @@ public class Registration extends javax.servlet.http.HttpServlet {
         String firstname            = req.getParameter("firstname");
         String lastname             = req.getParameter("lastname");
         String email                = req.getParameter("email");
-        String password1            = req.getParameter("password");
+        String password             = req.getParameter("password");
         String passwordConfirmation = req.getParameter("passwordConfirmation");
         String secretQuestion       = req.getParameter("secret_question");
         String secretAnswer         = req.getParameter("secret_answer");
 
         // check that passwords matches
-        if(password1.equals(passwordConfirmation)) {
+        if(password.equals(passwordConfirmation)) {
 
             ////////////////////////////
             // add new dev account in DB

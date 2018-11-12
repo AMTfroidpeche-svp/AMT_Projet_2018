@@ -7,9 +7,8 @@
 </head>
 
 <body>
-  <!-- on va peut etre pas garder cette div-->
   <div class="main">
-    <form action="${pageContext.request.contextPath}/login" method="post">
+    <form action="login" method="post">
         <fieldset>
             <p>Login</p>
             <input type="email" name="email" placeholder="Email Address" autofocus required><br />
@@ -19,7 +18,7 @@
               <a href="#" name="password_forgotten">Password forgotten?</a>
             </p>
             <p>
-              <a href="registration" name="register_account">Create a dev account</a>
+                <a href="registration" name="register_account">Create a dev account</a>
             </p>
         </fieldset>
     </form>
