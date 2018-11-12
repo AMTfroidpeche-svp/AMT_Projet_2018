@@ -18,6 +18,7 @@ public class Login extends javax.servlet.http.HttpServlet {
     private static final String LOGIN_VIEW = "WEB-INF/pages/login.jsp";
     private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
     private static final String HOMEPAGE_VIEW = "WEB-INF/pages/application.jsp";
+    private static final String USER_SESSION = "userSession";
 
     @EJB
     UserDAOLocal userDAO;
@@ -34,20 +35,22 @@ public class Login extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
 
         /************** LOGIN **************/
         if (req.getParameter("login") != null) {
-            // Verify in DB if email/password are valid
-            userDAO.addUser(new User("toto", "tutu", "tata", "toto@tutu.tata", 10, "tototututata"));
-            /**** IF VALID ****/
-            if (userDAO.checkPassword(email, password)) {
+            String email = req.getParameter("email");
+            String password = req.getParameter("password");
 
-                //req.setAttribute("user", email);
-                HttpSession session = req.getSession();
-                session.setAttribute("user", email);
-                req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
+            // Create a session
+            HttpSession session = req.getSession();
+
+            User user;
+            // Verify in DB if email/password are valid
+            /**** IF VALID ****/
+            if ((user = userDAO.checkPassword(email, password)) != null) {
+                session.setAttribute(USER_SESSION, user);
+                //req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
+                resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW);
             }
             /**** IF INVALID ****/
             else {

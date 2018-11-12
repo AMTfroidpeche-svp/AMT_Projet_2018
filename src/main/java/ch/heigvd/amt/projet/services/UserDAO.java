@@ -10,13 +10,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.mail.MessagingException;
 import javax.sql.DataSource;
 import javax.ejb.Stateless;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -71,8 +69,8 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         return null;
     }
 
-    public boolean checkPassword(String email, String password){
-        String sql = "SELECT hashpass FROM users WHERE email = ?;";
+    public User checkPassword(String email, String password){
+        String sql = "SELECT * FROM users WHERE email = ?;";
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
 
@@ -82,11 +80,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
 
-            if(!resultSet.next()) {
-                return false;
+            String hashedPassword = CipherUtil.sha2Generator(password);
+            if(!resultSet.next() || !resultSet.getString("hashPass").equals(hashedPassword)) {
+                return null;
             }
             else{
-                 return resultSet.getString(1).equals(CipherUtil.sha2Generator(password));
+                return mapUser(resultSet);
             }
 
         } catch (SQLException e) {
@@ -94,7 +93,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         } finally {
             cleanUp(preparedStatement);
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -272,6 +271,21 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private static User mapUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setFirstName(resultSet.getString("firstName"));
+        user.setLastName(resultSet.getString("lastName"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("hashPass"));
+        user.setIDQuestion(resultSet.getInt("IDQuestion"));
+        user.setPermissionsLevel(resultSet.getInt("permissionLevel"));
+        user.setResponseQuestion(resultSet.getString("responseQuestion"));
+        user.setToken(resultSet.getString("TOKEN"));
+        // todo
+        //user.setTokenGeneration(resultSet.get);
+        return user;
     }
 
 }
