@@ -6,8 +6,13 @@ import java.security.NoSuchAlgorithmException;
 public class CipherUtil {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
-    public static String sha2Generator(String password) throws NoSuchAlgorithmException {
-        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+    public static String sha2Generator(String password) {
+        MessageDigest sha256 = null;
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         byte[] passwordBytes = password.getBytes();
         byte[] digest = sha256.digest(passwordBytes);
         return byteArrayToTokenString(digest);

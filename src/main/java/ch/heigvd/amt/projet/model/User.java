@@ -1,5 +1,8 @@
 package ch.heigvd.amt.projet.model;
 
+import ch.heigvd.amt.projet.business.CipherUtil;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 public class User {
@@ -16,7 +19,7 @@ public class User {
     public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
+        this.password = CipherUtil.sha2Generator(password);
         this.email = email;
         this.IDQuestion = IDQuestion;
         this.responseQuestion = responseQuestion;

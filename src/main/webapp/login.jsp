@@ -9,7 +9,7 @@
 <body>
   <!-- on va peut etre pas garder cette div-->
   <div class="main">
-    <form action="" method="post">
+    <form action="${pageContext.request.contextPath}/login" method="post">
         <fieldset>
             <p>Login</p>
             <input type="email" name="email" placeholder="Email Address" autofocus required><br />

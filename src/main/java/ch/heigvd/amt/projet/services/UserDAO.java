@@ -60,8 +60,6 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         } finally {
             cleanUp(preparedStatement, preparedStatementAdd);
         }
@@ -88,11 +86,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 return false;
             }
             else{
-                try {
-                    return resultSet.getString(1).equals(CipherUtil.sha2Generator(password));
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+                 return resultSet.getString(1).equals(CipherUtil.sha2Generator(password));
             }
 
         } catch (SQLException e) {
@@ -130,11 +124,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                     return false;
                 } else {
                     String TokenInDb =  resultSet.getString(1);
-                    try {
                         return resultSet.getString(0).equals(CipherUtil.sha2Generator(newPassword));
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
                 }
 
             } catch (SQLException e) {
@@ -153,8 +143,6 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 return true;
 
             } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } finally {
                 cleanUp(preparedStatement2, preparedStatement);
@@ -178,8 +166,6 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } finally {
             cleanUp(preparedStatement);
@@ -216,7 +202,6 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean resetPassword(String email, String response) {
-        //check reponse
        if(!checkResponse(email, response) || !updateToken(email, true)) {
            return false;
        }
@@ -272,8 +257,6 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } finally {
             cleanUp(preparedStatement);
