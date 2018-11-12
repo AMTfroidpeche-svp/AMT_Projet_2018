@@ -22,4 +22,5 @@
         <servlet-name>Registration</servlet-name>
         <url-pattern>/registration</url-pattern>
     </servlet-mapping>
+
 </web-app>

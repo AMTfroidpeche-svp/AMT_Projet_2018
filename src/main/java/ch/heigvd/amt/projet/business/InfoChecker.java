@@ -4,6 +4,6 @@ import ch.heigvd.amt.projet.model.User;
 public class InfoChecker {
 
     public boolean checkinfo(User u){
-        return !u.getFirstName().isEmpty() && !u.getLastName().isEmpty() && !u.getPassword().isEmpty() && !u.getMail().isEmpty() && !u.getResponseQuestion().isEmpty();
+        return !u.getFirstName().isEmpty() && !u.getLastName().isEmpty() && !u.getPassword().isEmpty() && !u.getEmail().isEmpty() && !u.getResponseQuestion().isEmpty();
     }
 }

@@ -3,7 +3,7 @@ package ch.heigvd.amt.projet.model;
 import java.util.Date;
 
 public class User {
-    private String mail;
+    private String email;
     private String firstName;
     private String lastName;
     private String password;
@@ -13,11 +13,11 @@ public class User {
     private String token = "";
     private Date tokenGeneration;
 
-    public User(String firstName, String lastName, String password, String mail, int IDQuestion, String responseQuestion) {
+    public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.mail = mail;
+        this.email = email;
         this.IDQuestion = IDQuestion;
         this.responseQuestion = responseQuestion;
     }
@@ -34,8 +34,8 @@ public class User {
         return password;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
     public int getIDQuestion() {
@@ -67,8 +67,8 @@ public class User {
         this.password = password;
     }
 
-    public void setMail(String email) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setToken(String token) {
