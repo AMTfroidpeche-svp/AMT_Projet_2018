@@ -14,10 +14,10 @@ import java.io.IOException;
 
 public class Login extends javax.servlet.http.HttpServlet {
 
-    public final String CREATE_ACCOUNT_VIEW = "register.jsp";
-    public final String LOGIN_VIEW = "login.jsp";
-    public final String PASSWORD_FORGOTTEN_VIEW = ".jsp";
-    public final String HOMEPAGE_VIEW = "application.jsp";
+    private static final String CREATE_ACCOUNT_VIEW = "WEB-INF/pages/register.jsp";
+    private static final String LOGIN_VIEW = "WEB-INF/pages/login.jsp";
+    private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
+    private static final String HOMEPAGE_VIEW = "WEB-INF/pages/application.jsp";
 
     @EJB
     UserDAOLocal userDAO;
@@ -41,18 +41,17 @@ public class Login extends javax.servlet.http.HttpServlet {
         if (req.getParameter("login") != null) {
             // Verify in DB if email/password are valid
             userDAO.addUser(new User("toto", "tutu", "tata", "toto@tutu.tata", 10, "tototututata"));
-            userDAO.resetPassword("toto@tutu.tata", "tototututata");
             /**** IF VALID ****/
             if (userDAO.checkPassword(email, password)) {
 
                 //req.setAttribute("user", email);
                 HttpSession session = req.getSession();
                 session.setAttribute("user", email);
-                this.getServletContext().getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
+                req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
             }
             /**** IF INVALID ****/
             else {
-                this.getServletContext().getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
+                req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }
         }
 

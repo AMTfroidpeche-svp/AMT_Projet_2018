@@ -17,7 +17,7 @@
   </nav>
 
   <div class="flex-container">
-    <h2>Applications: </h1>
+    <h1>Applications: </h1>
 
     <div class="app-container">
       <div class="app-info">

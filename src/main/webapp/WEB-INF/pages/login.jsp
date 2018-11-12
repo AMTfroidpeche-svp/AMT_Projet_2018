@@ -8,7 +8,7 @@
 
 <body>
   <div class="main">
-    <form action="" method="post">
+    <form action="login" method="post">
         <fieldset>
             <p>Login</p>
             <input type="email" name="email" placeholder="Email Address" autofocus required><br />
@@ -18,7 +18,7 @@
               <a href="#" name="password_forgotten">Password forgotten?</a>
             </p>
             <p>
-              <a href="register.htm">Create a dev account</a>
+                <a href="registration" name="register_account">Create a dev account</a>
             </p>
         </fieldset>
     </form>
