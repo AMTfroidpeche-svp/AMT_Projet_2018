@@ -57,15 +57,5 @@ public class Login extends HttpServlet {
                 req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }
         }
-
-        /************** CREATE ACCOUNT **************/
-        else if (req.getParameter("register_account") != null) {
-            resp.sendRedirect(req.getContextPath() + CREATE_ACCOUNT_VIEW);
-        }
-
-        /************** PASSWORD FORGOTTEN **************/
-        else if (req.getParameter("password_forgotten") != null) {
-            resp.sendRedirect(req.getContextPath() + PASSWORD_FORGOTTEN_VIEW);
-        }
     }
 }

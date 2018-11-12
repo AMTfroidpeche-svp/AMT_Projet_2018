@@ -15,7 +15,7 @@
             <input type="password" name="password" placeholder="Password" required><br />
             <input type="submit" name="login" value="Login">
             <p>
-              <a href="#" name="password_forgotten">Password forgotten?</a>
+              <a href="newPassword" name="password_forgotten">Password forgotten?</a>
             </p>
             <p>
                 <a href="registration" name="register_account">Create a dev account</a>

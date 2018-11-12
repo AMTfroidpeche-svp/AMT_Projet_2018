@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Registration extends javax.servlet.http.HttpServlet {
 
-    public final String CREATE_ACCOUNT_VIEW = "/register.jsp";
+    public final String VIEW = "WEB-INF/pages/register.jsp";
     public final String LOGIN_VIEW = "/login";
 
     @Override
@@ -18,7 +18,7 @@ public class Registration extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(CREATE_ACCOUNT_VIEW).forward(req, resp);
+        req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Registration extends javax.servlet.http.HttpServlet {
             resp.sendRedirect(req.getContextPath() + LOGIN_VIEW);
         }
         else {
-            this.getServletContext().getRequestDispatcher(CREATE_ACCOUNT_VIEW).forward(req, resp);
+            this.getServletContext().getRequestDispatcher(VIEW).forward(req, resp);
         }
     }
 }
