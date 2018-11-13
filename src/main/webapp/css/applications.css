@@ -2,28 +2,23 @@
     border:1px solid black; 
     display:flex; 
     flex-direction: column;
-
     background-color: lightblue;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
   }
 
   .app-container {
     border: 0px solid red;
     margin: 5px;
     min-height: 250px;
-
-    
-
     display:flex; 
     flex-direction: row;
-
     justify-content: flex-start;
-
   }
 
   .app-container > div {
     border: 0px solid green;
     margin: 5px;
-    
   }
 
   .app-info {
@@ -39,7 +34,7 @@
 
   .app-descr {
     flex-grow: 5;
-    
+    border-radius: 6px;
   }
 
   .app-descr > div {
@@ -48,5 +43,4 @@
     background-color: white;
     height: 75%;
     border: 1px solid black;
-    border-radius: 1%;
   }

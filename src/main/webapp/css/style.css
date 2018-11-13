@@ -2,6 +2,8 @@
 nav {
     background-color: #333;
     display: flex;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
 nav > a {
@@ -14,4 +16,8 @@ nav > a {
 nav > a:hover {
     background-color: #ddd;
     color: black;
+}
+
+.loginFieldset {
+    border-radius: 6px;
 }

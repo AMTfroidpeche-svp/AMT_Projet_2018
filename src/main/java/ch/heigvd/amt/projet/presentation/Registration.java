@@ -39,8 +39,6 @@ public class Registration extends javax.servlet.http.HttpServlet {
         String secretAnswer         = req.getParameter("secretAnswer");
 
         // check that passwords matches
-        System.out.println("password1 = " + password);
-        System.out.println("password2 = " + passwordConfirmation);
         if(password.equals(passwordConfirmation)) {
 
             // TODO: add some textfield validations
