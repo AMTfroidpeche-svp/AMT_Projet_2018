@@ -28,6 +28,10 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.Logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminPanel</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.AdminPanelServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -52,6 +56,10 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPanel</servlet-name>
+        <url-pattern>/adminPanel</url-pattern>
     </servlet-mapping>
 
     <filter>
