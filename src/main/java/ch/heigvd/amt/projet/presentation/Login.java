@@ -41,13 +41,13 @@ public class Login extends HttpServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-            // Create a session
-            HttpSession session = req.getSession();
-
             User user;
             // Verify in DB if email/password are valid
             /**** IF VALID ****/
             if ((user = userDAO.checkPassword(email, password)) != null) {
+                // Create a session
+                HttpSession session = req.getSession();
+
                 session.setAttribute(USER_SESSION, user);
                 //req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
                 resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW);
