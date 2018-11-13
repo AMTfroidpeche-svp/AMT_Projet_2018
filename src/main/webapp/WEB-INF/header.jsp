@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
@@ -6,7 +7,7 @@
 
     <nav>
         <a href="profile">Profile</a>
-        <a href="app">Applications</a>
+        <c:if test="${sessionScope.userSession.permissionLevel == 0}"><a href="app">Applications</a></c:if>
         <a href="logout">Log out</a>
     </nav>
 

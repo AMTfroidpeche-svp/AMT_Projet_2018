@@ -48,7 +48,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 preparedStatementAdd.setString(2, CipherUtil.sha2Generator(user.getPassword()));
                 preparedStatementAdd.setString(3, user.getFirstName());
                 preparedStatementAdd.setString(4, user.getLastName());
-                preparedStatementAdd.setInt(5, user.getPermissionsLevel());
+                preparedStatementAdd.setInt(5, user.getPermissionLevel());
                 preparedStatementAdd.setInt(6, user.getIDQuestion());
                 preparedStatementAdd.setString(7, user.getResponseQuestion());
                 preparedStatementAdd.executeUpdate();
@@ -280,7 +280,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("hashPass"));
         user.setIDQuestion(resultSet.getInt("IDQuestion"));
-        user.setPermissionsLevel(resultSet.getInt("permissionLevel"));
+        user.setPermissionLevel(resultSet.getInt("permissionLevel"));
         user.setResponseQuestion(resultSet.getString("responseQuestion"));
         user.setToken(resultSet.getString("TOKEN"));
         // todo

@@ -2,7 +2,6 @@ package ch.heigvd.amt.projet.model;
 
 import ch.heigvd.amt.projet.business.CipherUtil;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 public class User {
@@ -12,7 +11,7 @@ public class User {
     private String password;
     private int IDQuestion;
     private String responseQuestion;
-    private int permissionsLevel = 0;
+    private int permissionLevel = 0;
     private String token = "";
     private Date tokenGeneration;
 
@@ -49,8 +48,8 @@ public class User {
         return IDQuestion;
     }
 
-    public int getPermissionsLevel() {
-        return permissionsLevel;
+    public int getPermissionLevel() {
+        return permissionLevel;
     }
 
     public String getResponseQuestion() {
@@ -66,8 +65,8 @@ public class User {
     }
 
 
-    public void setPermissionsLevel(int permissionsLevel) {
-        this.permissionsLevel = permissionsLevel;
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
     }
 
     public void setPassword(String password) {
