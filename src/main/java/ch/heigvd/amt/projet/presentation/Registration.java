@@ -1,5 +1,9 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.model.User;
+import ch.heigvd.amt.projet.services.UserDAOLocal;
+
+import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +14,9 @@ public class Registration extends javax.servlet.http.HttpServlet {
 
     public final String VIEW = "WEB-INF/pages/register.jsp";
     public final String LOGIN_VIEW = "/login";
+
+    @EJB
+    UserDAOLocal userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -23,26 +30,35 @@ public class Registration extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String firstname            = req.getParameter("firstname");
-        String lastname             = req.getParameter("lastname");
+        String firstName            = req.getParameter("firstName");
+        String lastName             = req.getParameter("lastName");
         String email                = req.getParameter("email");
         String password             = req.getParameter("password");
         String passwordConfirmation = req.getParameter("passwordConfirmation");
-        String secretQuestion       = req.getParameter("secret_question");
-        String secretAnswer         = req.getParameter("secret_answer");
+        String secretQuestionID     = req.getParameter("secretQuestion"); // TODO ID QUESTION AND NOT TEXT
+        String secretAnswer         = req.getParameter("secretAnswer");
 
         // check that passwords matches
+        System.out.println("password1 = " + password);
+        System.out.println("password2 = " + passwordConfirmation);
         if(password.equals(passwordConfirmation)) {
 
-            ////////////////////////////
-            // add new dev account in DB
-            /* ....... */
-            ////////////////////////////
+            // TODO: add some textfield validations
 
-            resp.sendRedirect(req.getContextPath() + LOGIN_VIEW);
+            // add new dev account in DB
+            User user = new User(firstName, lastName, password, email, 1, secretAnswer);
+            if(userDAO.addUser(user)) {
+                // user successfully added
+                resp.sendRedirect(req.getContextPath() + LOGIN_VIEW);
+            }
+            else {
+                // error when adding user
+            }
+
+
         }
         else {
-            this.getServletContext().getRequestDispatcher(VIEW).forward(req, resp);
+            req.getRequestDispatcher(VIEW).forward(req, resp);
         }
     }
 }

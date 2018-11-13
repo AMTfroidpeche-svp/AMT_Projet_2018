@@ -45,7 +45,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 String sqlAdd = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion) VALUES(?,?,?,?,?,?,?);";
                 preparedStatementAdd = connection.prepareStatement(sqlAdd);
                 preparedStatementAdd.setString(1, user.getEmail());
-                preparedStatementAdd.setString(2, CipherUtil.sha2Generator(user.getPassword()));
+                preparedStatementAdd.setString(2, user.getPassword());
                 preparedStatementAdd.setString(3, user.getFirstName());
                 preparedStatementAdd.setString(4, user.getLastName());
                 preparedStatementAdd.setInt(5, user.getPermissionLevel());
