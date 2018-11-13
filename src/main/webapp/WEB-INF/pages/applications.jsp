@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@include file="/WEB-INF/header.jsp"%>
 <html>
 
 <head>
@@ -9,12 +10,6 @@
 </head>
 
 <body>
-
-  <nav>
-      <a href="profile.htm">Profile</a> 
-      <a href="applications.htm">Applications</a>
-      <a href="login.htm">Log out</a>
-  </nav>
 
   <div class="flex-container">
     <h1>Applications: </h1>

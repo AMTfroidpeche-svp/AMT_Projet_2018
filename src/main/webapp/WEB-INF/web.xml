@@ -20,6 +20,10 @@
         <servlet-name>PasswordForgotten</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.PasswordForgottenServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Profile</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.ProfileServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -36,6 +40,10 @@
     <servlet-mapping>
         <servlet-name>PasswordForgotten</servlet-name>
         <url-pattern>/newPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Profile</servlet-name>
+        <url-pattern>/profile</url-pattern>
     </servlet-mapping>
 
     <filter>
