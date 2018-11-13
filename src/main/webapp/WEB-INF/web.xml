@@ -66,10 +66,20 @@
         <filter-name>ConnectedFilter</filter-name>
         <filter-class>ch.heigvd.amt.projet.filters.ConnectedFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>ch.heigvd.amt.projet.filters.AdminFilter</filter-class>
+    </filter>
 
     <filter-mapping>
         <filter-name>ConnectedFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/adminPanel</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
 </web-app>

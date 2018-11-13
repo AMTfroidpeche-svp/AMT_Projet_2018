@@ -18,6 +18,7 @@ public class Login extends HttpServlet {
     private static final String LOGIN_VIEW = "WEB-INF/pages/login.jsp";
     private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
     private static final String HOMEPAGE_VIEW = "/app";
+    private static final String ADMIN_VIEW = "/adminPanel";
     private static final String USER_SESSION = "userSession";
 
     @EJB
@@ -50,7 +51,13 @@ public class Login extends HttpServlet {
 
                 session.setAttribute(USER_SESSION, user);
                 //req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
-                resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW);
+
+                if(user.getPermissionsLevel() == 1) {
+                    resp.sendRedirect(req.getContextPath() + ADMIN_VIEW);
+                }
+                else {
+                    resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW);
+                }
             }
             /**** IF INVALID ****/
             else {
