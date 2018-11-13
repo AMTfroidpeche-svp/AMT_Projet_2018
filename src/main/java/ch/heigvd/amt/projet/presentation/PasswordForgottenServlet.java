@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class PasswordForgottenServlet extends HttpServlet {
-    public static final String VIEW = "WEB-INF/pages/newPassword.jsp";
+    public static final String VIEW = "WEB-INF/pages/passwordForgotten.jsp";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
