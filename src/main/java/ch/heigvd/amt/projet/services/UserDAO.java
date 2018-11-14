@@ -61,7 +61,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement, preparedStatementAdd);
         }
@@ -88,11 +88,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-        return null;
     }
 
     @Override
@@ -115,11 +114,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             return retArray;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement, preparedStatementDel);
         }
-        return null;
 
     }
 
@@ -143,11 +141,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-       return null;
     }
 
     @Override
@@ -164,11 +161,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-        return false;
     }
 
     private boolean validateToken(String token){
@@ -211,7 +207,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 }
 
             } catch (SQLException | ParseException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             } finally {
             cleanUp(preparedStatementUpdate, preparedStatement);
         }
@@ -235,11 +231,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-        return false;
     }
 
     @Override
@@ -262,11 +257,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-        return -1;
     }
 
     @Override
@@ -299,11 +293,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             }
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-        return false;
     }
 
     private boolean updateToken(String email, boolean action){
@@ -326,11 +319,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement);
         }
-        return false;
     }
 
     private boolean sendEmailToken(String email, String token){

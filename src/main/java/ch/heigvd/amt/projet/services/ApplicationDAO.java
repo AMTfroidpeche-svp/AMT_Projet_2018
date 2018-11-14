@@ -38,15 +38,13 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             preparedStatement.setString(4, app.getAPI_TOKEN());
             preparedStatement.setString(5, app.getAPI_SECRET());
             preparedStatement.executeUpdate();
-
-            result = true;
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         finally {
         cleanUp(preparedStatement);
     }
-        return result;
 }
 
     @Override
@@ -72,15 +70,14 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
                 preparedStatementDel = connection.prepareStatement(sqlDel);
                 preparedStatementDel.setString(1, app.getAPI_TOKEN());
                 preparedStatementDel.execute();
-                result = true;
+                return true;
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement, preparedStatementDel);
         }
-        return result;
     }
 
     @Override
@@ -111,15 +108,14 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
                 preparedStatementDel.setString(2, newDescription);
                 preparedStatementDel.setString(3, app.getAPI_TOKEN());
                 preparedStatementDel.execute();
-                result = true;
+                return true;
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement, preparedStatementDel);
         }
-        return result;
 
     }
 
@@ -162,11 +158,10 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             cleanUp(preparedStatement, preparedStatementDel);
         }
-        return null;
 
     }
 
