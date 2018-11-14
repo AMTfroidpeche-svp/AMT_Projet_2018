@@ -43,11 +43,7 @@ public class CreateAppServlet extends HttpServlet {
 
         String appOwner = ((User)session.getAttribute(USER_SESSION)).getEmail();
 
-        // TODO: generate Token + timeToken
-        String tokenAPI  = appName;
-        String secretAPI = appName;
-
-        Application app = new Application(appOwner, appName, appDescr, tokenAPI, secretAPI);
+        Application app = new Application(appOwner, appName, appDescr);
         if(appDAO.createApp(app)) {
             resp.sendRedirect(req.getContextPath() + APP_VIEW);
         }
