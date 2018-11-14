@@ -127,11 +127,11 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         String sql, sqlSelect;
         if(permissionLevel == 0){
             sql = "SELECT appOwner FROM applications WHERE appOwner = ?;";
-            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications WHERE appOwner = ? ORDER BY appName LIMIT 10 OFFSET ?;";
+            sqlSelect = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName LIMIT 10 OFFSET ?;";
         }
         else {
             sql = "SELECT appOwner FROM applications";
-            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications ORDER BY appName LIMIT 10 OFFSET ?;";
+            sqlSelect = "SELECT * FROM applications ORDER BY appName LIMIT 10 OFFSET ?;";
         }
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
