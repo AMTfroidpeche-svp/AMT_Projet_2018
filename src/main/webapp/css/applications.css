@@ -44,3 +44,7 @@
     height: 75%;
     border: 1px solid black;
   }
+
+  .app-descr-text {
+    border-radius: 6px;
+  }
