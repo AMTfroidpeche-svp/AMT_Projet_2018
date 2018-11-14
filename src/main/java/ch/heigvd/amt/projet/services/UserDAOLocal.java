@@ -2,11 +2,15 @@ package ch.heigvd.amt.projet.services;
 
 import ch.heigvd.amt.projet.model.User;
 
+import java.util.List;
+
 public interface UserDAOLocal {
 
     public boolean addUser(User user);
 
-    public User getUser();
+    public User getUser(String email);
+
+    public List<User> getPageUser(int pageNumber);
 
     public User checkPassword(String email, String password);
 

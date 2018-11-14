@@ -14,9 +14,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -65,8 +69,58 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     @Override
-    public User getUser() {
+    public User getUser(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?;";
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement    = null;
+
+        try (Connection connection = dataSource.getConnection()){
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()) {
+                return null;
+            }
+            else{
+                return mapUser(resultSet);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanUp(preparedStatement);
+        }
         return null;
+    }
+
+    @Override
+    public List<User> getPageUser(int pageNumber) {
+        String sql = "SELECT * FROM users ORDER BY email OFFSET 10 * (? - 1) LIMIT 10;";
+        ResultSet resultSet = null;
+        boolean result = false;
+        PreparedStatement preparedStatement    = null;
+        PreparedStatement preparedStatementDel = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatementDel = connection.prepareStatement(sql);
+            preparedStatementDel.setInt(1, pageNumber);
+            resultSet = preparedStatementDel.executeQuery();
+            ArrayList<User> retArray = new ArrayList<>();
+            while(resultSet.next()){
+                retArray.add(mapUser(resultSet));
+            }
+            return retArray;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanUp(preparedStatement, preparedStatementDel);
+        }
+        return null;
+
     }
 
     public User checkPassword(String email, String password){
@@ -93,11 +147,27 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         } finally {
             cleanUp(preparedStatement);
         }
-        return null;
+       return null;
     }
 
     @Override
     public boolean changePermissions(String email, int newPermissionLevel) {
+        String sql = "UPDATE users SET permissionLevel = ? WHERE email = ?;";
+        PreparedStatement preparedStatement    = null;
+
+        try (Connection connection = dataSource.getConnection()){
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, newPermissionLevel);
+            preparedStatement.setString(2, email);
+            preparedStatement.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanUp(preparedStatement);
+        }
         return false;
     }
 
@@ -112,6 +182,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             String sql = "SELECT TOKEN, tokenDate FROM users WHERE email = ?;";
             ResultSet resultSet = null;
             PreparedStatement preparedStatement = null;
+            PreparedStatement preparedStatementUpdate = null;
 
             try (Connection connection = dataSource.getConnection()) {
                 preparedStatement = connection.prepareStatement(sql);
@@ -122,30 +193,29 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 if (!resultSet.next()) {
                     return false;
                 } else {
-                    String TokenInDb =  resultSet.getString(1);
-                        return resultSet.getString(0).equals(CipherUtil.sha2Generator(newPassword));
+                    String tokenInDb =  resultSet.getString(1);
+                    Date dateToken = f.parse(resultSet.getString(2));
+                    long diff = new Date().getTime() - dateToken.getTime();
+                    diff = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
+
+                    if(token.equals(tokenInDb) && diff < 30){
+                        sql = "UPDATE users SET hashpass = ? WHERE email = ?;";
+                        preparedStatementUpdate = null;
+                        preparedStatementUpdate = connection.prepareStatement(sql);
+
+                        preparedStatementUpdate.setString(1, CipherUtil.sha2Generator(newPassword));
+                        preparedStatementUpdate.setString(2, email);
+                        preparedStatementUpdate.executeUpdate();
+                        return true;
+                    }
                 }
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            sql = "UPDATE users SET hashpass = ? WHERE email = ?;";
-            resultSet = null;
-            PreparedStatement preparedStatement2 = null;
-
-            try (Connection connection = dataSource.getConnection()) {
-                preparedStatement2 = connection.prepareStatement(sql);
-
-                preparedStatement2.setString(1, CipherUtil.sha2Generator(newPassword));
-                preparedStatement2.setString(2, email);
-                preparedStatement2.executeUpdate();
-                return true;
-
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
-                cleanUp(preparedStatement2, preparedStatement);
-            }
+            cleanUp(preparedStatementUpdate, preparedStatement);
+        }
+
             return false;
         }
         return false;
@@ -265,7 +335,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     private boolean sendEmail(String email, String token){
         try {
-            EmailUtility.sendEmail("olivier2222@laposte.net", "test", "test");
+            EmailUtility.sendEmail("", "test", "test");
             return true;
         } catch (MessagingException e) {
             e.printStackTrace();
