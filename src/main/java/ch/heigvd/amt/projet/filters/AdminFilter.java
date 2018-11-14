@@ -25,6 +25,7 @@ public class AdminFilter implements Filter {
         HttpSession session = req.getSession();
 
         if(((User) session.getAttribute(USER_SESSION)).getPermissionLevel() == 1) {
+            //TODO: fix admin filter
             filterChain.doFilter(req, resp);
         }
         else {

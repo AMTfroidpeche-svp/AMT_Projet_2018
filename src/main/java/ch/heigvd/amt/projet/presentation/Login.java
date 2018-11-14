@@ -53,7 +53,7 @@ public class Login extends HttpServlet {
                 //req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
 
                 if(user.getPermissionLevel() == 1) {
-                    resp.sendRedirect(req.getContextPath() + ADMIN_VIEW);
+                    resp.sendRedirect(req.getContextPath() + ADMIN_VIEW + "?page=1");
                 }
                 else {
                     resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW + "?page=1");

@@ -24,7 +24,9 @@
       <div class="app-container">
         <div class="app-info">
           <p>${i.appName}</p>
-          <img src="profile.jpg" width="50px" height="50px" >
+          <img src="profile.jpg" width="50px" height="50px" />
+          <input type="button" name="edit_${i.API_TOKEN}" value="Edit">
+          <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
         </div>
         <div class="app-descr">
           <div class="app-descr-text">

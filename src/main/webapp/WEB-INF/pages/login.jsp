@@ -10,7 +10,7 @@
   <div class="main">
     <form action="login" method="post">
         <fieldset class="loginFieldset">
-            <p>Login</p>
+            <legend>Login</legend>
             <input type="email" name="email" placeholder="Email Address" autofocus required><br />
             <input type="password" name="password" placeholder="Password" required><br />
             <input type="submit" name="login" value="Login">

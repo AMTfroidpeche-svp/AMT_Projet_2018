@@ -21,3 +21,8 @@ nav > a:hover {
 .loginFieldset {
     border-radius: 6px;
 }
+
+.userList {
+    display:flex;
+    flex-direction: column;
+}
