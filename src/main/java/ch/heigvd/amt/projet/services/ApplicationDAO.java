@@ -124,7 +124,15 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null){
             return null;
         }
-        String sql = "SELECT appOwner FROM applications WHERE appOwner = ?;";
+        String sql, sqlSelect;
+        if(permissionLevel == 0){
+            sql = "SELECT appOwner FROM applications WHERE appOwner = ?;";
+            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications WHERE appOwner = ? ORDER BY appName OFFSET 10 * (? - 1) LIMIT 10;";
+        }
+        else {
+            sql = "SELECT appOwner FROM applications";
+            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications ORDER BY appName OFFSET 10 * (? - 1) LIMIT 10;";
+        }
         ResultSet resultSet = null;
         boolean result = false;
         PreparedStatement preparedStatement    = null;
@@ -145,7 +153,6 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             }
             else{
                 resultSet.beforeFirst();
-                String sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications WHERE appOwner = ? ORDER BY appName OFFSET 10 * (? - 1) LIMIT 10;";
                 preparedStatementDel = connection.prepareStatement(sqlSelect);
                 preparedStatementDel.setString(1, appOwner);
                 preparedStatementDel.setInt(2, pageNumber);
