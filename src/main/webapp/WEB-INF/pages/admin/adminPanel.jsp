@@ -1,16 +1,23 @@
+<%@ include file="/WEB-INF/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
-<%@include file="/WEB-INF/header.jsp"%>
 <html>
 
-<head>
-    <title>Profile</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
+    <head>
+        <title>Admin Panel</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
 
-<body>
+    <body>
+        <h1>Admin Panel</h1>
 
-schuuuuuuuuuurch.
+    <fieldset>
+        <legend>Look for users</legend>
+        <input type="text" name="findEmailText" placeholder="user email" />
+        <input type="button" name="findEmail" value="Search" />
+    </fieldset>
 
-</body>
+    </body>
 
 </html>
