@@ -320,7 +320,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             preparedStatement.setString(3, email);
             preparedStatement.executeUpdate();
             if(action){
-                return sendEmail(email, token);
+                return sendEmailToken(email, token);
             }
             else{
                 return true;
@@ -333,7 +333,17 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         return false;
     }
 
-    private boolean sendEmail(String email, String token){
+    private boolean sendEmailToken(String email, String token){
+        try {
+            EmailUtility.sendEmail("", "test", "test");
+            return true;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean sendEmailPassword(String email, String password){
         try {
             EmailUtility.sendEmail("", "test", "test");
             return true;
