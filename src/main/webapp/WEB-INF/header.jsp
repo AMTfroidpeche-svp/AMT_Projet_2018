@@ -8,7 +8,7 @@
     <nav>
         <a href="profile">Profile</a>
         <c:if test="${sessionScope.userSession.permissionLevel == 0}">
-            <a href="app">My Apps</a>
+            <a href="app?page=1">My Apps</a>
             <a href="createApp">Create App</a>
         </c:if>
         <a href="logout">Logout</a>

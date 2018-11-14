@@ -56,7 +56,7 @@ public class Login extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + ADMIN_VIEW);
                 }
                 else {
-                    resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW);
+                    resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW + "?page=1");
                 }
             }
             /**** IF INVALID ****/

@@ -45,7 +45,7 @@ public class CreateAppServlet extends HttpServlet {
 
         Application app = new Application(appOwner, appName, appDescr);
         if(appDAO.createApp(app)) {
-            resp.sendRedirect(req.getContextPath() + APP_VIEW);
+            resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
         }
         else {
             req.getRequestDispatcher(VIEW).forward(req, resp);
