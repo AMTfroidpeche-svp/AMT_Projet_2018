@@ -121,41 +121,44 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
 
     @Override
     public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel) {
-        if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null){
+        if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null || pageNumber < 1){
             return null;
         }
         String sql, sqlSelect;
         if(permissionLevel == 0){
             sql = "SELECT appOwner FROM applications WHERE appOwner = ?;";
-            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications WHERE appOwner = ? ORDER BY appName OFFSET 10 * (? - 1) LIMIT 10;";
+            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications WHERE appOwner = ? ORDER BY appName LIMIT 10 OFFSET ?;";
         }
         else {
             sql = "SELECT appOwner FROM applications";
-            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications ORDER BY appName OFFSET 10 * (? - 1) LIMIT 10;";
+            sqlSelect = "SELECT appOwner, appName, description, APIToken FROM applications ORDER BY appName LIMIT 10 OFFSET ?;";
         }
         ResultSet resultSet = null;
-        boolean result = false;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
 
         try (Connection connection = dataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setString(1, appOwner);
+            if(permissionLevel == 0) {
+                preparedStatement.setString(1, appOwner);
+            }
             resultSet = preparedStatement.executeQuery();
             int numberOfApp = 0;
             if (resultSet.last()) {
                 numberOfApp = resultSet.getRow();
-                resultSet.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
             }
             if((pageNumber - 1) * 10 >= numberOfApp){
                 return null;
             }
             else{
-                resultSet.beforeFirst();
                 preparedStatementDel = connection.prepareStatement(sqlSelect);
-                preparedStatementDel.setString(1, appOwner);
-                preparedStatementDel.setInt(2, pageNumber);
+                if(permissionLevel == 0) {
+                    preparedStatementDel.setString(1, appOwner);
+                    preparedStatementDel.setInt(2, 10 * (pageNumber - 1));
+                }
+                else {
+                    preparedStatementDel.setInt(1, 10 * (pageNumber - 1));
+                }
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<Application> retArray = new ArrayList<>();
                 while(resultSet.next()){

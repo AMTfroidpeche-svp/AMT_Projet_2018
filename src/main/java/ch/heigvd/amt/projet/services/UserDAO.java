@@ -1,6 +1,7 @@
 package ch.heigvd.amt.projet.services;
 
 import ch.heigvd.amt.projet.business.CipherUtil;
+import ch.heigvd.amt.projet.model.Application;
 import ch.heigvd.amt.projet.model.EmailUtility;
 import ch.heigvd.amt.projet.model.User;
 
@@ -96,22 +97,36 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public List<User> getPageUser(int pageNumber) {
-        String sql = "SELECT * FROM users ORDER BY email OFFSET 10 * (? - 1) LIMIT 10;";
+        if(pageNumber < 1){
+            return null;
+        }
+        String sql, sqlSelect;
+        sql = "SELECT email FROM users";
+        sqlSelect = "SELECT * FROM users ORDER BY email LIMIT 10 OFFSET ?;";
         ResultSet resultSet = null;
-        boolean result = false;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
 
         try (Connection connection = dataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatementDel = connection.prepareStatement(sql);
-            preparedStatementDel.setInt(1, pageNumber);
-            resultSet = preparedStatementDel.executeQuery();
-            ArrayList<User> retArray = new ArrayList<>();
-            while(resultSet.next()){
-                retArray.add(mapUser(resultSet));
+            resultSet = preparedStatement.executeQuery();
+            int numberOfApp = 0;
+            if (resultSet.last()) {
+                numberOfApp = resultSet.getRow();
             }
-            return retArray;
+            if((pageNumber - 1) * 10 >= numberOfApp){
+                return null;
+            }
+            else{
+                preparedStatementDel = connection.prepareStatement(sqlSelect);
+                preparedStatementDel.setInt(1, 10 * (pageNumber - 1));
+                resultSet = preparedStatementDel.executeQuery();
+                ArrayList<User> retArray = new ArrayList<>();
+                while(resultSet.next()){
+                    retArray.add(mapUser(resultSet));
+                }
+                return retArray;
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
