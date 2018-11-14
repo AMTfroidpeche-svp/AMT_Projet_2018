@@ -21,6 +21,14 @@
         <servlet-class>ch.heigvd.amt.projet.presentation.PasswordForgottenServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>QuestionAuth</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.QuestionAuth</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.ResetPassword</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Profile</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.ProfileServlet</servlet-class>
     </servlet>
@@ -52,6 +60,14 @@
     <servlet-mapping>
         <servlet-name>PasswordForgotten</servlet-name>
         <url-pattern>/newPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionAuth</servlet-name>
+        <url-pattern>/questionAuth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Profile</servlet-name>

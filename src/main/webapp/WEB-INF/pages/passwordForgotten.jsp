@@ -8,12 +8,12 @@
 
 <body>
 <div class="main">
-    <form action="" method="post">
+    <form action="newPassword" method="post">
         <fieldset>
             <p>Enter your email address</p>
             <input type="text" name="email" placeholder="toto@example.com" required autofocus> <br />
 
-            <input type="submit" name="passwordForgottenButton" value="ask for new password">
+            <input type="submit" name="passwordForgottenButton" value="reset your password">
 
         </fieldset>
     </form>

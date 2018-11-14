@@ -102,7 +102,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         }
         String sql, sqlSelect;
         sql = "SELECT email FROM users";
-        sqlSelect = "SELECT * FROM users ORDER BY email LIMIT 10 OFFSET ?;";
+        sqlSelect = "SELECT * FROM users ORDER BY email LIMIT 11 OFFSET ?;";
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
@@ -342,7 +342,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     private boolean sendEmailToken(String email, String token){
         try {
-            EmailUtility.sendEmail("", "test", "test");
+            EmailUtility.sendEmail("olivier2222@laposte.net", "test", token);
             return true;
         } catch (MessagingException e) {
             e.printStackTrace();

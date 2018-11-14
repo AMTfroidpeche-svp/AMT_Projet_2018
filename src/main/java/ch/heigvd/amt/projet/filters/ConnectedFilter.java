@@ -26,7 +26,7 @@ public class ConnectedFilter implements Filter {
         HttpSession session = req.getSession();
 
         if(session.getAttribute(USER_SESSION) != null || req.getRequestURI().endsWith(".css") ||
-           req.getRequestURI().endsWith("/registration") || req.getRequestURI().endsWith("/newPassword")) {
+           req.getRequestURI().endsWith("/registration") || req.getRequestURI().endsWith("/newPassword") || req.getRequestURI().endsWith("/questionAuth") || req.getRequestURI().endsWith("/resetPassword")) {
             filterChain.doFilter(req, resp);
         }
         else {
