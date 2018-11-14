@@ -32,6 +32,10 @@
         <servlet-name>AdminPanel</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.AdminPanelServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateApp</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.CreateAppServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -60,6 +64,10 @@
     <servlet-mapping>
         <servlet-name>AdminPanel</servlet-name>
         <url-pattern>/adminPanel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateApp</servlet-name>
+        <url-pattern>/createApp</url-pattern>
     </servlet-mapping>
 
     <filter>

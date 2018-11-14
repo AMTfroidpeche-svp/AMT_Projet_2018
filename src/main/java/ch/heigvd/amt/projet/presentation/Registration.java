@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class Registration extends javax.servlet.http.HttpServlet {
 
-    public final String VIEW = "WEB-INF/pages/register.jsp";
-    public final String LOGIN_VIEW = "/login";
+    private static final String VIEW = "WEB-INF/pages/register.jsp";
+    private static final String LOGIN_VIEW = "/login";
 
     @EJB
     UserDAOLocal userDAO;
