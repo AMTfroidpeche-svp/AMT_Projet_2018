@@ -56,7 +56,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 preparedStatementAdd.setInt(5, user.getPermissionLevel());
                 preparedStatementAdd.setInt(6, user.getIDQuestion());
                 preparedStatementAdd.setString(7, user.getResponseQuestion());
-                preparedStatementAdd.setBoolean(8, user.isActive());
+                preparedStatementAdd.setBoolean(8, user.getIsActive());
                 preparedStatementAdd.setBoolean(9, user.hasToChangedPassword());
                 preparedStatementAdd.executeUpdate();
 

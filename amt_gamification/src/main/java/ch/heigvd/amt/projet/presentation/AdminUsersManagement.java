@@ -17,6 +17,7 @@ import java.util.List;
 
 public class AdminUsersManagement extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/admin/adminManageUser.jsp";
+    private static final String ADMIN_USERS_MANAGEMENT_VIEW = "/adminUsersManagement";
     private static final int    APPS_PER_PAGE = 10;
 
     @EJB
@@ -50,6 +51,16 @@ public class AdminUsersManagement extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        System.out.println("POST");
+        String userEmail = req.getParameter("user");
+        String action = req.getParameter("changeUserAccountActivity");
+        /***** Set 'isActive' of the account in DB *****/
+        if(action.equals("Enable Account")) {
+            userDAO.setActive(userEmail, 1);
+        }
+        else {
+            userDAO.setActive(userEmail, 0);
+        }
+
+        resp.sendRedirect(req.getContextPath() + ADMIN_USERS_MANAGEMENT_VIEW + "?user=" + userEmail + "&page=1");
     }
 }
