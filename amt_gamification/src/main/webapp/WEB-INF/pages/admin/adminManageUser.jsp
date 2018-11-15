@@ -10,7 +10,6 @@
     <title>My Apps</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/adminPanel.css">
-    <link rel="stylesheet" type="text/css" href="css/applications.css">
     <link rel="stylesheet" type="text/css" href="css/adminManageUser.css">
 
 </head>

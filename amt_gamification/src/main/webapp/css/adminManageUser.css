@@ -111,3 +111,68 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+
+
+
+.flex-container {
+    border:1px solid black;
+    display:flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.app-container {
+    margin: 5px;
+    min-height: 50px;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.app-content {
+    display:flex;
+    flex-direction: row;
+
+    justify-content: flex-start;
+}
+
+.app-container > div {
+    border: 0px solid green;
+    margin: 10px;
+}
+
+.app-info {
+    flex-grow: 0;
+}
+
+.app-info > p {
+    margin-left: 15px;
+}
+.app-info > img {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) ;
+    margin-bottom: 15px;
+}
+
+.app-descr {
+    flex-grow: 5;
+    border-radius: 6px;
+    margin: 20px;
+}
+
+
+.app-descr > div {
+    padding: 5px;
+    background-color: white;
+    height: 90%;
+    border: 1px solid black;
+}
+
+.app-descr-text {
+    border-radius: 6px;
+}
