@@ -60,7 +60,12 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
 
     @Override
     public boolean deleteApp(Application app) {
-        String sql = "SELECT APIToken FROM applications WHERE APIToken = ?;";
+        return deleteApp(app.getAPI_TOKEN(), app.getAppOwner());
+    }
+
+    @Override
+    public boolean deleteApp(String APIToken, String appOwner) {
+        String sql = "SELECT APIToken FROM applications WHERE APIToken = ? and appOwner = ?;";
         ResultSet resultSet = null;
         boolean result = false;
         PreparedStatement preparedStatement    = null;
@@ -69,7 +74,8 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         try (Connection connection = dataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, app.getAPI_TOKEN());
+            preparedStatement.setString(1, APIToken);
+            preparedStatement.setString(2, appOwner);
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
@@ -77,9 +83,10 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             }
             else{
                 resultSet.beforeFirst();
-                String sqlDel = "DELETE FROM applications WHERE APIToken = ?;";
+                String sqlDel = "DELETE FROM applications WHERE APIToken = ? and appOwner = ?;";
                 preparedStatementDel = connection.prepareStatement(sqlDel);
-                preparedStatementDel.setString(1, app.getAPI_TOKEN());
+                preparedStatementDel.setString(1, APIToken);
+                preparedStatementDel.setString(2, appOwner);
                 preparedStatementDel.execute();
                 return true;
             }
@@ -92,11 +99,16 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     }
 
     @Override
-    public boolean updateApp(Application app, String newName, String newDescription) {
-        if(newName == null || newDescription == null){
+    public boolean updateApp(Application app, String newName, String newDescription, String appOwner) {
+        return updateApp(app.getAPI_TOKEN(), newName, newDescription, appOwner);
+    }
+
+    @Override
+    public boolean updateApp(String APIToken, String newName, String newDescription, String appOwner) {
+        if(APIToken == null || newName == null || newDescription == null){
             return false;
         }
-        String sql = "SELECT APIToken FROM applications WHERE APIToken = ?;";
+        String sql = "SELECT APIToken FROM applications WHERE APIToken = ? and appOwner = ?;";
         ResultSet resultSet = null;
         boolean result = false;
         PreparedStatement preparedStatement    = null;
@@ -105,7 +117,8 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         try (Connection connection = dataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, app.getAPI_TOKEN());
+            preparedStatement.setString(1, APIToken);
+            preparedStatement.setString(2, appOwner);
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
@@ -113,11 +126,12 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             }
             else{
                 resultSet.beforeFirst();
-                String sqlUpdate = "UPDATE applications SET appName = ?, description = ? WHERE APIToken = ?;";
+                String sqlUpdate = "UPDATE applications SET appName = ?, description = ? WHERE APIToken = ? and appOwner = ?;";
                 preparedStatementDel = connection.prepareStatement(sqlUpdate);
                 preparedStatementDel.setString(1, newName);
                 preparedStatementDel.setString(2, newDescription);
-                preparedStatementDel.setString(3, app.getAPI_TOKEN());
+                preparedStatementDel.setString(3, APIToken);
+                preparedStatementDel.setString(4, appOwner);
                 preparedStatementDel.execute();
                 return true;
             }
@@ -127,7 +141,6 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         } finally {
             cleanUp(preparedStatement, preparedStatementDel);
         }
-
     }
 
     @Override
@@ -189,6 +202,39 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     @Override
     public List<Application> retrieveApp(String appOwner, int pageNumber) {
         return retrieveApp(appOwner, pageNumber, 0);
+    }
+
+    @Override
+    public Application getApp(String appTOKEN, String appOwner) {
+        if(appTOKEN == null || appOwner == null){
+            return null;
+        }
+        String sql = "SELECT * FROM applications WHERE appOwner = ? AND APIToken = ?;";
+
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        Application app = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, appOwner);
+            preparedStatement.setString(2, appTOKEN);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()) {
+                return null;
+            }
+
+            app = new Application(resultSet.getString("appOwner"), resultSet.getString("appName"), resultSet.getString("description"), resultSet.getString("APIToken"), resultSet.getString("APISecret"));
+
+            return app;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cleanUp(preparedStatement);
+        }
     }
 
 }
