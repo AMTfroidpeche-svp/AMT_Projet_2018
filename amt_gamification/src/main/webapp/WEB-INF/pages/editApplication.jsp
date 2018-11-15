@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Edit an App</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
