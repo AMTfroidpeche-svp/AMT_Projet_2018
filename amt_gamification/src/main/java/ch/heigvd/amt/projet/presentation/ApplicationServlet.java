@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -33,11 +34,15 @@ public class ApplicationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        //TODO: handle error, ex: ?page=10000
         int pageNumber = req.getParameter("page") != null ? Integer.parseInt(req.getParameter("page")) : 1;
 
         User user = (User)session.getAttribute(USER_SESSION);
-        List<Application> apps = appDAO.retrieveApp(user.getEmail(), pageNumber, user.getPermissionLevel());
+        List<Application> apps = appDAO.retrieveApp(user.getEmail(), user.getPermissionLevel());
+        int begin = (pageNumber - 1) * APPS_PER_PAGE;
+        int end = (pageNumber - 1) * APPS_PER_PAGE + APPS_PER_PAGE + 1;
+        if(end > apps.size())
+            end = apps.size();
+        apps = new ArrayList<>(apps.subList(begin, end));
 
         req.setAttribute("appsPerPage", APPS_PER_PAGE);
         req.setAttribute("apps", apps);

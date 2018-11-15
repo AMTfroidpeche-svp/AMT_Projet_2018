@@ -16,9 +16,9 @@ public interface ApplicationDaoLocal {
 
     public boolean updateApp(String APIToken, String newName, String newDescription, String appOwner);
 
-    public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel);
+    public List<Application> retrieveApp(String appOwner, int permissionLevel);
 
-    public List<Application> retrieveApp(String appOwner, int pageNumber);
+    public List<Application> retrieveApp(String appOwner);
 
     public Application getApp(String appTOKEN, String appOwner);
 }

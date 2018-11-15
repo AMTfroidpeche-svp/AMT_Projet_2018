@@ -23,9 +23,9 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     private final String sqlDeleteApp = "DELETE FROM applications WHERE APIToken = ? and appOwner = ?;";
     private final String sqlUpdateApp = "UPDATE applications SET appName = ?, description = ? WHERE APIToken = ? and appOwner = ?;";
     private final String sqlSelectAppByDev = "SELECT appOwner FROM applications WHERE appOwner = ?;";
-    private final String sqlSelectSetOfApp = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName LIMIT ? OFFSET ?;";
+    private final String sqlSelectSetOfApp = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName;";
     private final String sqlSelectAllApp = "SELECT appOwner FROM applications";
-    private final String sqlSelectSetOfAllApp = "SELECT * FROM applications ORDER BY appName LIMIT ? OFFSET ?;";
+    private final String sqlSelectSetOfAllApp = "SELECT * FROM applications ORDER BY appName;";
     private final String sqlSelectUniqueApp = "SELECT * FROM applications WHERE appOwner = ? AND APIToken = ?;";
 
     @Resource(lookup = "java:/amt_project")
@@ -145,9 +145,8 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     }
 
     @Override
-    public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel) {
-        int maxNumberOfAppToReturn = APP_PER_PAGE + 1;
-        if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null || pageNumber < 1){
+    public List<Application> retrieveApp(String appOwner, int permissionLevel) {
+        if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null){
             return null;
         }
         String sql, sqlSelect;
@@ -173,19 +172,9 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             if (resultSet.last()) {
                 numberOfApp = resultSet.getRow();
             }
-            if((pageNumber - 1) * 10 >= numberOfApp){
-                return null;
-            }
-            else{
                 preparedStatementDel = connection.prepareStatement(sqlSelect);
                 if(permissionLevel == 0) {
                     preparedStatementDel.setString(1, appOwner);
-                    preparedStatementDel.setInt(2, maxNumberOfAppToReturn);
-                    preparedStatementDel.setInt(3, APP_PER_PAGE * (pageNumber - 1));
-                }
-                else {
-                    preparedStatementDel.setInt(1, maxNumberOfAppToReturn);
-                    preparedStatementDel.setInt(2, APP_PER_PAGE * (pageNumber - 1));
                 }
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<Application> retArray = new ArrayList<>();
@@ -193,7 +182,6 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
                     retArray.add(new Application(resultSet.getString("appOwner"), resultSet.getString("appName"), resultSet.getString("description"), resultSet.getString("APIToken"), resultSet.getString("APISecret")));
                 }
                 return retArray;
-            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -204,8 +192,8 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     }
 
     @Override
-    public List<Application> retrieveApp(String appOwner, int pageNumber) {
-        return retrieveApp(appOwner, pageNumber, 0);
+    public List<Application> retrieveApp(String appOwner) {
+        return retrieveApp(appOwner, 0);
     }
 
     @Override
