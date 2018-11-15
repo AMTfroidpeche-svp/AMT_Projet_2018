@@ -15,4 +15,6 @@ public interface ApplicationDaoLocal {
     public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel);
 
     public List<Application> retrieveApp(String appOwner, int pageNumber);
+
+    public Application getApp(String appTOKEN, String appOwner);
 }
