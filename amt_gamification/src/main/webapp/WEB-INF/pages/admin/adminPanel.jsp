@@ -35,7 +35,7 @@
 
                     <c:forEach items="${users}" var="i">
                         <tr>
-                            <td><a href="adminUsersManagement?user=${i.email}">${i.email}</td>
+                            <td><a href="adminUsersManagement?user=${i.email}&page=1">${i.email}</td>
                             <td>${i.firstName}</td>
                             <td>${i.lastName}</td>
                             <td id="permissionLevelTD">${i.permissionLevel}</td>

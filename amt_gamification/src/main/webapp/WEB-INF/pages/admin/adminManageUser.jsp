@@ -33,7 +33,8 @@
             </div>
             <div class="activity">
 
-                <form action="changeUserAccountActivity" method="post">
+                <form action="adminUsersManagement" method="post">
+                    <input type="hidden" name="user" value="${requestScope.user.email}">
                     <c:choose>
                         <c:when test="${requestScope.user.isActive eq false}">
                             <input type="submit" name="changeUserAccountActivity" value="Enable Account">
@@ -81,10 +82,10 @@
     <!-- Previous/Next page buttons -->
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:if test="${page ne 1}">
-        <a href='app?page=${page-1}' id="linkPreviousPage">Previous Page </a>
+        <a href='adminUsersManagement?user=${requestScope.user.email}&page=${page-1}' id="linkPreviousPage">Previous Page </a>
     </c:if>
     <c:if test="${fn:length(apps) gt appsPerPage}">
-        <a href='app?page=${page+1}' id="linkNextPage"> Next Page</a>
+        <a href='adminUsersManagement?user=${requestScope.user.email}&page=${page+1}' id="linkNextPage"> Next Page</a>
     </c:if>
 </div>
 
