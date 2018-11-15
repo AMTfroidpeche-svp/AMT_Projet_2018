@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 
 public class ApplicationServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/applications.jsp";
+    private static final String EDIT_VIEW = "/editApp";
+    private static final String APP_VIEW = "/app";
     private static final String USER_SESSION = "userSession";
     private static final int    APPS_PER_PAGE = 10;
 
@@ -30,7 +33,7 @@ public class ApplicationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-
+        //TODO: handle error, ex: ?page=10000
         int pageNumber = req.getParameter("page") != null ? Integer.parseInt(req.getParameter("page")) : 1;
 
         User user = (User)session.getAttribute(USER_SESSION);
@@ -42,7 +45,32 @@ public class ApplicationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        HttpSession session = req.getSession();
 
+        User user = (User)session.getAttribute(USER_SESSION);
+
+        Enumeration buttonNames = req.getParameterNames();
+        String buttonName = (String)buttonNames.nextElement();
+        String buttonEffect = buttonName.split("_")[0];
+        buttonName = buttonName.split("_")[1];
+
+        /***** Edit an APP *****/
+        if(buttonEffect.equals("edit")) {
+            resp.sendRedirect(req.getContextPath() + EDIT_VIEW + "?appToken=" + buttonName);
+        }
+
+        /***** Delete an APP *****/
+        else if(buttonEffect.equals("delete")) {
+            /** Delete OK **/
+            if(appDAO.deleteApp(buttonName, user.getEmail())) {
+                resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
+            }
+            /** Delete failed **/
+            else {
+
+            }
+
+        }
     }
 }

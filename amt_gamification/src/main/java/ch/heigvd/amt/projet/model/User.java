@@ -14,18 +14,25 @@ public class User {
     private int permissionLevel = 0;
     private String token = "";
     private Date tokenGeneration;
+    private boolean isActive = true;
+    private boolean hasToChangedPassword = true;
 
     public User() {
-
     }
 
-    public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion) {
+    public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion, boolean isActive, boolean hasTochangePassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = CipherUtil.sha2Generator(password);
         this.email = email;
         this.IDQuestion = IDQuestion;
         this.responseQuestion = responseQuestion;
+        this.isActive = isActive;
+        this.hasToChangedPassword = hasTochangePassword;
+    }
+
+    public User(String firstName, String lastName, String password, String email, int IDQuestion, String responseQuestion) {
+        this(firstName, lastName, password, email, IDQuestion, responseQuestion, true, false);
     }
 
     public String getFirstName() {
@@ -64,6 +71,13 @@ public class User {
         return tokenGeneration;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public boolean hasToChangedPassword() {
+        return hasToChangedPassword;
+    }
 
     public void setPermissionLevel(int permissionLevel) {
         this.permissionLevel = permissionLevel;
@@ -94,4 +108,12 @@ public class User {
     }
 
     public void setResponseQuestion(String responseQuestion) { this.responseQuestion = responseQuestion; }
+
+    public void setHasToChangedPassword(boolean hasToChangedPassword) {
+        this.hasToChangedPassword = hasToChangedPassword;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

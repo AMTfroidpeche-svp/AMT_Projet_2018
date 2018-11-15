@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class CreateAppServlet extends HttpServlet {
-    private static final String VIEW = "WEB-INF/pages/createApplication.jsp";
+public class EditAppServlet extends HttpServlet {
+    private static final String VIEW = "WEB-INF/pages/editApplication.jsp";
     private static final String APP_VIEW = "/app";
     private static final String USER_SESSION = "userSession";
 
@@ -28,8 +28,17 @@ public class CreateAppServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession sesion = req.getSession();
+        HttpSession session = req.getSession();
 
+        String appToken = req.getParameter("appToken");
+        User user = (User)session.getAttribute(USER_SESSION);
+
+        /***** DB Query to have app info *****/
+        Application app = appDAO.getApp(appToken, user.getEmail());
+
+        //req.setAttribute("APIToken", appToken);
+        req.setAttribute("appName", app.getAppName());
+        req.setAttribute("appDescr", app.getDescription());
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
@@ -37,18 +46,19 @@ public class CreateAppServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        String appName  = req.getParameter("appName");
-        String appDescr = req.getParameter("appDescr");
-        // TODO: textField validations
+        User user = (User)session.getAttribute(USER_SESSION);
 
-        String appOwner = ((User)session.getAttribute(USER_SESSION)).getEmail();
+        String appToken   = req.getParameter("appToken");
+        String newAppName  = req.getParameter("appName");
+        String newAppDescr = req.getParameter("appDescr");
 
-        Application app = new Application(appOwner, appName, appDescr);
-        if(appDAO.createApp(app)) {
+        /***** App updated successfully *****/
+        if(appDAO.updateApp(appToken, newAppName, newAppDescr, user.getEmail())) {
             resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
         }
+
+        /***** App update failed *****/
         else {
-            req.getRequestDispatcher(VIEW).forward(req, resp);
         }
     }
 }

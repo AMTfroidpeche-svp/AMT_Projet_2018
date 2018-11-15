@@ -48,6 +48,8 @@ public class AMTGamificationFluentTest extends FluentTest {
     registerPage.typeFirstName("firstName");
     registerPage.typeLastName("lastname");
     registerPage.typeEmail("firstname.lastname@test.test");
+    registerPage.typePassword("password");
+    registerPage.typeConfirmPassword("password");
     registerPage.typeQuestion(1);
     registerPage.typeAnswer("yverdon");
     registerPage.clickRegister();
@@ -64,6 +66,41 @@ public class AMTGamificationFluentTest extends FluentTest {
     loginPage.clickSignin();
     loginPage.isAt();
   }
+
+  @Test
+  @ProbeTest(tags = "WebUI")
+  public void basicScenario() {
+    goTo(baseUrl + "/registration");
+    loginPage.isAt();
+    registerPage.typeFirstName("toto");
+    registerPage.typeLastName("tata");
+    registerPage.typeEmail("toto@tata.tutu");
+    registerPage.typePassword("tutu");
+    registerPage.typeConfirmPassword("tutu");
+    registerPage.typeQuestion(1);
+    registerPage.typeAnswer("response");
+    registerPage.clickRegister();
+    loginPage.isAt();
+    loginPage.typeEmail("toto@tata.tutu");
+    loginPage.typePassword("tutu");
+    loginPage.clickSignin();
+    profilePage.isAt();
+    profilePage.goToCreateAppPageViaMenu();
+    createAppPage.isAt();
+    for(int i = 0; i < 25; i++){
+        createAppPage.typeAppName("test" + String.valueOf(i));
+        createAppPage.typeDescription("test" + String.valueOf(i));
+        createAppPage.clickCreate();
+    }
+    createAppPage.isAt();
+    createAppPage.goToAppPageViaMenu();
+
+    appPage.isAt();
+    appPage.goToNextPage();
+    appPage.goToNextPage();
+
+  }
+
   @Override
   public WebDriver getDefaultDriver() {
     //return new FirefoxDriver();

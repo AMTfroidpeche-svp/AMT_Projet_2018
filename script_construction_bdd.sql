@@ -9,13 +9,15 @@ create table users(
     hashPass varchar(64) NOT NULL, 
     firstName varchar(60) NOT NULL,
     lastName varchar(60) NOT NULL,
-    permissionLevel INT NOT NULL,
+    permissionLevel int NOT NULL,
     IDQuestion int,
     responseQuestion varchar(60), 
     TOKEN varchar(64),
     tokenDate varchar(20),
+	isActive tinyint NOT NULL,
+	hasToChangePassword tinyint NOT NULL,
     PRIMARY KEY (email),
-    FOREIGN KEY (IDQuestion) REFERENCES Questions(ID)
+    FOREIGN KEY (IDQuestion) REFERENCES questions(ID)
 );
 
 create table applications(
@@ -33,9 +35,6 @@ create table questions(
     primary key (ID)
 );
 
-insert into Questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
+insert into questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
 
 SET FOREIGN_KEY_CHECKS=1;
-
-
-insert into users values ("test", "test", "test","test",0,2,"test", null, null);

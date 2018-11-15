@@ -10,7 +10,7 @@ public class QuestionAuthPage extends FluentPage {
     private final static String submitResponse = "#submitQuestionAuth";
 
     public void isAt() {
-        assertThat(title()).isEqualTo("Question Auth");
+        assertThat(title()).isEqualTo("Question");
     }
 
     public void typeResponse(String response) {

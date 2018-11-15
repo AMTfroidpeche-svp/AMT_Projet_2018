@@ -7,43 +7,60 @@
 <html>
 
 <head>
-  <title>Profile</title>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/applications.css">
+    <title>My Apps</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/applications.css">
 
 </head>
 
 <body>
 
 
-
-  <div class="flex-container">
-    <h1>Applications: </h1>
-
+<div class="flex-container">
+    <h1>Applications </h1>
+    <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:forEach items="${apps}" var="i">
-      <div class="app-container" id="appContainer">
-        <div class="app-info">
-          <p>${i.appName}</p>
-          <img src="profile.jpg" width="50px" height="50px" >
-        </div>
-        <div class="app-descr">
-          <div class="app-descr-text">
-            ${i.description}
-          </div>
-        </div>
-      </div>
+
+
+
+            <div class="app-container" id="appContainer">
+                <div class="app-name">
+                        ${i.appName}
+                </div>
+
+                <div class="app-content">
+                    <div class="app-info">
+
+                        <img src="profile.jpg" width="50px" height="50px"/> <br/>
+                        <form action="app" method="post">
+                            <input class="loginButon" type="submit" name="edit_${i.API_TOKEN}" value="Edit"> <br/>
+
+                            <input class="loginButon" type="submit" name="delete_${i.API_TOKEN}" value="Delete">
+                        </form>
+                    </div>
+
+                    <div class="app-descr">
+                        <div class="app-descr-text">
+                                ${i.description}
+                        </div>
+                    </div>
+                </div>
+            </div>
     </c:forEach>
 
-  </div>
+</div>
 
-  <!-- Previous/Next page buttons -->
-  <fmt:parseNumber var = "page" type = "number" value = "${param['page']}" />
-  <c:if test="${page ne 1}">
+<div class="footer">
+<!-- Previous/Next page buttons -->
+<fmt:parseNumber var="page" type="number" value="${param['page']}"/>
+<c:if test="${page ne 1}">
     <a href='app?page=${page-1}' id="linkPreviousPage">Previous Page </a>
-  </c:if>
-  <c:if test="${fn:length(apps) gt appsPerPage}">
+</c:if>
+<c:if test="${fn:length(apps) gt appsPerPage}">
     <a href='app?page=${page+1}' id="linkNextPage"> Next Page</a>
-  </c:if>
+</c:if>
+</div>
+
 </body>
 
 </html>

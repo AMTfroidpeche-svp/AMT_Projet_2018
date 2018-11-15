@@ -2,23 +2,29 @@
     border:1px solid black; 
     display:flex; 
     flex-direction: column;
-    background-color: lightblue;
+    background-color: aliceblue;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
   }
 
   .app-container {
-    border: 0px solid red;
     margin: 5px;
-    min-height: 250px;
+    min-height: 50px;
     display:flex; 
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
   }
 
+.app-content {
+    display:flex;
+    flex-direction: row;
+
+    justify-content: flex-start;
+}
+
   .app-container > div {
     border: 0px solid green;
-    margin: 5px;
+    margin: 10px;
   }
 
   .app-info {
@@ -29,19 +35,31 @@
     margin-left: 15px;
   }
   .app-info > img {
-    margin: 0px 15px;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) ;
+      margin-bottom: 15px;
   }
 
   .app-descr {
     flex-grow: 5;
     border-radius: 6px;
+      margin: 20px;
   }
+
+.app-info > form > input {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) ;
+    margin-bottom: 15px;
+}
 
   .app-descr > div {
     padding: 5px;
-    margin-top:50px;
     background-color: white;
-    height: 75%;
+    height: 90%;
     border: 1px solid black;
   }
 
