@@ -19,8 +19,36 @@ nav > a:hover {
 }
 
 .loginFieldset {
+    background-color: aliceblue;
     border-radius: 6px;
+    border:1px solid black;
+    padding-left: 50px;
+    width: 200px;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
 }
+
+.loginInput {
+    margin-bottom: 25px;
+}
+.loginButon {
+    padding:5px 15px;
+    background:#ccc;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+}
+
+.loginFieldset > p {
+    margin-bottom: 25px;
+}
+
 
 .userList {
     display:flex;

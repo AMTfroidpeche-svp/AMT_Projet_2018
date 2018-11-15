@@ -9,13 +9,13 @@
 <body>
 <div class="main">
     <form action="questionAuth" method="post">
-        <fieldset>
+        <div class="loginFieldset">
             <p>${question}</p>
-            <input type="text" name="response" placeholder="response" required autofocus> <br />
+            <input class="loginInput" type="text" name="response" placeholder="response" required autofocus> <br />
 
-            <input type="submit" name="questionAuthButton" value="response">
+            <input class="loginButon" type="submit" name="questionAuthButton" value="response">
 
-        </fieldset>
+        </div>
     </form>
 </div>
 
