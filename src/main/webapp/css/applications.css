@@ -40,11 +40,13 @@
       left: 50%;
       top: 50%;
       transform: translateX(-50%) ;
+      margin-bottom: 15px;
   }
 
   .app-descr {
     flex-grow: 5;
     border-radius: 6px;
+      margin: 20px;
   }
 
 .app-info > form > input {
@@ -52,6 +54,7 @@
     left: 50%;
     top: 50%;
     transform: translateX(-50%) ;
+    margin-bottom: 15px;
 }
 
   .app-descr > div {
