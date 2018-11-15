@@ -38,11 +38,15 @@ nav > a:hover {
 .loginButon {
     padding:5px 15px;
     background:#ccc;
-    border:0 none;
+    border: 1px solid black;
     cursor:pointer;
     -webkit-border-radius: 5px;
     border-radius: 5px;
     margin-bottom: 25px;
+}
+
+.loginButon:hover{
+    background-color: #bbb;
 }
 
 .loginLink {
