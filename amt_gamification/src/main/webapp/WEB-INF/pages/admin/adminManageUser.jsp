@@ -24,19 +24,21 @@
     <div class="profile-container">
         <div class="user-info">
             <div id="img-profile">
-                <img src="profile.jpg" alt="profile image" width="200px" height="200px" style="float:left;">
+                <img src="profile.jpg" alt="profile image" width="150px" height="150px" style="float:left;">
             </div>
             <div>
                 <h2 id="fullName">Full name: ${sessionScope.userSession.firstName} ${sessionScope.userSession.lastName}</h2>
                 <h2 id="email">Email: ${sessionScope.userSession.email}</h2>
             </div>
-            <div>
-                <button class="adminResetButton">Reset Password</button> <br />
-                <p>Actif? wesh</p>
+            <div class="activity">
+                Actif user<br />
                 <label class="switch">
-                    <input type="checkbox">
+                    <input type="checkbox" checked>
                     <span class="slider round"></span>
                 </label>
+            </div>
+            <div>
+                <button class="adminResetButton">Reset Password</button> <br />
             </div>
         </div>
     </div>

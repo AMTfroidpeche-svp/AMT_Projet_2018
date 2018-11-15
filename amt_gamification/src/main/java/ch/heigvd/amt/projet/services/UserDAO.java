@@ -325,6 +325,27 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
        return true;
     }
 
+    @Override
+    public boolean setActive(String email, int isActive) {
+        String sql = "UPDATE users SET isActive = ? WHERE email = ?;";
+
+        PreparedStatement preparedStatement = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, isActive);
+            preparedStatement.setString(2, email);
+            preparedStatement.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cleanUp(preparedStatement);
+        }
+    }
+
     private boolean checkResponse(String email, String response){
         String sql = "SELECT responseQuestion FROM users WHERE email = ?;";
         ResultSet resultSet = null;
