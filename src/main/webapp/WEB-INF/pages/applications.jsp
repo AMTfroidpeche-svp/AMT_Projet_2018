@@ -25,7 +25,7 @@
                 <p>${i.appName}</p>
                 <img src="profile.jpg" width="50px" height="50px"/>
                 <form action="app" method="post">
-                    <input type="submit" name="edit_${i.API_TOKEN}" value="Edit">
+                    <input type="submit" name="edit_${i.API_TOKEN}" value="Edit"> <br />
                     <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
                 </form>
             </div>
