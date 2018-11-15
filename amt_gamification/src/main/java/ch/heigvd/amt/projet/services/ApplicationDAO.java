@@ -15,9 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal {
     private final static int APP_PER_PAGE = 10;
+    private final String sqlAppExist = "SELECT appName FROM applications WHERE appowner = ? && appname = ?;";
+    private final String sqlInsertApp = "INSERT INTO applications(appOwner, appName, description, APIToken, APISecret) VALUES(?,?,?,?,?);";
+    private final String sqlSelectApp = "SELECT APIToken FROM applications WHERE APIToken = ? and appOwner = ?;";
+    private final String sqlDeleteApp = "DELETE FROM applications WHERE APIToken = ? and appOwner = ?;";
+    private final String sqlUpdateApp = "UPDATE applications SET appName = ?, description = ? WHERE APIToken = ? and appOwner = ?;";
+    private final String sqlSelectAppByDev = "SELECT appOwner FROM applications WHERE appOwner = ?;";
+    private final String sqlSelectSetOfApp = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName LIMIT ? OFFSET ?;";
+    private final String sqlSelectAllApp = "SELECT appOwner FROM applications";
+    private final String sqlSelectSetOfAllApp = "SELECT * FROM applications ORDER BY appName LIMIT ? OFFSET ?;";
+    private final String sqlSelectUniqueApp = "SELECT * FROM applications WHERE appOwner = ? AND APIToken = ?;";
 
     @Resource(lookup = "java:/amt_project")
     DataSource dataSource;
@@ -25,12 +34,8 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
 
     @Override
     public boolean createApp(Application app) {
-        //TODO: insert if not exists
-        String sqlAppExist = "SELECT appName FROM applications WHERE appowner = ? && appname = ?;";
-        String sql = "INSERT INTO applications(appOwner, appName, description, APIToken, APISecret) VALUES(?,?,?,?,?);";
-        boolean result = false;
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatementExists = null;
+        ResultSet resultSet;
+        PreparedStatement preparedStatementExists;
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()) {
@@ -39,7 +44,7 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             preparedStatementExists.setString(2,app.getAppName());
             resultSet = preparedStatementExists.executeQuery();
             if(!resultSet.next()) {
-                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement = connection.prepareStatement(sqlInsertApp);
 
                 preparedStatement.setString(1, app.getAppOwner());
                 preparedStatement.setString(2, app.getAppName());
@@ -67,14 +72,12 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
 
     @Override
     public boolean deleteApp(String APIToken, String appOwner) {
-        String sql = "SELECT APIToken FROM applications WHERE APIToken = ? and appOwner = ?;";
-        ResultSet resultSet = null;
-        boolean result = false;
+        ResultSet resultSet;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectApp);
 
             preparedStatement.setString(1, APIToken);
             preparedStatement.setString(2, appOwner);
@@ -85,8 +88,7 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             }
             else{
                 resultSet.beforeFirst();
-                String sqlDel = "DELETE FROM applications WHERE APIToken = ? and appOwner = ?;";
-                preparedStatementDel = connection.prepareStatement(sqlDel);
+                preparedStatementDel = connection.prepareStatement(sqlDeleteApp);
                 preparedStatementDel.setString(1, APIToken);
                 preparedStatementDel.setString(2, appOwner);
                 preparedStatementDel.execute();
@@ -110,14 +112,12 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         if(APIToken == null || newName == null || newDescription == null){
             return false;
         }
-        String sql = "SELECT APIToken FROM applications WHERE APIToken = ? and appOwner = ?;";
-        ResultSet resultSet = null;
-        boolean result = false;
+        ResultSet resultSet;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectApp);
 
             preparedStatement.setString(1, APIToken);
             preparedStatement.setString(2, appOwner);
@@ -128,8 +128,7 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
             }
             else{
                 resultSet.beforeFirst();
-                String sqlUpdate = "UPDATE applications SET appName = ?, description = ? WHERE APIToken = ? and appOwner = ?;";
-                preparedStatementDel = connection.prepareStatement(sqlUpdate);
+                preparedStatementDel = connection.prepareStatement(sqlUpdateApp);
                 preparedStatementDel.setString(1, newName);
                 preparedStatementDel.setString(2, newDescription);
                 preparedStatementDel.setString(3, APIToken);
@@ -153,14 +152,14 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         }
         String sql, sqlSelect;
         if(permissionLevel == 0){
-            sql = "SELECT appOwner FROM applications WHERE appOwner = ?;";
-            sqlSelect = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName LIMIT ? OFFSET ?;";
+            sql = sqlSelectAppByDev;
+            sqlSelect = sqlSelectSetOfApp;
         }
         else {
-            sql = "SELECT appOwner FROM applications";
-            sqlSelect = "SELECT * FROM applications ORDER BY appName LIMIT ? OFFSET ?;";
+            sql = sqlSelectAllApp;
+            sqlSelect = sqlSelectSetOfAllApp;
         }
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
 
@@ -182,11 +181,11 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
                 if(permissionLevel == 0) {
                     preparedStatementDel.setString(1, appOwner);
                     preparedStatementDel.setInt(2, maxNumberOfAppToReturn);
-                    preparedStatementDel.setInt(3, 10 * (pageNumber - 1));
+                    preparedStatementDel.setInt(3, APP_PER_PAGE * (pageNumber - 1));
                 }
                 else {
                     preparedStatementDel.setInt(1, maxNumberOfAppToReturn);
-                    preparedStatementDel.setInt(2, 10 * (pageNumber - 1));
+                    preparedStatementDel.setInt(2, APP_PER_PAGE * (pageNumber - 1));
                 }
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<Application> retArray = new ArrayList<>();
@@ -214,14 +213,13 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         if(appTOKEN == null || appOwner == null){
             return null;
         }
-        String sql = "SELECT * FROM applications WHERE appOwner = ? AND APIToken = ?;";
 
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         PreparedStatement preparedStatement = null;
-        Application app = null;
+        Application app;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectUniqueApp);
             preparedStatement.setString(1, appOwner);
             preparedStatement.setString(2, appTOKEN);
 
