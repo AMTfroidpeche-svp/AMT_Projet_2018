@@ -24,7 +24,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Resource(lookup = "java:/amt_project")
@@ -218,7 +217,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                         preparedStatementUpdate.setString(1, CipherUtil.sha2Generator(newPassword));
                         preparedStatementUpdate.setString(2, email);
                         preparedStatementUpdate.executeUpdate();
-                        return true;
+                        return updateToken(email, false);
                     }
                 }
 
