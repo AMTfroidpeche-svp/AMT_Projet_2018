@@ -48,6 +48,10 @@
         <servlet-name>EditApp</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.EditAppServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminUsersManagement</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.AdminUsersManagement</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -93,6 +97,10 @@
         <servlet-name>EditApp</servlet-name>
         <url-pattern>/editApp</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUsersManagement</servlet-name>
+        <url-pattern>/adminUsersManagement</url-pattern>
+    </servlet-mapping>
 
     <filter>
         <filter-name>ConnectedFilter</filter-name>
@@ -110,6 +118,7 @@
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/adminPanel</url-pattern>
+        <url-pattern>/adminUsersManagement</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>

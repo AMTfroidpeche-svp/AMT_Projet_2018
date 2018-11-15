@@ -14,7 +14,7 @@
       <h1>Profile </h1>
     <div class="user-info">
         <div id="img-profile">
-            <img src="profile.jpg" alt="profile image" width="200px" height="200px" style="float:left;">
+            <img src="profile.jpg" alt="profile.jpg" width="200px" height="200px" style="float:left;">
         </div>
         <div>
             <h2 id="fullName">Full name: ${sessionScope.userSession.firstName} ${sessionScope.userSession.lastName}</h2>

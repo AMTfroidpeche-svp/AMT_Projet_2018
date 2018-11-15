@@ -35,14 +35,14 @@
 
                     <c:forEach items="${users}" var="i">
                         <tr>
-                            <td>${i.email}</td>
+                            <td><a href="adminUsersManagement?user=${i.email}">${i.email}</td>
                             <td>${i.firstName}</td>
                             <td>${i.lastName}</td>
                             <td id="permissionLevelTD">${i.permissionLevel}</td>
                         </tr>
                     </c:forEach>
                 </table>
-                <div>
+                <div class="footer">
                     <!-- Previous/Next page buttons -->
                     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
                     <c:if test="${page ne 1}">
@@ -53,7 +53,7 @@
                     </c:if>
                 </div>
             </c:if>
-
+            <p>Click on a user to manage his profile</p>
             <p>Permission Level: 0 = user, 1 = admin</p>
         </div>
     </form>

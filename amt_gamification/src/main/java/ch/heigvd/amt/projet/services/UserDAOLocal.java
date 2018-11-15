@@ -26,6 +26,7 @@ public interface UserDAOLocal {
 
     public boolean resetPassword(String email, String Response);
 
+    public boolean setActive(String email, int isActive);
 
 
 }
