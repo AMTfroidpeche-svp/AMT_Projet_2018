@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.fluentlenium.core.annotation.Page;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  *
  * @author Olivier Kopp
@@ -43,7 +45,7 @@ public class AMTGamificationFluentTest extends FluentTest {
   @Test
   @ProbeTest(tags = "WebUI")
   public void itShouldBePossibleToRegister() {
-    goTo(baseUrl + "/registration");
+    goTo(baseUrl + registerPage.getUrl());
     registerPage.isAt();
     registerPage.typeFirstName("firstName");
     registerPage.typeLastName("lastname");
@@ -59,7 +61,7 @@ public class AMTGamificationFluentTest extends FluentTest {
   @Test
   @ProbeTest(tags = "WebUI")
   public void itShouldNotBePossibleToSigninWithAnInvalidEmail() {
-    goTo(baseUrl + "/login");
+    goTo(baseUrl + loginPage.getUrl());
     loginPage.isAt();
     loginPage.typeEmail("not a valid email");
     loginPage.typePassword("any password");
@@ -70,8 +72,7 @@ public class AMTGamificationFluentTest extends FluentTest {
   @Test
   @ProbeTest(tags = "WebUI")
   public void basicScenario() {
-    goTo(baseUrl + "/registration");
-    loginPage.isAt();
+    goTo(baseUrl + registerPage.getUrl());
     registerPage.typeFirstName("toto");
     registerPage.typeLastName("tata");
     registerPage.typeEmail("toto@tata.tutu");
@@ -80,24 +81,32 @@ public class AMTGamificationFluentTest extends FluentTest {
     registerPage.typeQuestion(1);
     registerPage.typeAnswer("response");
     registerPage.clickRegister();
+    goTo(baseUrl + loginPage.getUrl());
     loginPage.isAt();
     loginPage.typeEmail("toto@tata.tutu");
     loginPage.typePassword("tutu");
     loginPage.clickSignin();
-    profilePage.isAt();
-    profilePage.goToCreateAppPageViaMenu();
-    createAppPage.isAt();
+    appPage.isAt();
     for(int i = 0; i < 25; i++){
+        appPage.goToCreateAppPageViaMenu();
+        createAppPage.isAt();
         createAppPage.typeAppName("test" + String.valueOf(i));
         createAppPage.typeDescription("test" + String.valueOf(i));
         createAppPage.clickCreate();
+        await().atMost(2, TimeUnit.SECONDS).untilPage(appPage).isLoaded();
     }
-    createAppPage.isAt();
-    createAppPage.goToAppPageViaMenu();
-
     appPage.isAt();
+    appPage.checkNumberOfApp(10);
     appPage.goToNextPage();
+    appPage.checkNumberOfApp(10);
     appPage.goToNextPage();
+    appPage.checkNumberOfApp(5);
+    appPage.goToPreviousPage();
+    appPage.goToPreviousPage();
+    appPage.goToLogoutPageViaMenu();
+    loginPage.isAt();
+    goTo(baseUrl + appPage.getUrl());
+    loginPage.isAt();
 
   }
 
