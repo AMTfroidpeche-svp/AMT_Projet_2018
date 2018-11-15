@@ -44,7 +44,7 @@ public class ApplicationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
 
         Enumeration buttonNames = req.getParameterNames();
@@ -54,10 +54,7 @@ public class ApplicationServlet extends HttpServlet {
 
         /***** Edit an APP *****/
         if(buttonEffect.equals("edit")) {
-
-
-            req.setAttribute("appToken", buttonName);
-            resp.sendRedirect(req.getContextPath() + EDIT_VIEW);
+            resp.sendRedirect(req.getContextPath() + EDIT_VIEW + "?appToken=" + buttonName);
         }
 
         /***** Delete an APP *****/

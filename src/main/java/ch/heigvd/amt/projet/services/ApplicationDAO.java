@@ -180,4 +180,37 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
         return retrieveApp(appOwner, pageNumber, 0);
     }
 
+    @Override
+    public Application getApp(String appTOKEN, String appOwner) {
+        if(appTOKEN == null || appOwner == null){
+            return null;
+        }
+        String sql = "SELECT * FROM applications WHERE appOwner = ? AND APIToken = ?;";
+
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        Application app = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, appOwner);
+            preparedStatement.setString(2, appTOKEN);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()) {
+                return null;
+            }
+
+            app = new Application(resultSet.getString("appOwner"), resultSet.getString("appName"), resultSet.getString("description"), resultSet.getString("APIToken"), resultSet.getString("APISecret"));
+
+            return app;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cleanUp(preparedStatement);
+        }
+    }
+
 }

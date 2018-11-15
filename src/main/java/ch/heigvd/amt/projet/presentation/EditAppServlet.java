@@ -1,5 +1,7 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.model.Application;
+import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.ApplicationDaoLocal;
 
 import javax.ejb.EJB;
@@ -12,7 +14,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class EditAppServlet extends HttpServlet {
-    public static final String VIEW = "WEB-INF/pages/editApplication.jsp";
+    private static final String VIEW = "WEB-INF/pages/editApplication.jsp";
+    private static final String USER_SESSION = "userSession";
 
     @EJB
     ApplicationDaoLocal appDAO;
@@ -26,10 +29,14 @@ public class EditAppServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        String appToken = (String)req.getAttribute("appToken");
+        String appToken = req.getParameter("appToken");
+        User user = (User)session.getAttribute(USER_SESSION);
 
         /***** DB Query to have app info *****/
+        Application app = appDAO.getApp(appToken, user.getEmail());
 
+        req.setAttribute("appName", app.getAppName());
+        req.setAttribute("appDescr", app.getDescription());
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
