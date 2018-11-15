@@ -9,13 +9,13 @@
 <body>
 <div class="main">
     <form action="newPassword" method="post">
-        <fieldset>
+        <div class="loginFieldset">
             <p>Enter your email address</p>
-            <input type="text" name="email" placeholder="toto@example.com" required autofocus> <br />
+            <input class="loginInput" type="text" name="email" placeholder="toto@example.com" required autofocus> <br />
 
-            <input type="submit" name="passwordForgottenButton" value="reset your password">
+            <input class="loginButon" type="submit" name="passwordForgottenButton" value="reset your password">
 
-        </fieldset>
+        </div>
     </form>
 </div>
 

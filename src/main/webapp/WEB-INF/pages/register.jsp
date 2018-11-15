@@ -9,20 +9,20 @@
 <body>
   <div class="main">
     <form action="registration" method="post">
-        <fieldset>
+        <div class="loginFieldset">
             <p>Register a dev account</p>
-            <input type="text" name="firstName" placeholder="Firstname" required autofocus> <br />
-            <input type="text" name="lastName" placeholder="Lastname" required> <br />
-            <input type="email" name="email" placeholder="Email Address" required><br />
-            <input type="password" name="password" placeholder="Password" required><br />
-            <input type="password" name="passwordConfirmation" placeholder="Confirm Password" required><br />
-            <select name="secretQuestion" required>
+            <input class="loginInput" type="text" name="firstName" placeholder="Firstname" required autofocus> <br />
+            <input class="loginInput" type="text" name="lastName" placeholder="Lastname" required> <br />
+            <input class="loginInput" type="email" name="email" placeholder="Email Address" required><br />
+            <input class="loginInput" type="password" name="password" placeholder="Password" required><br />
+            <input class="loginInput" type="password" name="passwordConfirmation" placeholder="Confirm Password" required><br />
+            <select class="loginInput" name="secretQuestion" required>
                 <option value="life">Is my life fucked up?</option>
                 <option value="studies">Where did you study?</option>
             </select><br />
-            <input type="text" name="secretAnswer" placeholder="Secret Answer" required><br />
-            <input type="submit" name="register" value="Register">
-        </fieldset>
+            <input class="loginInput" type="text" name="secretAnswer" placeholder="Secret Answer" required><br />
+            <input class="loginButon" type="submit" name="register" value="Register">
+        </div>
     </form>
   </div>
 
