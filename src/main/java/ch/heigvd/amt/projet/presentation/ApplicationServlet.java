@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ApplicationServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/applications.jsp";
-    private static final String EDIT_VIEW = "/edit";
+    private static final String EDIT_VIEW = "/editApp";
     private static final String USER_SESSION = "userSession";
     private static final int    APPS_PER_PAGE = 10;
 

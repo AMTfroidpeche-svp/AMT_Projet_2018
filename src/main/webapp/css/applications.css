@@ -10,7 +10,7 @@
   .app-container {
     border: 0px solid red;
     margin: 5px;
-    min-height: 250px;
+    min-height: 50px;
     display:flex; 
     flex-direction: row;
     justify-content: flex-start;
@@ -27,6 +27,7 @@
 
   .app-info > p {
     margin-left: 15px;
+    text-overflow: clip;
   }
   .app-info > img {
     margin: 0px 15px;

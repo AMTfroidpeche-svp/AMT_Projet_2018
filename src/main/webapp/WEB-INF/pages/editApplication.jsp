@@ -6,7 +6,7 @@
 </head>
 <body>
     <fieldset>
-        <p>Edit an App</p>
+        <h1>Edit an App</h1>
         <form action="editApp" method="post">
             <input type="text" name="appName" required autofocus> <br />
             <textarea name="appDescr" cols="50" rows="10"></textarea> <br />

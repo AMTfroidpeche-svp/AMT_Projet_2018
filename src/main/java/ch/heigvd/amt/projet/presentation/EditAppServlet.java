@@ -1,5 +1,8 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.services.ApplicationDaoLocal;
+
+import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +14,9 @@ import java.io.IOException;
 public class EditAppServlet extends HttpServlet {
     public static final String VIEW = "WEB-INF/pages/editApplication.jsp";
 
+    @EJB
+    ApplicationDaoLocal appDAO;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -21,6 +27,8 @@ public class EditAppServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         String appToken = (String)req.getAttribute("appToken");
+
+        /***** DB Query to have app info *****/
 
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
