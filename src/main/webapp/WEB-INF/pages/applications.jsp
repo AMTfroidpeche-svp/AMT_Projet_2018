@@ -7,7 +7,7 @@
 <html>
 
 <head>
-    <title>Profile</title>
+    <title>My Apps</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/applications.css">
 
@@ -20,21 +20,24 @@
     <h1>Applications: </h1>
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:forEach items="${apps}" var="i">
-        <div class="app-container">
-            <div class="app-info">
-                <p>${i.appName}</p>
-                <img src="profile.jpg" width="50px" height="50px"/>
-                <form action="app" method="post">
+        <form action="app" method="post">
+            <div class="app-container">
+                <div class="app-info">
+
+                    <p>${i.appName}</p>
+                    <img src="profile.jpg" width="50px" height="50px"/>
+
                     <input type="submit" name="edit_${i.API_TOKEN}" value="Edit">
                     <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
-                </form>
-            </div>
-            <div class="app-descr">
-                <div class="app-descr-text">
-                        ${i.description}
+
+                </div>
+                <div class="app-descr">
+                    <div class="app-descr-text">
+                            ${i.description}
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </c:forEach>
 
 </div>

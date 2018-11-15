@@ -54,7 +54,7 @@ public class ApplicationServlet extends HttpServlet {
 
         /***** Edit an APP *****/
         if(buttonEffect.equals("edit")) {
-            
+
 
             req.setAttribute("appToken", buttonName);
             resp.sendRedirect(req.getContextPath() + EDIT_VIEW);
