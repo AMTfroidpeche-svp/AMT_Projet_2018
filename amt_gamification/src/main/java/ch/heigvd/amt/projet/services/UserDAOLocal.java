@@ -18,6 +18,8 @@ public interface UserDAOLocal {
 
     public boolean changePassword(String email, String token, String newPassword);
 
+    public boolean changePasswordWithoutToken(String email, String oldPassword, String newPassword);
+
     public boolean changePasswordAdmin(String email, String newPassword);
 
     public int RetrieveSecretQuestion(String email);
