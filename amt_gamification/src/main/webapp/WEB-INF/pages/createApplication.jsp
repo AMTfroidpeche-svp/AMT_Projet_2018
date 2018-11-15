@@ -12,14 +12,14 @@
 
 <div class="main">
     <fieldset>
-        <form action="createApp" method="post">
+        <form action="createApp" id="createApp" method="post">
             <legend>Add a new Application</legend>
             <br/>
             <label>Application Name:</label> <br/>
-            <input type="text" name="appName" placeholder="app Name" required autofocus/> <br/><br/><br/>
+            <input type="text" name="appName" id="appNameField" placeholder="app Name" required autofocus/> <br/><br/><br/>
             <label>Description:</label> <br/>
-            <textarea name="appDescr" cols="50" rows="10"></textarea> <br/><br/>
-            <input type="submit" name="createAppButton" value="Add">
+            <textarea name="appDescr" id="appDescrField" cols="50" rows="10"></textarea> <br/><br/>
+            <input type="submit" name="createAppButton" id="submitCreateApp" value="Add">
         </form>
     </fieldset>
 </div>

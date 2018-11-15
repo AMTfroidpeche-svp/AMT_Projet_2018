@@ -8,12 +8,12 @@
 
 <body>
 <div class="main">
-    <form action="questionAuth" method="post">
+    <form action="questionAuth" id="questionAuth" method="post">
         <fieldset>
             <p>${question}</p>
-            <input type="text" name="response" placeholder="response" required autofocus> <br />
+            <input type="text" name="response" id="responseField" placeholder="response" required autofocus> <br />
 
-            <input type="submit" name="questionAuthButton" value="response">
+            <input type="submit" name="questionAuthButton" id="submitQuestionAuth" value="response">
 
         </fieldset>
     </form>

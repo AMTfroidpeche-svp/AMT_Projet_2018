@@ -8,13 +8,13 @@
 
 <body>
 <div class="main">
-    <form action="resetPassword" method="post">
+    <form action="resetPassword" id="resetPassword" method="post">
         <fieldset>
             <p>Enter the token you received and your new password</p>
-            <input type="text" name="token" placeholder="your token" required autofocus> <br />
-            <input type="password" name="password" placeholder="your new password" required autofocus> <br />
+            <input type="text" name="token" id="tokenField" placeholder="your token" required autofocus> <br />
+            <input type="password" name="password" id="passwordField" placeholder="your new password" required autofocus> <br />
 
-            <input type="submit" name="resetPassword" value="reset your password">
+            <input type="submit" name="resetPassword" id="resetPasswordSubmit" value="reset your password">
 
         </fieldset>
     </form>

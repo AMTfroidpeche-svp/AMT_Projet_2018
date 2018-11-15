@@ -21,7 +21,7 @@
     <h1>Applications: </h1>
 
     <c:forEach items="${apps}" var="i">
-      <div class="app-container">
+      <div class="app-container" id="appContainer">
         <div class="app-info">
           <p>${i.appName}</p>
           <img src="profile.jpg" width="50px" height="50px" >
@@ -39,10 +39,10 @@
   <!-- Previous/Next page buttons -->
   <fmt:parseNumber var = "page" type = "number" value = "${param['page']}" />
   <c:if test="${page ne 1}">
-    <a href='app?page=${page-1}'>Previous Page </a>
+    <a href='app?page=${page-1}' id="linkPreviousPage">Previous Page </a>
   </c:if>
   <c:if test="${fn:length(apps) gt appsPerPage}">
-    <a href='app?page=${page+1}'> Next Page</a>
+    <a href='app?page=${page+1}' id="linkNextPage"> Next Page</a>
   </c:if>
 </body>
 
