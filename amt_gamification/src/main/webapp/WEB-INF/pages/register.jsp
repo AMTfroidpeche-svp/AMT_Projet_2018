@@ -8,20 +8,20 @@
 
 <body>
   <div class="main">
-    <form action="registration" method="post">
+    <form action="registration" id="registration" method="post">
         <fieldset>
             <p>Register a dev account</p>
-            <input type="text" name="firstName" placeholder="Firstname" required autofocus> <br />
-            <input type="text" name="lastName" placeholder="Lastname" required> <br />
-            <input type="email" name="email" placeholder="Email Address" required><br />
-            <input type="password" name="password" placeholder="Password" required><br />
-            <input type="password" name="passwordConfirmation" placeholder="Confirm Password" required><br />
-            <select name="secretQuestion" required>
+            <input type="text" name="firstName" id="firstNameField" placeholder="Firstname" required autofocus> <br />
+            <input type="text" name="lastName" id="lastNameField" placeholder="Lastname" required> <br />
+            <input type="email" name="email" id="emailField" placeholder="Email Address" required><br />
+            <input type="password" name="password" id="passwordField" placeholder="Password" required><br />
+            <input type="password" name="passwordConfirmation" id="passwordConfirmationField" placeholder="Confirm Password" required><br />
+            <select name="secretQuestion" id="secretQuestionField" required>
                 <option value="life">Is my life fucked up?</option>
                 <option value="studies">Where did you study?</option>
             </select><br />
-            <input type="text" name="secretAnswer" placeholder="Secret Answer" required><br />
-            <input type="submit" name="register" value="Register">
+            <input type="text" name="secretAnswer" id="secretAnswerField" placeholder="Secret Answer" required><br />
+            <input type="submit" name="register" id="registerSubmit" value="Register">
         </fieldset>
     </form>
   </div>
