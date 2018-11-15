@@ -13,9 +13,9 @@
 <div class="main">
     <fieldset class="fieldset">
         <form action="createApp" method="post">
-            <legend>Add a new Application</legend>
+            <h1>Add a new Application</h1>
             <br/>
-            <label>Application Name:</label> <br/>
+            <label >Application Name:</label> <br/>
             <input class="loginInput" type="text" name="appName" placeholder="app Name" required autofocus/> <br/><br/><br/>
             <label>Description:</label> <br/>
             <textarea class="loginInput" name="appDescr" cols="50" rows="10"></textarea> <br/><br/>

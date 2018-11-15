@@ -67,3 +67,10 @@
   .app-descr-text {
     border-radius: 6px;
   }
+
+  .footer {
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) ;
+  }

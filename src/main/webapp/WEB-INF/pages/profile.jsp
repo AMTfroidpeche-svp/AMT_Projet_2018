@@ -11,6 +11,7 @@
 <body>
 
   <div class="flex-container">
+      <h1>Profile: </h1>
     <div class="user-info">
         <div id="img-profile">
             <img src="profile.jpg" alt="profile image" width="200px" height="200px" style="float:left;">
