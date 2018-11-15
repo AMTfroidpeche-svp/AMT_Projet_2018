@@ -61,6 +61,7 @@ public class Login extends HttpServlet {
             }
             /**** IF INVALID ****/
             else {
+                req.setAttribute("error", "Mon erreur");
                 req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }
         }
