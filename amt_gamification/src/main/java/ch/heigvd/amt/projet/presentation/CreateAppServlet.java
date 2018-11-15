@@ -48,6 +48,7 @@ public class CreateAppServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
         }
         else {
+            req.setAttribute("error", "Could not create app!");
             req.getRequestDispatcher(VIEW).forward(req, resp);
         }
     }

@@ -51,11 +51,14 @@ public class Registration extends javax.servlet.http.HttpServlet {
             }
             else {
                 // error when adding user
+                req.setAttribute("error", "Could not add user!");
+                req.getRequestDispatcher(VIEW).forward(req, resp);
             }
 
 
         }
         else {
+            req.setAttribute("error", "Passwords need to match!");
             req.getRequestDispatcher(VIEW).forward(req, resp);
         }
     }

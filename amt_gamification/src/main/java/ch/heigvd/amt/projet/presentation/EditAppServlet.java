@@ -59,6 +59,8 @@ public class EditAppServlet extends HttpServlet {
 
         /***** App update failed *****/
         else {
+            req.setAttribute("error", "Could not edit app!");
+            req.getRequestDispatcher(VIEW).forward(req, resp);
         }
     }
 }

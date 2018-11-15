@@ -8,7 +8,7 @@ public class CreateApplicationPage extends AbstractAMTGamificationPage {
     private final static String submitAddApp = "#submitCreateApp";
 
     public void isAt() {
-        assertThat(title()).isEqualTo("Login Page");
+        assertThat(title()).isEqualTo("Create App");
     }
 
     public void typeAppName(String name) {

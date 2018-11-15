@@ -8,12 +8,18 @@
 
 <body>
   <div class="main">
+
+      <% if(request.getAttribute("error") != null) {%>
+      <div class="alert">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          <%=request.getAttribute("error")%>
+      </div>
+      <%}%>
+
     <form action="login" method="post">
         <div class="loginFieldset">
             <!--<img src="AMTpeche.bmp" alt="AMTpeche">-->
-            <% if(request.getAttribute("error") != null) {%>
-            <div class="error">Une erreur a été rencontrée: <%=request.getAttribute("error")%></div>
-            <%}%>
+
             <p>Login</p>
             <input class="loginInput" type="email" name="email" id="emailField" placeholder="Email Address" autofocus required><br />
             <input class="loginInput" type="password" name="password" id="passwordField" placeholder="Password" required><br />

@@ -9,10 +9,10 @@ public class ProfilePage extends AbstractAMTGamificationPage {
     private final static String email = "#email";
 
     public void isAt() {
-        assertThat(title()).isEqualTo("Login Page");
+        assertThat(title()).isEqualTo("Profile");
     }
 
     public String getUrl() {
-        return "/createApp";
+        return "/profile";
     }
 }
