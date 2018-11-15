@@ -19,7 +19,7 @@ public class CreateApplicationPage extends AbstractAMTGamificationPage {
         fill(inputDescription).with(description);
     }
 
-    public void clickSignin() {
+    public void clickCreate() {
         click(submitAddApp);
     }
 
