@@ -1,16 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Mathieu
-  Date: 15.11.2018
-  Time: 10:02
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/header.jsp" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Edit an App</title>
 </head>
 <body>
-
+    <fieldset>
+        <p>Edit an App</p>
+        <form action="editApp" method="post">
+            <input type="text" name="appName" required autofocus> <br />
+            <textarea name="appDescr" cols="50" rows="10"></textarea> <br />
+            <input type="submit" name="edit" value="Save changes">
+        </form>
+    </fieldset>
 </body>
 </html>

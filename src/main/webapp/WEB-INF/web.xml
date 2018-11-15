@@ -44,6 +44,10 @@
         <servlet-name>CreateApp</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.CreateAppServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditApp</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.EditAppServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -84,6 +88,10 @@
     <servlet-mapping>
         <servlet-name>CreateApp</servlet-name>
         <url-pattern>/createApp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditApp</servlet-name>
+        <url-pattern>/editApp</url-pattern>
     </servlet-mapping>
 
     <filter>
