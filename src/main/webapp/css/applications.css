@@ -16,9 +16,16 @@
     justify-content: flex-start;
   }
 
+.app-content {
+    display:flex;
+    flex-direction: row;
+
+    justify-content: flex-start;
+}
+
   .app-container > div {
     border: 0px solid green;
-    margin: 5px;
+    margin: 10px;
   }
 
   .app-info {
@@ -27,7 +34,6 @@
 
   .app-info > p {
     margin-left: 15px;
-    text-overflow: clip;
   }
   .app-info > img {
     margin: 0px 15px;
@@ -37,6 +43,10 @@
     flex-grow: 5;
     border-radius: 6px;
   }
+
+.app-info > form > input {
+    margin: 0px 15px;
+}
 
   .app-descr > div {
     padding: 5px;
