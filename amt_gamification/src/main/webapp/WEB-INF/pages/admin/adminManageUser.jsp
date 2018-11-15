@@ -46,7 +46,10 @@
                 </form>
             </div>
             <div>
-                <button class="adminResetButton">Reset Password</button>
+                <form action="adminUsersManagement" method="post">
+                    <input type="hidden" name="user" value="${requestScope.user.email}">
+                    <input type="submit" class="adminResetButton" name="resetUserPassword">Reset Password</input>
+                </form>
                 <br/>
             </div>
         </div>

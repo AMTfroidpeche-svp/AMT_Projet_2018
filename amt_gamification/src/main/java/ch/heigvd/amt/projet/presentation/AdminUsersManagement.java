@@ -52,13 +52,20 @@ public class AdminUsersManagement extends HttpServlet {
         HttpSession session = req.getSession();
 
         String userEmail = req.getParameter("user");
-        String action = req.getParameter("changeUserAccountActivity");
+        String changeActive = req.getParameter("changeUserAccountActivity");
+
         /***** Set 'isActive' of the account in DB *****/
-        if(action.equals("Enable Account")) {
-            userDAO.setActive(userEmail, 1);
+        if(changeActive != null) {
+            if (changeActive.equals("Enable Account")) {
+                userDAO.setActive(userEmail, 1);
+            } else {
+                userDAO.setActive(userEmail, 0);
+            }
         }
-        else {
-            userDAO.setActive(userEmail, 0);
+
+        /***** Reset user password and force him to set a new one *****/
+        if(req.getParameter("resetUserPassword") != null) {
+            userDAO.changePasswordAdmin(userEmail);
         }
 
         resp.sendRedirect(req.getContextPath() + ADMIN_USERS_MANAGEMENT_VIEW + "?user=" + userEmail + "&page=1");

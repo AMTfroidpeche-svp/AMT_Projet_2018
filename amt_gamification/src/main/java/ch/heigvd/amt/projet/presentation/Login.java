@@ -19,6 +19,7 @@ public class Login extends HttpServlet {
     private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
     private static final String HOMEPAGE_VIEW = "/app";
     private static final String ADMIN_VIEW = "/adminPanel";
+    private static final String CHANGE_PASSWORD_VIEW = "/newPassword";
     private static final String USER_SESSION = "userSession";
 
     @EJB
@@ -52,14 +53,24 @@ public class Login extends HttpServlet {
                 session.setAttribute(USER_SESSION, user);
                 //req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
 
-                if(user.getPermissionLevel() == 1) {
+                if(user.hasToChangedPassword()) {
+                    resp.sendRedirect(req.getContextPath() + CHANGE_PASSWORD_VIEW);
+                }
+                else if(user.getPermissionLevel() == 1) {
                     resp.sendRedirect(req.getContextPath() + ADMIN_VIEW + "?page=1");
                 }
                 else {
                     resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW + "?page=1");
                 }
             }
-            /**** IF INVALID ****/
+
+            /*** IF HAS TO CHANGE PASSWORD ***/
+            else if ((user = userDAO.getUser(email)) != null && user.hasToChangedPassword()) {
+                req.setAttribute("error", "An administrator requested a password change. Please check your email inbox.");
+                req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
+            }
+
+            /*** IF INVALID ***/
             else {
                 req.setAttribute("error", "Bad username or password!");
                 req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
