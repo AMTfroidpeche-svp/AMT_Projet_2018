@@ -25,20 +25,31 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     @Override
     public boolean createApp(Application app) {
         //TODO: insert if not exists
+        String sqlAppExist = "SELECT FROM applications(appName) WHERE appowner = ?;";
         String sql = "INSERT INTO applications(appOwner, appName, description, APIToken, APISecret) VALUES(?,?,?,?,?);";
         boolean result = false;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatementExists = null;
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatementExists = connection.prepareStatement(sqlAppExist);
+            preparedStatementExists.setString(1,app.getAppOwner());
+            resultSet = preparedStatementExists.executeQuery();
+            if(!resultSet.next()) {
+                preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, app.getAppOwner());
-            preparedStatement.setString(2, app.getAppName());
-            preparedStatement.setString(3, app.getDescription());
-            preparedStatement.setString(4, app.getAPI_TOKEN());
-            preparedStatement.setString(5, app.getAPI_SECRET());
-            preparedStatement.executeUpdate();
-            return true;
+                preparedStatement.setString(1, app.getAppOwner());
+                preparedStatement.setString(2, app.getAppName());
+                preparedStatement.setString(3, app.getDescription());
+                preparedStatement.setString(4, app.getAPI_TOKEN());
+                preparedStatement.setString(5, app.getAPI_SECRET());
+                preparedStatement.executeUpdate();
+                return true;
+            }
+            else{
+                return false;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
