@@ -36,7 +36,10 @@
     margin-left: 15px;
   }
   .app-info > img {
-    margin: 0px 15px;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) ;
   }
 
   .app-descr {
@@ -45,14 +48,16 @@
   }
 
 .app-info > form > input {
-    margin: 0px 15px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) ;
 }
 
   .app-descr > div {
     padding: 5px;
-    margin-top:50px;
     background-color: white;
-    height: 75%;
+    height: 90%;
     border: 1px solid black;
   }
 
