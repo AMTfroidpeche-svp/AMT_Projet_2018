@@ -7,16 +7,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9dcbe2fb-d65b-4a8d-8460-6ea5726b3ecd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/amt_gamification/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/amt_gamification/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/filters/AdminFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/filters/AdminFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/filters/ConnectedFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/filters/ConnectedFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/presentation/AdminPanelServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/presentation/AdminPanelServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/presentation/ApplicationServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/presentation/ApplicationServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/presentation/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/presentation/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/services/ApplicationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/services/ApplicationDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/services/ApplicationDaoLocal.java" beforeDir="false" afterPath="$PROJECT_DIR$/amt_gamification/src/main/java/ch/heigvd/amt/projet/services/ApplicationDaoLocal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/business/CipherUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/business/InfoChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/business/ManageApp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/business/SessionManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/filters/AdminFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/filters/ConnectedFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/model/Application.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/model/EmailUtility.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/model/Question.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/AdminPanelServlet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/ApplicationServlet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/CreateAppServlet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/EditAppServlet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/Login.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/Logout.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/PasswordForgottenServlet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/ProfileServlet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/QuestionAuth.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/Registration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/presentation/ResetPassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/services/ApplicationDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/services/ApplicationDaoLocal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/services/DatabaseUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/services/UserDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/amt/projet/services/UserDAOLocal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/AMTpeche.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/header.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/adminPanel.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/applications.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/createApplication.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/editApplication.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/login.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/passwordForgotten.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/profile.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/profile.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/questionAuth.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/register.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/resetPassword.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/adminPanel.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/applications.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/profile.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/style.css" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -187,7 +228,7 @@
     <option name="width" value="978" />
     <option name="height" value="1050" />
   </component>
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectView">
@@ -209,119 +250,6 @@
             </path>
             <path>
               <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="projet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="projet" type="462c0819:PsiDirectoryNode" />
-              <item name="business" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="projet" type="462c0819:PsiDirectoryNode" />
-              <item name="filters" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="projet" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="projet" type="462c0819:PsiDirectoryNode" />
-              <item name="presentation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="projet" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Projet_AMT_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="admin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Projet_AMT_2018" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -335,7 +263,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542294800615" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542295695750" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/amt_gamification" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -635,12 +563,12 @@
       <workItem from="1539933595773" duration="8240000" />
       <workItem from="1542033519901" duration="15012000" />
       <workItem from="1542126907508" duration="30666000" />
-      <workItem from="1542269359574" duration="20618000" />
+      <workItem from="1542269359574" duration="21065000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86084000" />
+    <option name="totallyTimeSpent" value="86531000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -653,6 +581,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28389263" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -674,7 +603,7 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32867134" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32867134" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" weight="0.32867134" />
       <window_info anchor="bottom" id="Application Servers" order="11" weight="0.44475526" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32867134" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32867134" />
