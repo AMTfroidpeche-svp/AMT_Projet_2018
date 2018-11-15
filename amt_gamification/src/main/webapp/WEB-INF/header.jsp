@@ -12,7 +12,7 @@
             <a href="createApp" id="createAppNav">Create App</a>
         </c:if>
         <c:if test="${sessionScope.userSession.permissionLevel == 1}">
-            <a href="adminPanel" id="adminPanelNav">Manage Users</a>
+            <a href="adminPanel?page=1" id="adminPanelNav">Manage Users</a>
         </c:if>
         <a href="logout" id="logoutNav">Logout</a>
     </nav>

@@ -30,8 +30,8 @@
                         <th>FirstName</th>
                         <th>LastName</th>
                         <th>Permission Level</th>
+                        <th>Is Active</th>
                     </tr>
-
 
                     <c:forEach items="${users}" var="i">
                         <tr>
@@ -39,6 +39,7 @@
                             <td>${i.firstName}</td>
                             <td>${i.lastName}</td>
                             <td id="permissionLevelTD">${i.permissionLevel}</td>
+                            <td>${i.isActive}</td>
                         </tr>
                     </c:forEach>
                 </table>
