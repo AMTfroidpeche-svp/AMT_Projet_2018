@@ -2,20 +2,20 @@
 <html>
 
 <head>
-    <title>Register</title>
+    <title>Question</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
 <div class="main">
     <form action="questionAuth" id="questionAuth" method="post">
-        <fieldset>
+        <div class="loginFieldset">
             <p>${question}</p>
-            <input type="text" name="response" id="responseField" placeholder="response" required autofocus> <br />
+            <input class="loginInput" type="text" name="response" id="responseField" placeholder="response" required autofocus> <br />
 
-            <input type="submit" name="questionAuthButton" id="submitQuestionAuth" value="response">
+            <input class="loginButon" type="submit" name="questionAuthButton" id="submitQuestionAuth" value="response">
 
-        </fieldset>
+        </div>
     </form>
 </div>
 

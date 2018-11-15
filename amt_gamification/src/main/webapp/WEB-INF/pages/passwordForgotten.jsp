@@ -2,20 +2,22 @@
 <html>
 
 <head>
-    <title>Register</title>
+    <title>Password forgotten</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
 <div class="main">
     <form action="newPassword" id="passwordForgotten" method="post">
-        <fieldset>
+        <div class="loginFieldset">
             <p>Enter your email address</p>
-            <input type="text" name="email" id="emailField" placeholder="toto@example.com" required autofocus> <br />
+            <input class="loginInput" type="text" name="email" id="emailField" placeholder="toto@example.com" required autofocus> <br />
 
-            <input type="submit" name="passwordForgottenButton" id="submitPasswordForgotten" value="reset your password">
+            <input class="loginButon" type="submit" name="passwordForgottenButton" id="submitPasswordForgotten" value="reset your password"> <br />
 
-        </fieldset>
+            <p><a href="login" class="loginLink" id="backButton">Back</a></p>
+
+        </div>
     </form>
 </div>
 
