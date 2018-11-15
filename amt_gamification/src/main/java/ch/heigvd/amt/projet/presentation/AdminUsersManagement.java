@@ -39,6 +39,7 @@ public class AdminUsersManagement extends HttpServlet {
         User user = userDAO.getUser(req.getParameter("user"));
         List<Application> apps = appDAO.retrieveApp(user.getEmail(), pageNumber, user.getPermissionLevel());
 
+        req.setAttribute("user", user);
         req.setAttribute("appsPerPage", APPS_PER_PAGE);
         req.setAttribute("apps", apps);
 
@@ -49,6 +50,6 @@ public class AdminUsersManagement extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-
+        System.out.println("POST");
     }
 }

@@ -71,7 +71,7 @@ public class User {
         return tokenGeneration;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
