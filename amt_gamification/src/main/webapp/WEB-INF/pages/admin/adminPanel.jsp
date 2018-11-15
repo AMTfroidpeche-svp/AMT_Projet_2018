@@ -33,14 +33,16 @@
                         <th>Is Active</th>
                     </tr>
 
-                    <c:forEach items="${users}" var="i">
-                        <tr>
-                            <td><a href="adminUsersManagement?user=${i.email}&page=1">${i.email}</td>
-                            <td>${i.firstName}</td>
-                            <td>${i.lastName}</td>
-                            <td id="permissionLevelTD">${i.permissionLevel}</td>
-                            <td>${i.isActive}</td>
-                        </tr>
+                    <c:forEach items="${users}" var="i" varStatus="loop">
+                        <c:if test="${!(loop.last and fn:length(users) gt appsPerPage)}">
+                            <tr>
+                                <td><a href="adminUsersManagement?user=${i.email}&page=1"/>${i.email}</td>
+                                <td>${i.firstName}</td>
+                                <td>${i.lastName}</td>
+                                <td id="permissionLevelTD">${i.permissionLevel}</td>
+                                <td>${i.isActive}</td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                 </table>
                 <div class="footer">

@@ -54,26 +54,26 @@
 
     <h1>Applications </h1>
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
-    <c:forEach items="${apps}" var="i">
-
-
-        <div class="app-container" id="appContainer">
-            <div class="app-name">
-                    ${i.appName}
-            </div>
-            <div class="app-content">
-                <div class="app-info">
-
-                    <img src="profile.jpg" width="50px" height="50px"/> <br/>
-
+    <c:forEach items="${apps}" var="i" varStatus="loop">
+        <c:if test="${!(loop.last and fn:length(apps) gt appsPerPage)}">
+            <div class="app-container" id="appContainer">
+                <div class="app-name">
+                        ${i.appName}
                 </div>
-                <div class="app-descr">
-                    <div class="app-descr-text">
-                            ${i.description}
+                <div class="app-content">
+                    <div class="app-info">
+
+                        <img src="profile.jpg" width="50px" height="50px"/> <br/>
+
+                    </div>
+                    <div class="app-descr">
+                        <div class="app-descr-text">
+                                ${i.description}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </c:if>
     </c:forEach>
 
 </div>
@@ -82,7 +82,8 @@
     <!-- Previous/Next page buttons -->
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:if test="${page ne 1}">
-        <a href='adminUsersManagement?user=${requestScope.user.email}&page=${page-1}' id="linkPreviousPage">Previous Page </a>
+        <a href='adminUsersManagement?user=${requestScope.user.email}&page=${page-1}' id="linkPreviousPage">Previous
+            Page </a>
     </c:if>
     <c:if test="${fn:length(apps) gt appsPerPage}">
         <a href='adminUsersManagement?user=${requestScope.user.email}&page=${page+1}' id="linkNextPage"> Next Page</a>
