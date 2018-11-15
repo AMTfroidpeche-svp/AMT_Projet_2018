@@ -29,6 +29,7 @@ public class QuestionAuth extends HttpServlet {
         String question = "";
         switch(questionID){
             case 1:
+                question = "TAMERE";
                 break;
             default:
                 question = "ALLO";

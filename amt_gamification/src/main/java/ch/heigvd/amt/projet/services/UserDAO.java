@@ -186,7 +186,6 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         return (token != null && token.length() == 64);
     }
 
-    //pas finis
     @Override
     public boolean changePassword(String email, String token, String newPassword) {
         if (validateToken(token)) {
@@ -233,8 +232,47 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     @Override
+    public boolean changePasswordWithoutToken(String email, String oldPassword, String newPassword) {
+            String sql = "SELECT hashpass FROM users WHERE email = ?;";
+            ResultSet resultSet = null;
+            PreparedStatement preparedStatement = null;
+            PreparedStatement preparedStatementUpdate = null;
+
+            try (Connection connection = dataSource.getConnection()) {
+                preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setString(1, email);
+                resultSet = preparedStatement.executeQuery();
+
+                if (!resultSet.next()) {
+                    return false;
+                } else {
+                    String oldPasswordHash =  CipherUtil.sha2Generator(oldPassword);
+
+                    if(oldPasswordHash.equals(resultSet.getString(1))){
+                        sql = "UPDATE users SET hashpass = ?, hasToChangePassword = false WHERE email = ?;";
+                        preparedStatementUpdate = null;
+                        preparedStatementUpdate = connection.prepareStatement(sql);
+
+                        preparedStatementUpdate.setString(1, CipherUtil.sha2Generator(newPassword));
+                        preparedStatementUpdate.setString(2, email);
+                        preparedStatementUpdate.executeUpdate();
+                        return true;
+                    }
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                cleanUp(preparedStatementUpdate, preparedStatement);
+            }
+
+            return false;
+    }
+
+    @Override
     public boolean changePasswordAdmin(String email, String newPassword) {
-        String sql = "UPDATE users SET hashpass = ? WHERE email = ?;";
+        String sql = "UPDATE users SET hashpass = ?, hasToChangePassword = true WHERE email = ?;";
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
@@ -243,7 +281,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             preparedStatement.setString(1, CipherUtil.sha2Generator(newPassword));
             preparedStatement.setString(2, email);
             preparedStatement.executeUpdate();
-            return true;
+            return sendEmailPassword(email, newPassword);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -342,22 +380,20 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     private boolean sendEmailToken(String email, String token){
         try {
-            EmailUtility.sendEmail("olivier2222@laposte.net", "test", token);
+            EmailUtility.sendEmail("olivier2222@laposte.net", "Request reset password", "A request has been made to reset your password.\nPlease use this token to change your password within 30 minutes : " + token + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     private boolean sendEmailPassword(String email, String password){
         try {
-            EmailUtility.sendEmail("", "test", "test");
+            EmailUtility.sendEmail("", "Password reset", "An admin reset your password.\nPlease use this new password to connect to the app : " + password + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     private static User mapUser(ResultSet resultSet) throws SQLException {

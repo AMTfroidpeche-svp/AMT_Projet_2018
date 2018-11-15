@@ -15,6 +15,7 @@ create table users(
     TOKEN varchar(64),
     tokenDate varchar(20),
 	isActive tinyint NOT NULL,
+	hasToChangePassword tinyint NOT NULL,
     PRIMARY KEY (email),
     FOREIGN KEY (IDQuestion) REFERENCES questions(ID)
 );
