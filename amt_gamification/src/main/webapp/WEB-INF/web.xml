@@ -52,6 +52,10 @@
         <servlet-name>AdminUsersManagement</servlet-name>
         <servlet-class>ch.heigvd.amt.projet.presentation.AdminUsersManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangePassword</servlet-name>
+        <servlet-class>ch.heigvd.amt.projet.presentation.ChangePassword</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -100,6 +104,10 @@
     <servlet-mapping>
         <servlet-name>AdminUsersManagement</servlet-name>
         <url-pattern>/adminUsersManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassword</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
     </servlet-mapping>
 
     <filter>

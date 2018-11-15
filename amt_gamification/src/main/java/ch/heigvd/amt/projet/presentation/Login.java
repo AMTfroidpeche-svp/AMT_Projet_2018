@@ -19,7 +19,7 @@ public class Login extends HttpServlet {
     private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
     private static final String HOMEPAGE_VIEW = "/app";
     private static final String ADMIN_VIEW = "/adminPanel";
-    private static final String CHANGE_PASSWORD_VIEW = "/newPassword";
+    private static final String CHANGE_PASSWORD_VIEW = "/changePassword";
     private static final String USER_SESSION = "userSession";
 
     @EJB
