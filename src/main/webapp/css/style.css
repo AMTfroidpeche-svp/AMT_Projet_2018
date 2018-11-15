@@ -45,6 +45,12 @@ nav > a:hover {
     margin-bottom: 25px;
 }
 
+.loginLink {
+
+    text-decoration: none;
+    margin-bottom: 55px;
+}
+
 .loginFieldset > p {
     margin-bottom: 25px;
 }
@@ -57,4 +63,10 @@ nav > a:hover {
 
 .fieldset {
     background-color: aliceblue;
+}
+
+.footer > a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
 }
