@@ -13,7 +13,9 @@
             <p>Enter your email address</p>
             <input class="loginInput" type="text" name="email" placeholder="toto@example.com" required autofocus> <br />
 
-            <input class="loginButon" type="submit" name="passwordForgottenButton" value="reset your password">
+            <input class="loginButon" type="submit" name="passwordForgottenButton" value="reset your password"> <br />
+
+            <p><a href="login" class="loginLink">Back</a></p>
 
         </div>
     </form>

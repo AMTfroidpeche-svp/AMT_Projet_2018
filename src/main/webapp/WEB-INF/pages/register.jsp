@@ -21,8 +21,12 @@
                 <option value="studies">Where did you study?</option>
             </select><br />
             <input class="loginInput" type="text" name="secretAnswer" placeholder="Secret Answer" required><br />
-            <input class="loginButon" type="submit" name="register" value="Register">
+            <input class="loginButon" type="submit" name="register" value="Register"> <br />
+
+            <p><a href="login" class="loginLink">Back</a></p>
         </div>
+
+
     </form>
   </div>
 
