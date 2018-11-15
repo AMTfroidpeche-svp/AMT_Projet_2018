@@ -51,7 +51,6 @@ public class Login extends HttpServlet {
                 HttpSession session = req.getSession();
 
                 session.setAttribute(USER_SESSION, user);
-
                 if(user.hasToChangedPassword()) {
                     resp.sendRedirect(req.getContextPath() + CHANGE_PASSWORD_VIEW);
                 }

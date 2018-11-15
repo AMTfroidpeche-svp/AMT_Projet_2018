@@ -30,7 +30,6 @@ public class ConnectedFilter implements Filter {
             filterChain.doFilter(req, resp);
         }
         else {
-            System.out.println("FILTERED: You're not connected");
             req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
         }
     }

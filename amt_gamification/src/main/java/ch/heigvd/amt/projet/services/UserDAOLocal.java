@@ -28,5 +28,5 @@ public interface UserDAOLocal {
 
     public boolean setActive(String email, int isActive);
 
-
+    public boolean setDescription(String email, String description);
 }

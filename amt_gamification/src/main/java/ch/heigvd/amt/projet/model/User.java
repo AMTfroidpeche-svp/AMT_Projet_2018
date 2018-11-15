@@ -16,6 +16,7 @@ public class User {
     private Date tokenGeneration;
     private boolean isActive = true;
     private boolean hasToChangedPassword = true;
+    private String description;
 
     public User() {
     }
@@ -75,6 +76,8 @@ public class User {
         return isActive;
     }
 
+    public String getDescription() { return description; }
+
     public boolean hasToChangedPassword() {
         return hasToChangedPassword;
     }
@@ -116,4 +119,6 @@ public class User {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    public void setDescription(String description) { this.description = description; }
 }
