@@ -413,7 +413,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     private boolean sendEmailPassword(String email, String password){
         try {
-            EmailUtility.sendEmail("", "Password reset", "An admin reset your password.\nPlease use this new password to connect to the app : " + password + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
+            EmailUtility.sendEmail(email, "Password reset", "An admin reset your password.\nPlease use this new password to connect to the app : " + password + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
             return true;
         } catch (MessagingException e) {
             throw new RuntimeException(e);
