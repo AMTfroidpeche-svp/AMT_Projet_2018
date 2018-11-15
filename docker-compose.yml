@@ -1,0 +1,41 @@
+version: "2"
+
+services:
+  app:
+    container_name: "app"
+    build: ./docker/app
+    environment:
+      - WILDFLY_USER=user
+      - WILDFLY_PASS=password
+      - DB_NAME=amt_project
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_URI=db:3306
+      
+    volumes:
+        - ./docker/app/AMT_Projet_2018.war:/opt/jboss/wildfly/standalone/deployments/AMT_Projet_2018.war
+    depends_on:
+      - db
+    ports:
+      - "8080:8080" # application
+      - "9990:9990" # admin console
+
+  db:
+    container_name: "db"
+    build: ./docker/db
+    environment:
+      - MYSQL_DATABASE=amt_project
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links: 
+        - db:db
+    ports:
+        - 8000:80
+    environment:
+        MYSQL_USER: user
+        MYSQL_PASSWORD: test
+        MYSQL_ROOT_PASSWORD: root
+
