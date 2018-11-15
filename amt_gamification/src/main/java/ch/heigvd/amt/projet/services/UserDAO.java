@@ -404,7 +404,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     private boolean sendEmailToken(String email, String token){
         try {
-            EmailUtility.sendEmail("olivier2222@laposte.net", "Request reset password", "A request has been made to reset your password.\nPlease use this token to change your password within 30 minutes : " + token + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
+            EmailUtility.sendEmail(email, "Request reset password", "A request has been made to reset your password.\nPlease use this token to change your password within 30 minutes : " + token + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
             return true;
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -413,7 +413,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     private boolean sendEmailPassword(String email, String password){
         try {
-            EmailUtility.sendEmail("", "Password reset", "An admin reset your password.\nPlease use this new password to connect to the app : " + password + "\n\nIf you didn't ask to reset your password, you can ignore this email.\n\n\nAMTFroidPeche devTeam.");
+            EmailUtility.sendEmail(email, "Password reset", "An admin reset your password.\nPlease use this new password to connect to the app : " + password + "\n\n\nAMTFroidPeche devTeam.");
             return true;
         } catch (MessagingException e) {
             throw new RuntimeException(e);

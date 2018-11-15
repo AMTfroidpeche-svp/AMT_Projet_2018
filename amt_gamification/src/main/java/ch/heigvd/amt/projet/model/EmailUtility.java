@@ -1,5 +1,8 @@
 package ch.heigvd.amt.projet.model;
 
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
@@ -20,14 +23,33 @@ import javax.mail.internet.MimeMessage;
  */
 public class EmailUtility {
 
-    private static final String host = "smtp.gmail.com";
-    private static final String port = "587";
-    private static final String user = "amtFroidPeche";
-    private static final String pass = "fusetea2018";
+    private static String host = "smtp.gmail.com";
+    private static String port = "587";
+    private static String user = "xxx";
+    private static String pass = "xxx";
+    private static boolean isSetUp = false;
 
-    public static void sendEmail(String toAddress, String subject, String message) throws AddressException,
-            MessagingException {
+    public static void sendEmail(String toAddress, String subject, String message) throws MessagingException {
 
+        if(!isSetUp){
+            FileInputStream fs = null;
+            Properties p = new Properties();
+            try {
+                InputStream is = EmailUtility.class.getResourceAsStream("/config/configSMTP.utf8");
+                //fs = new FileInputStream(new File(config.toURI()));
+                p.load(is);
+            } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+            EmailUtility.host = p.getProperty("host");
+            EmailUtility.port = p.getProperty("port");
+            EmailUtility.user = p.getProperty("user");
+            EmailUtility.pass = p.getProperty("pass");
+            EmailUtility.isSetUp = true;
+        }
+        if(user.equals("xxx") || pass.equals("xxx")){
+            throw new RuntimeException("parameters not set up");
+        }
         // sets SMTP server properties
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
