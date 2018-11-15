@@ -271,13 +271,14 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     @Override
-    public boolean changePasswordAdmin(String email, String newPassword) {
+    public boolean changePasswordAdmin(String email) {
         String sql = "UPDATE users SET hashpass = ?, hasToChangePassword = true WHERE email = ?;";
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
             preparedStatement = connection.prepareStatement(sql);
 
+            String newPassword = UUID.randomUUID().toString();
             preparedStatement.setString(1, CipherUtil.sha2Generator(newPassword));
             preparedStatement.setString(2, email);
             preparedStatement.executeUpdate();
