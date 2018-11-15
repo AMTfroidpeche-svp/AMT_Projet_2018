@@ -10,7 +10,11 @@ public interface ApplicationDaoLocal {
 
     public boolean deleteApp(Application app);
 
-    public boolean updateApp(Application app, String newName, String newDescription);
+    public boolean deleteApp(String APIToken, String appOwner);
+
+    public boolean updateApp(Application app, String newName, String newDescription, String appOwner);
+
+    public boolean updateApp(String APIToken, String newName, String newDescription, String appOwner);
 
     public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel);
 
