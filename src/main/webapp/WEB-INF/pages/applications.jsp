@@ -21,22 +21,27 @@
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:forEach items="${apps}" var="i">
 
+
         <form action="app" method="post">
             <div class="app-container">
-                <div class="app-info">
-
-                    <p>${i.appName}</p>
-
-                    <img src="profile.jpg" width="50px" height="50px"/> <br />
-
-                    <input type="submit" name="edit_${i.API_TOKEN}" value="Edit"> <br />
-
-                    <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
-
+                <div class="app-name">
+                        ${i.appName}
                 </div>
-                <div class="app-descr">
-                    <div class="app-descr-text">
-                            ${i.description}
+
+                <div class="app-content">
+                    <div class="app-info">
+
+                        <img src="profile.jpg" width="50px" height="50px"/> <br/>
+
+                        <input type="submit" name="edit_${i.API_TOKEN}" value="Edit"> <br/>
+
+                        <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
+                    </div>
+
+                    <div class="app-descr">
+                        <div class="app-descr-text">
+                                ${i.description}
+                        </div>
                     </div>
                 </div>
             </div>
