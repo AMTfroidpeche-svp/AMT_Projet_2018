@@ -15,7 +15,7 @@ create table users(
     TOKEN varchar(64),
     tokenDate varchar(20),
     PRIMARY KEY (email),
-    FOREIGN KEY (IDQuestion) REFERENCES Questions(ID)
+    FOREIGN KEY (IDQuestion) REFERENCES questions(ID)
 );
 
 create table applications(
@@ -33,22 +33,6 @@ create table questions(
     primary key (ID)
 );
 
-insert into Questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
-
-insert into users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion, TOKEN, tokenDate) 
-	values('admin@admin.com', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', 'admin', 'admin', 1, 1, 'allo', 'fiweererergweofjweoif', NULL);
-
-delete from users where email='email1@email.com';
-select * from users;
-select * from applications;
-select * from questions;
-
-SELECT appOwner, appName, description, APIToken FROM applications WHERE appOwner = ? ORDER BY appName LIMIT 10 OFFSET 10;
-
+insert into questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
 
 SET FOREIGN_KEY_CHECKS=1;
-
-
-
-insert into users values ("test", "test", "test","test",0,2,"test", null, null);
-

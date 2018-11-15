@@ -14,7 +14,7 @@
 
 <body>
 <h1>Admin Panel</h1>
-<fieldset>
+<fieldset class="fieldset">
     <form action="adminPanel" method="post">
         <legend>Look for users</legend>
         <div class="userList">

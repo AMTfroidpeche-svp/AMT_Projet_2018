@@ -1,7 +1,7 @@
 .flex-container {
     height: 100%;
     width: 100%;
-    background-color: lightblue;
+    background-color: aliceblue;
     border: 1px solid black;
     display: flex;
     flex-direction: column;

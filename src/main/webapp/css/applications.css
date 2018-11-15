@@ -2,7 +2,7 @@
     border:1px solid black; 
     display:flex; 
     flex-direction: column;
-    background-color: lightblue;
+    background-color: aliceblue;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
   }

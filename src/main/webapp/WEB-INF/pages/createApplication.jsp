@@ -11,15 +11,15 @@
 <body>
 
 <div class="main">
-    <fieldset>
+    <fieldset class="fieldset">
         <form action="createApp" method="post">
             <legend>Add a new Application</legend>
             <br/>
             <label>Application Name:</label> <br/>
-            <input type="text" name="appName" placeholder="app Name" required autofocus/> <br/><br/><br/>
+            <input class="loginInput" type="text" name="appName" placeholder="app Name" required autofocus/> <br/><br/><br/>
             <label>Description:</label> <br/>
-            <textarea name="appDescr" cols="50" rows="10"></textarea> <br/><br/>
-            <input type="submit" name="createAppButton" value="Add">
+            <textarea class="loginInput" name="appDescr" cols="50" rows="10"></textarea> <br/><br/>
+            <input class="loginButon" type="submit" name="createAppButton" value="Add">
         </form>
     </fieldset>
 </div>

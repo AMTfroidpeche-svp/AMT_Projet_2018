@@ -5,12 +5,14 @@
     <title>Edit an App</title>
 </head>
 <body>
-    <fieldset>
+    <fieldset class="fieldset">
         <h1>Edit an App</h1>
         <form action="editApp" method="post">
-            <input type="text" name="appName" value="${param['appName']}" required autofocus> <br />
+
+            <input class="loginInput" type="text" name="appName" value="${param['appName']}" required autofocus> <br />
             <textarea name="appDescr" cols="50" rows="10">${param['appDescr']}</textarea> <br />
-            <input type="submit" name="edit" value="Save changes">
+            <input class="loginButon" type="submit" name="edit" value="Save changes">
+
         </form>
     </fieldset>
 </body>
