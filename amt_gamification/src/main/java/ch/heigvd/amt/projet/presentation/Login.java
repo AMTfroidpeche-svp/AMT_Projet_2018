@@ -46,12 +46,11 @@ public class Login extends HttpServlet {
             User user;
             // Verify in DB if email/password are valid
             /**** IF VALID ****/
-            if ((user = userDAO.checkPassword(email, password)) != null) {
+            if ((user = userDAO.checkPassword(email, password)) != null && user.getIsActive()) {
                 // Create a session
                 HttpSession session = req.getSession();
 
                 session.setAttribute(USER_SESSION, user);
-                //req.getRequestDispatcher(HOMEPAGE_VIEW).forward(req, resp);
 
                 if(user.hasToChangedPassword()) {
                     resp.sendRedirect(req.getContextPath() + CHANGE_PASSWORD_VIEW);
@@ -64,8 +63,14 @@ public class Login extends HttpServlet {
                 }
             }
 
+            /*** ACCOUNT HAS BEEN DISABLED ***/
+            else if (!user.getIsActive()) {
+                req.setAttribute("error", "An administrator disabled your account. Please contact the support. (amtfroidpeche@gmail.com)");
+                req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
+            }
+
             /*** IF HAS TO CHANGE PASSWORD ***/
-            else if ((user = userDAO.getUser(email)) != null && user.hasToChangedPassword()) {
+            else if ((userDAO.getUser(email)) != null && user.hasToChangedPassword()) {
                 req.setAttribute("error", "An administrator requested a password change. Please check your email inbox.");
                 req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }
