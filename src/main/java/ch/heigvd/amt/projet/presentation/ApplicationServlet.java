@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 
 public class ApplicationServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/applications.jsp";
+    private static final String EDIT_VIEW = "/edit";
     private static final String USER_SESSION = "userSession";
     private static final int    APPS_PER_PAGE = 10;
 
@@ -42,7 +44,25 @@ public class ApplicationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
 
+        Enumeration buttonNames = req.getParameterNames();
+        String buttonName = (String)buttonNames.nextElement();
+        String buttonEffect = buttonName.split("_")[0];
+        buttonName = buttonName.split("_")[1];
+
+        /***** Edit an APP *****/
+        if(buttonEffect.equals("edit")) {
+            
+
+            req.setAttribute("appToken", buttonName);
+            resp.sendRedirect(req.getContextPath() + EDIT_VIEW);
+        }
+
+        /***** Delete an APP *****/
+        else if(buttonEffect.equals("delete")) {
+
+        }
     }
 }

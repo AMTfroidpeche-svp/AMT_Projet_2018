@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AdminFilter implements Filter {
-    public static final String HOMEPAGE = "/app";
+    public static final String HOMEPAGE = "/logout";
     public static final String USER_SESSION = "userSession";
 
     @Override
@@ -29,6 +29,7 @@ public class AdminFilter implements Filter {
             filterChain.doFilter(req, resp);
         }
         else {
+            System.out.println("FILTERED: You're not admin");
             req.getRequestDispatcher(HOMEPAGE).forward(req, resp);
         }
     }
