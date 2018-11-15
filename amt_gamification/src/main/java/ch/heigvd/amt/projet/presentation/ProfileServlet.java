@@ -1,5 +1,9 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.model.User;
+import ch.heigvd.amt.projet.services.UserDAOLocal;
+
+import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +13,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class ProfileServlet extends HttpServlet {
-    public static final String VIEW = "WEB-INF/pages/profile.jsp";
+    private static final String VIEW = "WEB-INF/pages/profile.jsp";
+    private static final String PROFILE_VIEW = "/profile";
+    private static final String USER_SESSION = "userSession";
+    private static final int    SIZE_MAX_DESCR = 300;
+
+    @EJB
+    UserDAOLocal userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -24,7 +34,20 @@ public class ProfileServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
 
+        User user = (User)session.getAttribute(USER_SESSION);
+        String newDescription = req.getParameter("userDescr");
+
+        /*** the new description is too big ! ***/
+        if(newDescription.length() >= SIZE_MAX_DESCR) {
+            resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+        }
+        else {
+            userDAO.setDescription(user.getEmail(), newDescription);
+            ((User)session.getAttribute(USER_SESSION)).setDescription(newDescription);
+            resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+        }
     }
 }

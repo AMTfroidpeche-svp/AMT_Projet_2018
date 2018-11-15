@@ -4,6 +4,7 @@ create database amt_project;
 use amt_project;
 
 SET FOREIGN_KEY_CHECKS=0;
+
 create table users(
 	email varchar(60), 
     hashPass varchar(64) NOT NULL, 
@@ -14,8 +15,9 @@ create table users(
     responseQuestion varchar(60), 
     TOKEN varchar(64),
     tokenDate varchar(20),
-	isActive tinyint NOT NULL,
-	hasToChangePassword tinyint NOT NULL,
+	isActive tinyint NOT NULL DEFAULT 1,
+	hasToChangePassword tinyint NOT NULL DEFAULT 0,
+    description varchar(300),
     PRIMARY KEY (email),
     FOREIGN KEY (IDQuestion) REFERENCES questions(ID)
 );

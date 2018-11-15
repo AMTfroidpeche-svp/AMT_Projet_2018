@@ -347,6 +347,27 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         }
     }
 
+    @Override
+    public boolean setDescription(String email, String description) {
+        String sql = "UPDATE users SET description = ? WHERE email = ?;";
+
+        PreparedStatement preparedStatement = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, description);
+            preparedStatement.setString(2, email);
+            preparedStatement.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cleanUp(preparedStatement);
+        }
+    }
+
     private boolean checkResponse(String email, String response){
         String sql = "SELECT responseQuestion FROM users WHERE email = ?;";
         ResultSet resultSet = null;
@@ -431,6 +452,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         user.setToken(resultSet.getString("TOKEN"));
         user.setActive(resultSet.getBoolean("isActive"));
         user.setHasToChangedPassword(resultSet.getBoolean("hasToChangePassword"));
+        user.setDescription(resultSet.getString("description"));
         return user;
     }
 
