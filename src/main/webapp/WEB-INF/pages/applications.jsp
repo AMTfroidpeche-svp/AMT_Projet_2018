@@ -17,7 +17,7 @@
 
 
 <div class="flex-container">
-    <h1>Applications: </h1>
+    <h1>Applications </h1>
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:forEach items="${apps}" var="i">
 
