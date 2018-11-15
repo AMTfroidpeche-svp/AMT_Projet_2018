@@ -44,7 +44,7 @@
     border-radius: 6px;
   }
 
-.app-info > input {
+.app-info > form > input {
     margin: 0px 15px;
 }
 

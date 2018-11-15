@@ -22,7 +22,7 @@
     <c:forEach items="${apps}" var="i">
 
 
-        <form action="app" method="post">
+
             <div class="app-container">
                 <div class="app-name">
                         ${i.appName}
@@ -32,10 +32,11 @@
                     <div class="app-info">
 
                         <img src="profile.jpg" width="50px" height="50px"/> <br/>
+                        <form action="app" method="post">
+                            <input type="submit" name="edit_${i.API_TOKEN}" value="Edit"> <br/>
 
-                        <input type="submit" name="edit_${i.API_TOKEN}" value="Edit"> <br/>
-
-                        <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
+                            <input type="submit" name="delete_${i.API_TOKEN}" value="Delete">
+                        </form>
                     </div>
 
                     <div class="app-descr">
@@ -45,7 +46,6 @@
                     </div>
                 </div>
             </div>
-        </form>
     </c:forEach>
 
 </div>
