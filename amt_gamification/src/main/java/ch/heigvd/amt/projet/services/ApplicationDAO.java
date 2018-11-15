@@ -25,7 +25,7 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
     @Override
     public boolean createApp(Application app) {
         //TODO: insert if not exists
-        String sqlAppExist = "SELECT FROM applications(appName) WHERE appowner = ?;";
+        String sqlAppExist = "SELECT appName FROM applications WHERE appowner = ?;";
         String sql = "INSERT INTO applications(appOwner, appName, description, APIToken, APISecret) VALUES(?,?,?,?,?);";
         boolean result = false;
         ResultSet resultSet = null;

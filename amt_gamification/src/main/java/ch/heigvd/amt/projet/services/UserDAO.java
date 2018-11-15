@@ -406,8 +406,8 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         user.setPermissionLevel(resultSet.getInt("permissionLevel"));
         user.setResponseQuestion(resultSet.getString("responseQuestion"));
         user.setToken(resultSet.getString("TOKEN"));
-        // todo
-        //user.setTokenGeneration(resultSet.get);
+        user.setActive(resultSet.getBoolean("isActive"));
+        user.setHasToChangedPassword(resultSet.getBoolean("hasToChangePassword"));
         return user;
     }
 
