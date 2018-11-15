@@ -3,8 +3,17 @@
 <html>
 <head>
     <title>Edit an App</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+
+    <% if(request.getAttribute("error") != null) {%>
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%=request.getAttribute("error")%>
+    </div>
+    <%}%>
+
     <fieldset class="fieldset">
         <h1>Edit an App</h1>
         <form action="editApp" method="post">

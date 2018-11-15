@@ -27,18 +27,26 @@
                 <img src="profile.jpg" alt="profile image" width="150px" height="150px" style="float:left;">
             </div>
             <div>
-                <h2 id="fullName">Full name: ${sessionScope.userSession.firstName} ${sessionScope.userSession.lastName}</h2>
-                <h2 id="email">Email: ${sessionScope.userSession.email}</h2>
+                <h2 id="fullName">Full
+                    name: ${requestScope.user.firstName} ${requestScope.user.lastName}</h2>
+                <h2 id="email">Email: ${requestScope.user.email}</h2>
             </div>
             <div class="activity">
-                Actif user<br />
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
+
+                <form action="changeUserAccountActivity" method="post">
+                    <c:choose>
+                        <c:when test="${requestScope.user.isActive eq false}">
+                            <input type="submit" name="changeUserAccountActivity" value="Enable Account">
+                        </c:when>
+                        <c:otherwise>
+                            <input type="submit" name="changeUserAccountActivity" value="Disable Account">
+                        </c:otherwise>
+                    </c:choose>
+                </form>
             </div>
             <div>
-                <button class="adminResetButton">Reset Password</button> <br />
+                <button class="adminResetButton">Reset Password</button>
+                <br/>
             </div>
         </div>
     </div>

@@ -11,6 +11,14 @@
 <body>
 
 <div class="main">
+
+    <% if(request.getAttribute("error") != null) {%>
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%=request.getAttribute("error")%>
+    </div>
+    <%}%>
+
     <fieldset class="fieldset">
         <form action="createApp" id="createApp" method="post">
             <h1>Add a new Application</h1>
