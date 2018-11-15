@@ -209,7 +209,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                     diff = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
 
                     if(token.equals(tokenInDb) && diff < 30){
-                        sql = "UPDATE users SET hashpass = ? WHERE email = ?;";
+                        sql = "UPDATE users SET hashpass = ?, TOKEN = null, tokenDate = null WHERE email = ?;";
                         preparedStatementUpdate = null;
                         preparedStatementUpdate = connection.prepareStatement(sql);
 

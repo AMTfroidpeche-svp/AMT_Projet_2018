@@ -10,7 +10,7 @@
 <div class="main">
     <form action="questionAuth" id="questionAuth" method="post">
         <div class="loginFieldset">
-            <p>${question}</p>
+            <p>${requestScope.question}</p>
             <input class="loginInput" type="text" name="response" id="responseField" placeholder="response" required autofocus> <br />
 
             <input class="loginButon" type="submit" name="questionAuthButton" id="submitQuestionAuth" value="response">
