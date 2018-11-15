@@ -50,6 +50,7 @@
 
 </div>
 
+<nav>
 <!-- Previous/Next page buttons -->
 <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
 <c:if test="${page ne 1}">
@@ -58,6 +59,8 @@
 <c:if test="${fn:length(apps) gt appsPerPage}">
     <a href='app?page=${page+1}'> Next Page</a>
 </c:if>
+</nav>
+
 </body>
 
 </html>
