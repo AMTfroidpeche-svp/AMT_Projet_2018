@@ -17,6 +17,7 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal {
+    private final static int APP_PER_PAGE = 10;
 
     @Resource(lookup = "java:/amt_project")
     DataSource dataSource;
@@ -146,17 +147,18 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
 
     @Override
     public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel) {
+        int maxNumberOfAppToReturn = APP_PER_PAGE + 1;
         if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null || pageNumber < 1){
             return null;
         }
         String sql, sqlSelect;
         if(permissionLevel == 0){
             sql = "SELECT appOwner FROM applications WHERE appOwner = ?;";
-            sqlSelect = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName LIMIT 11 OFFSET ?;";
+            sqlSelect = "SELECT * FROM applications WHERE appOwner = ? ORDER BY appName LIMIT ? OFFSET ?;";
         }
         else {
             sql = "SELECT appOwner FROM applications";
-            sqlSelect = "SELECT * FROM applications ORDER BY appName LIMIT 11 OFFSET ?;";
+            sqlSelect = "SELECT * FROM applications ORDER BY appName LIMIT ? OFFSET ?;";
         }
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
@@ -179,10 +181,12 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
                 preparedStatementDel = connection.prepareStatement(sqlSelect);
                 if(permissionLevel == 0) {
                     preparedStatementDel.setString(1, appOwner);
-                    preparedStatementDel.setInt(2, 10 * (pageNumber - 1));
+                    preparedStatementDel.setInt(2, maxNumberOfAppToReturn);
+                    preparedStatementDel.setInt(3, 10 * (pageNumber - 1));
                 }
                 else {
-                    preparedStatementDel.setInt(1, 10 * (pageNumber - 1));
+                    preparedStatementDel.setInt(1, maxNumberOfAppToReturn);
+                    preparedStatementDel.setInt(2, 10 * (pageNumber - 1));
                 }
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<Application> retArray = new ArrayList<>();

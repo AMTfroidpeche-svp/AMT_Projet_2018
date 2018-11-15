@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class AMTGamificationFluentTest extends FluentTest {
 
   private final String baseUrl = "http://localhost:8080/AMT_Projet_2018";
+  private final String driverPath = "C:\\chromedriver.exe";
 
   @Page
   public ApplicationPage appPage;
@@ -113,7 +114,7 @@ public class AMTGamificationFluentTest extends FluentTest {
   @Override
   public WebDriver getDefaultDriver() {
     //return new FirefoxDriver();
-    System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+    System.setProperty("webdriver.chrome.driver", driverPath);
     return new ChromeDriver();
   }
 
