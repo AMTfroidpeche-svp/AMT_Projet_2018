@@ -26,6 +26,25 @@ import java.util.concurrent.TimeUnit;
 
 @Stateless
 public class UserDAO extends DatabaseUtils implements UserDAOLocal {
+    private final static String sqlAddUser = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion, isActive, hasToChangePassword, imageUrl) VALUES(?,?,?,?,?,?,?,?,?,?);";
+    private final static String sqlSelectUser = "SELECT email FROM users WHERE email = ?;";
+    private final static String sqlSelectAllUser = "SELECT * FROM users WHERE email = ?;";
+    private final static String sqlSetOfUser = "SELECT * FROM users ORDER BY email LIMIT 11 OFFSET ?;";
+    private final static String sqlChangePermission = "UPDATE users SET permissionLevel = ? WHERE email = ?;";
+    private final static String sqlSelectToken = "SELECT TOKEN, tokenDate FROM users WHERE email = ?;";
+    private final static String sqlUpdatePassToken = "UPDATE users SET hashpass = ?, TOKEN = null, tokenDate = null WHERE email = ?;";
+    private final static String sqlPass = "SELECT hashpass FROM users WHERE email = ?;";
+    private final static String sqlUpdatePassHasToChange = "UPDATE users SET hashpass = ?, hasToChangePassword = ? WHERE email = ?;";
+    private final static String sqlIdQuestion = "SELECT IDQuestion FROM users WHERE email = ?;";
+    private final static String sqlQuestions = "SELECT * FROM questions;";
+    private final static String sqlUpdateImage = "UPDATE users SET imageUrl = ? WHERE email = ?;";
+    private final static String sqlUpdateDescription = "UPDATE users SET description = ? WHERE email = ?;";
+    private final static String sqlUpdateActive = "UPDATE users SET isActive = ? WHERE email = ?;";
+    private final static String sqlUpdateToken = "UPDATE users SET TOKEN = ?, tokenDate = ? WHERE email = ?;";
+    private final static String sqlSelectResponse = "SELECT responseQuestion FROM users WHERE email = ?;";
+
+    private final static int TOKEN_VALIDITY = 30; //token validity in minutes
+
 
     @Resource(lookup = "java:/amt_project")
     DataSource dataSource;
@@ -34,21 +53,19 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean addUser(User user){
-        String sql = "SELECT email FROM users WHERE email = ?;";
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         boolean result = false;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementAdd = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectUser);
 
             preparedStatement.setString(1, user.getEmail());
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
-                String sqlAdd = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion, isActive, hasToChangePassword, imageUrl) VALUES(?,?,?,?,?,?,?,?,?,?);";
-                preparedStatementAdd = connection.prepareStatement(sqlAdd);
+                preparedStatementAdd = connection.prepareStatement(sqlAddUser);
                 preparedStatementAdd.setString(1, user.getEmail());
                 preparedStatementAdd.setString(2, user.getPassword());
                 preparedStatementAdd.setString(3, user.getFirstName());
@@ -75,12 +92,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public User getUser(String email) {
-        String sql = "SELECT * FROM users WHERE email = ?;";
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectAllUser);
 
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
@@ -104,15 +120,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         if(pageNumber < 1){
             return null;
         }
-        String sql, sqlSelect;
-        sql = "SELECT email FROM users";
-        sqlSelect = "SELECT * FROM users ORDER BY email LIMIT 11 OFFSET ?;";
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         PreparedStatement preparedStatement    = null;
         PreparedStatement preparedStatementDel = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectUser);
             resultSet = preparedStatement.executeQuery();
             int numberOfApp = 0;
             if (resultSet.last()) {
@@ -122,7 +135,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 return null;
             }
             else{
-                preparedStatementDel = connection.prepareStatement(sqlSelect);
+                preparedStatementDel = connection.prepareStatement(sqlSetOfUser);
                 preparedStatementDel.setInt(1, 10 * (pageNumber - 1));
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<User> retArray = new ArrayList<>();
@@ -141,12 +154,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     public User checkPassword(String email, String password){
-        String sql = "SELECT * FROM users WHERE email = ?;";
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectAllUser);
 
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
@@ -168,11 +180,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean changePermissions(String email, int newPermissionLevel) {
-        String sql = "UPDATE users SET permissionLevel = ? WHERE email = ?;";
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlChangePermission);
 
             preparedStatement.setInt(1, newPermissionLevel);
             preparedStatement.setString(2, email);
@@ -193,13 +204,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     @Override
     public boolean changePassword(String email, String token, String newPassword) {
         if (validateToken(token)) {
-            String sql = "SELECT TOKEN, tokenDate FROM users WHERE email = ?;";
-            ResultSet resultSet = null;
+            ResultSet resultSet;
             PreparedStatement preparedStatement = null;
             PreparedStatement preparedStatementUpdate = null;
 
             try (Connection connection = dataSource.getConnection()) {
-                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement = connection.prepareStatement(sqlSelectToken);
 
                 preparedStatement.setString(1, email);
                 resultSet = preparedStatement.executeQuery();
@@ -212,10 +222,9 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                     long diff = new Date().getTime() - dateToken.getTime();
                     diff = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
 
-                    if(token.equals(tokenInDb) && diff < 30){
-                        sql = "UPDATE users SET hashpass = ?, TOKEN = null, tokenDate = null WHERE email = ?;";
+                    if(token.equals(tokenInDb) && diff < TOKEN_VALIDITY){
                         preparedStatementUpdate = null;
-                        preparedStatementUpdate = connection.prepareStatement(sql);
+                        preparedStatementUpdate = connection.prepareStatement(sqlUpdatePassToken);
 
                         preparedStatementUpdate.setString(1, CipherUtil.sha2Generator(newPassword));
                         preparedStatementUpdate.setString(2, email);
@@ -237,13 +246,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean changePasswordWithoutToken(String email, String oldPassword, String newPassword) {
-            String sql = "SELECT hashpass FROM users WHERE email = ?;";
-            ResultSet resultSet = null;
+            ResultSet resultSet;
             PreparedStatement preparedStatement = null;
             PreparedStatement preparedStatementUpdate = null;
 
             try (Connection connection = dataSource.getConnection()) {
-                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement = connection.prepareStatement(sqlPass);
 
                 preparedStatement.setString(1, email);
                 resultSet = preparedStatement.executeQuery();
@@ -254,12 +262,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                     String oldPasswordHash =  CipherUtil.sha2Generator(oldPassword);
 
                     if(oldPasswordHash.equals(resultSet.getString(1))){
-                        sql = "UPDATE users SET hashpass = ?, hasToChangePassword = false WHERE email = ?;";
                         preparedStatementUpdate = null;
-                        preparedStatementUpdate = connection.prepareStatement(sql);
+                        preparedStatementUpdate = connection.prepareStatement(sqlUpdatePassHasToChange);
 
                         preparedStatementUpdate.setString(1, CipherUtil.sha2Generator(newPassword));
-                        preparedStatementUpdate.setString(2, email);
+                        preparedStatementUpdate.setBoolean(2, false);
+                        preparedStatementUpdate.setString(3, email);
                         preparedStatementUpdate.executeUpdate();
                         return true;
                     }
@@ -276,15 +284,15 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean changePasswordAdmin(String email) {
-        String sql = "UPDATE users SET hashpass = ?, hasToChangePassword = true WHERE email = ?;";
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlUpdatePassHasToChange);
 
             String newPassword = UUID.randomUUID().toString();
             preparedStatement.setString(1, CipherUtil.sha2Generator(newPassword));
-            preparedStatement.setString(2, email);
+            preparedStatement.setBoolean(2, false);
+            preparedStatement.setString(3, email);
             preparedStatement.executeUpdate();
             return sendEmailPassword(email, newPassword);
 
@@ -297,12 +305,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public int RetrieveSecretQuestion(String email) {
-        String sql = "SELECT IDQuestion FROM users WHERE email = ?;";
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlIdQuestion);
 
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
@@ -323,12 +330,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public List<Question> getAllQuestions() {
-        String sql = "SELECT * FROM questions;";
         ResultSet resultSet = null;
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlQuestions);
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
@@ -352,11 +358,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean updateImage(String email, String url) {
-        String sql = "UPDATE users SET imageUrl = ? WHERE email = ?;";
         PreparedStatement preparedStatement    = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlUpdateImage);
 
             String newPassword = UUID.randomUUID().toString();
             preparedStatement.setString(1, url);
@@ -381,12 +386,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean setActive(String email, int isActive) {
-        String sql = "UPDATE users SET isActive = ? WHERE email = ?;";
-
         PreparedStatement preparedStatement = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlUpdateActive);
 
             preparedStatement.setInt(1, isActive);
             preparedStatement.setString(2, email);
@@ -402,12 +405,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
 
     @Override
     public boolean setDescription(String email, String description) {
-        String sql = "UPDATE users SET description = ? WHERE email = ?;";
 
         PreparedStatement preparedStatement = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlUpdateDescription);
 
             preparedStatement.setString(1, description);
             preparedStatement.setString(2, email);
@@ -422,12 +424,11 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     private boolean checkResponse(String email, String response){
-        String sql = "SELECT responseQuestion FROM users WHERE email = ?;";
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         PreparedStatement preparedStatement   = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlSelectResponse);
 
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
@@ -450,11 +451,10 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     private boolean updateToken(String email, boolean action){
-        String sql = "UPDATE users SET TOKEN = ?, tokenDate = ? WHERE email = ?;";
         PreparedStatement preparedStatement   = null;
 
         try (Connection connection = dataSource.getConnection()){
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sqlUpdateToken);
             String token = action ? CipherUtil.sha2Generator(UUID.randomUUID().toString()) : null;
             String tokenDate = action ? f.format(new Date()) : null;
 
