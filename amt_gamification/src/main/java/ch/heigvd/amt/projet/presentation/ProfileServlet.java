@@ -29,8 +29,6 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        System.out.println("URL = " + ((User)session.getAttribute(USER_SESSION)).getImageUrl());
-        System.out.println("DES = " + ((User)session.getAttribute(USER_SESSION)).getDescription());
 
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
