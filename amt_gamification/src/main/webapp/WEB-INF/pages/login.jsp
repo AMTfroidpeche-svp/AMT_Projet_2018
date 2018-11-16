@@ -15,7 +15,7 @@
           <%=request.getAttribute("error")%>
       </div>
       <%}%>
-
+      <img id="loginLogo" src="https://i.imgur.com/G1ZirjI.png">
     <form action="login" method="post">
         <div class="loginFieldset">
             <!--<img src="AMTpeche.bmp" alt="AMTpeche">-->
@@ -31,10 +31,11 @@
             <p>
                 <a href="registration" name="register_account" id="linkRegisterAccount">Create a dev account</a>
             </p>
+
         </div>
     </form>
-  </div>
 
+  </div>
 </body>
 
 </html>
