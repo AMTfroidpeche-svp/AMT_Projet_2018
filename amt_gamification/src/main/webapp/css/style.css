@@ -37,7 +37,7 @@ nav > a:hover {
 }
 
 #select {
-    /*width: 100px;*/
+    width: 100px;
     text-overflow: ellipsis;
 }
 .loginButon {
@@ -112,7 +112,7 @@ nav > a:hover {
 }
 
 #loginLogo {
-    height: 150px;
+    height: 100px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -121,5 +121,5 @@ nav > a:hover {
 #loginTitle {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%) translateY(150px);
+    transform: translateX(-50%) translateY(100px);
 }
