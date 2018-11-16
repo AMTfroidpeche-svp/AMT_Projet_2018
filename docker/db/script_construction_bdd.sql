@@ -4,6 +4,7 @@ create database amt_project;
 use amt_project;
 
 SET FOREIGN_KEY_CHECKS=0;
+
 create table users(
 	email varchar(60), 
     hashPass varchar(64) NOT NULL, 
@@ -14,8 +15,9 @@ create table users(
     responseQuestion varchar(60), 
     TOKEN varchar(64),
     tokenDate varchar(20),
-	isActive tinyint NOT NULL,
-	hasToChangePassword tinyint NOT NULL,
+	isActive tinyint NOT NULL DEFAULT 1,
+	hasToChangePassword tinyint NOT NULL DEFAULT 0,
+    description varchar(300),
     PRIMARY KEY (email),
     FOREIGN KEY (IDQuestion) REFERENCES questions(ID)
 );
@@ -35,6 +37,6 @@ create table questions(
     primary key (ID)
 );
 
-insert into questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
+insert into questions(question) values ("What Is your favorite book?"),("What is the name of the road you grew up on?"),("What is your mother’s maiden name?"),("What was the name of your first/current/favorite pet?"),("What was the first company that you worked for?"),("Where did you meet your spouse?"),("Where did you go to high school/college?"),("What is your favorite food?"),("What city were you born in?"),("Where is your favorite place to vacation?");
 
 SET FOREIGN_KEY_CHECKS=1;
