@@ -24,6 +24,7 @@ public class AMTGamificationFluentTest extends FluentTest {
   private final String password = "password";
   private final String response = "response";
   private final int MAX_APP = 25;
+  private final int MAX_USER = 25;
 
   @Page
   public ApplicationPage appPage;
@@ -63,6 +64,23 @@ public class AMTGamificationFluentTest extends FluentTest {
     registerPage.typeAnswer(response);
     registerPage.clickRegister();
   }
+
+    @Test
+    @ProbeTest(tags = "WebUI")
+    public void itShouldBePossibleToRegisterSomeUsers() {
+        goTo(baseUrl + registerPage.getUrl());
+        registerPage.isAt();
+        for(int i = 0; i < MAX_USER; i++) {
+            registerPage.typeFirstName(firstName + String.valueOf(i));
+            registerPage.typeLastName(lastName + String.valueOf(i));
+            registerPage.typeEmail(email + String.valueOf(i));
+            registerPage.typePassword(password + String.valueOf(i));
+            registerPage.typeConfirmPassword(password + String.valueOf(i));
+            registerPage.typeQuestion(1);
+            registerPage.typeAnswer(response + String.valueOf(i));
+            registerPage.clickRegister();
+        }
+    }
 
     @Test
     @ProbeTest(tags = "WebUI")
@@ -114,7 +132,7 @@ public class AMTGamificationFluentTest extends FluentTest {
     loginPage.typePassword(password);
     loginPage.clickSignin();
     appPage.isAt();
-    for(int i = 0; i < 25; i++){
+    for(int i = 0; i < MAX_APP; i++){
         appPage.goToCreateAppPageViaMenu();
         createAppPage.isAt();
         createAppPage.typeAppName("test" + String.valueOf(i));

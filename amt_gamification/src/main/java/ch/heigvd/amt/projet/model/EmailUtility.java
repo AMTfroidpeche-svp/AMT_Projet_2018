@@ -32,11 +32,9 @@ public class EmailUtility {
     public static void sendEmail(String toAddress, String subject, String message) throws MessagingException {
 
         if(!isSetUp){
-            FileInputStream fs = null;
             Properties p = new Properties();
             try {
                 InputStream is = EmailUtility.class.getResourceAsStream("/config/configSMTP.utf8");
-                //fs = new FileInputStream(new File(config.toURI()));
                 p.load(is);
             } catch (IOException e){
             throw new RuntimeException(e);
