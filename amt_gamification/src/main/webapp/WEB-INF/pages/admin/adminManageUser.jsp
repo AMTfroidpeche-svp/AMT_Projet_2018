@@ -42,10 +42,10 @@
                     <input type="hidden" name="user" value="${requestScope.user.email}">
                     <c:choose>
                         <c:when test="${requestScope.user.isActive eq false}">
-                            <input type="submit" name="changeUserAccountActivity" value="Enable Account">
+                            <input class="adminButton" type="submit" name="changeUserAccountActivity" value="Enable Account">
                         </c:when>
                         <c:otherwise>
-                            <input type="submit" name="changeUserAccountActivity" value="Disable Account">
+                            <input class="adminButton" type="submit" name="changeUserAccountActivity" value="Disable Account">
                         </c:otherwise>
                     </c:choose>
                 </form>
@@ -53,7 +53,7 @@
             <div>
                 <form action="adminUsersManagement" method="post">
                     <input type="hidden" name="user" value="${requestScope.user.email}">
-                    <input type="submit" class="adminResetButton" name="resetUserPassword" value="Reset user password">
+                    <input type="submit" class="adminButton" name="resetUserPassword" value="Reset user password">
                 </form>
                 <br/>
             </div>
@@ -71,7 +71,7 @@
                 <div class="app-content">
                     <div class="app-info">
 
-                        <img src="profile.jpg" width="50px" height="50px"/> <br/>
+                        <img src="https://i.imgur.com/ixbSsSD.png" width="50px" height="50px"/> <br/>
 
                     </div>
                     <div class="app-descr">
