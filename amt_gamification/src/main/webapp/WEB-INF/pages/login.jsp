@@ -16,11 +16,10 @@
       </div>
       <%}%>
 
-      <img id="loginLogo" src="https://i.imgur.com/G1ZirjI.png">
+      <img id="loginLogo" src="https://i.imgur.com/G1ZirjI.png" height="100px">
       <h3 id="loginTitle">AMTfroidpeche</h3>
     <form action="login" method="post">
         <div class="loginFieldset">
-            <!--<img src="AMTpeche.bmp" alt="AMTpeche">-->
 
             <p>Login</p>
             <input class="loginInput" type="email" name="email" id="emailField" placeholder="Email Address" autofocus required><br />
