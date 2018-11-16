@@ -71,7 +71,7 @@
                 <div class="app-content">
                     <div class="app-info">
 
-                        <img src="profile.jpg" width="50px" height="50px"/> <br/>
+                        <img src="https://i.imgur.com/ixbSsSD.png" width="50px" height="50px"/> <br/>
 
                     </div>
                     <div class="app-descr">
