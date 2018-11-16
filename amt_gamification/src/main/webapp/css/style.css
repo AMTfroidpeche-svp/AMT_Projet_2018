@@ -38,6 +38,7 @@ nav > a:hover {
 
 #select {
     width: 100px;
+    max-width: 100px;
     text-overflow: ellipsis;
 }
 .loginButon {
