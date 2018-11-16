@@ -3,6 +3,7 @@ package ch.heigvd.amt.projet.presentation;
 import ch.heigvd.amt.projet.model.Application;
 import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.ApplicationDaoLocal;
+import ch.heigvd.amt.projet.business.Constants;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
@@ -18,7 +19,6 @@ import java.util.List;
 public class ApplicationServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/applications.jsp";
     private static final String USER_SESSION = "userSession";
-    private static final int    APPS_PER_PAGE = 10;
 
     @EJB
     ApplicationDaoLocal appDAO;
@@ -37,7 +37,7 @@ public class ApplicationServlet extends HttpServlet {
         User user = (User)session.getAttribute(USER_SESSION);
         List<Application> apps = appDAO.retrieveApp(user.getEmail(), pageNumber, user.getPermissionLevel());
 
-        req.setAttribute("appsPerPage", APPS_PER_PAGE);
+        req.setAttribute("appsPerPage", Constants.APPS_PER_PAGE);
         req.setAttribute("apps", apps);
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }

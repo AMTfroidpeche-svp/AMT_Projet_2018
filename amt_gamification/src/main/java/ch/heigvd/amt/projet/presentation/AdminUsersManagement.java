@@ -5,6 +5,7 @@ import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.ApplicationDaoLocal;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
 import ch.heigvd.amt.projet.presentation.PrensentationUrls;
+import ch.heigvd.amt.projet.business.Constants;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
@@ -41,7 +42,7 @@ public class AdminUsersManagement extends HttpServlet {
         List<Application> apps = appDAO.retrieveApp(user.getEmail(), pageNumber, user.getPermissionLevel());
 
         req.setAttribute("user", user);
-        req.setAttribute("appsPerPage", APPS_PER_PAGE);
+        req.setAttribute("appsPerPage", Constants.APPS_PER_PAGE);
         req.setAttribute("apps", apps);
 
         session.removeAttribute("error");

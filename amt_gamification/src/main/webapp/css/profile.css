@@ -43,3 +43,8 @@
     margin: 0px;
     overflow: auto;
 }
+
+.profilePicture {
+    border-radius: 6px;
+    margin-right: 15px;
+}

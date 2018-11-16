@@ -2,6 +2,7 @@ package ch.heigvd.amt.projet.presentation;
 
 import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
+import ch.heigvd.amt.projet.business.Constants;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
@@ -15,7 +16,6 @@ import java.util.List;
 
 public class AdminPanelServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/admin/adminPanel.jsp";
-    private static final int    USERS_PER_PAGE = 10;
 
     @EJB
     UserDAOLocal userDAO;
@@ -33,7 +33,7 @@ public class AdminPanelServlet extends HttpServlet {
 
         List<User> users = userDAO.getPageUser(pageNumber);
 
-        req.setAttribute("usersPerPage", USERS_PER_PAGE);
+        req.setAttribute("usersPerPage", Constants.USERS_PER_PAGE);
         req.setAttribute("users", users);
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }

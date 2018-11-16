@@ -1,6 +1,8 @@
 package ch.heigvd.amt.projet.services;
 
 import ch.heigvd.amt.projet.model.Application;
+import ch.heigvd.amt.projet.business.Constants;
+
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -14,7 +16,6 @@ import java.util.List;
 
 @Stateless
 public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal {
-    private final static int APP_PER_PAGE = 10;
     private final String sqlAppExist = "SELECT appName FROM applications WHERE appowner = ? && appname = ?;";
     private final String sqlInsertApp = "INSERT INTO applications(appOwner, appName, description, APIToken, APISecret) VALUES(?,?,?,?,?);";
     private final String sqlSelectApp = "SELECT APIToken FROM applications WHERE APIToken = ? and appOwner = ?;";
@@ -144,7 +145,7 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
 
     @Override
     public List<Application> retrieveApp(String appOwner, int pageNumber, int permissionLevel) {
-        int maxNumberOfAppToReturn = APP_PER_PAGE + 1;
+        int maxNumberOfAppToReturn = Constants.APPS_PER_PAGE + 1;
         if(permissionLevel < 0 || permissionLevel > 1 || appOwner == null || pageNumber < 1){
             return null;
         }
@@ -179,11 +180,11 @@ public class ApplicationDAO extends DatabaseUtils implements ApplicationDaoLocal
                 if(permissionLevel == 0) {
                     preparedStatementDel.setString(1, appOwner);
                     preparedStatementDel.setInt(2, maxNumberOfAppToReturn);
-                    preparedStatementDel.setInt(3, APP_PER_PAGE * (pageNumber - 1));
+                    preparedStatementDel.setInt(3, Constants.APPS_PER_PAGE * (pageNumber - 1));
                 }
                 else {
                     preparedStatementDel.setInt(1, maxNumberOfAppToReturn);
-                    preparedStatementDel.setInt(2, APP_PER_PAGE * (pageNumber - 1));
+                    preparedStatementDel.setInt(2, Constants.APPS_PER_PAGE * (pageNumber - 1));
                 }
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<Application> retArray = new ArrayList<>();

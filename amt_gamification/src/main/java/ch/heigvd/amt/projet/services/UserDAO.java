@@ -4,6 +4,7 @@ import ch.heigvd.amt.projet.business.CipherUtil;
 import ch.heigvd.amt.projet.model.EmailUtility;
 import ch.heigvd.amt.projet.model.Question;
 import ch.heigvd.amt.projet.model.User;
+import ch.heigvd.amt.projet.business.Constants;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
@@ -129,12 +130,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             if (resultSet.last()) {
                 numberOfApp = resultSet.getRow();
             }
-            if((pageNumber - 1) * 10 >= numberOfApp){
+            if((pageNumber - 1) * Constants.USERS_PER_PAGE >= numberOfApp){
                 return null;
             }
             else{
                 preparedStatementDel = connection.prepareStatement(sqlSetOfUser);
-                preparedStatementDel.setInt(1, 10 * (pageNumber - 1));
+                preparedStatementDel.setInt(1, Constants.USERS_PER_PAGE * (pageNumber - 1));
                 resultSet = preparedStatementDel.executeQuery();
                 ArrayList<User> retArray = new ArrayList<>();
                 while(resultSet.next()){
