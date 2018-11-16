@@ -19,6 +19,8 @@ public class User {
     private String description;
     private String imageUrl;
 
+    public static final String DEFAULT_IMAGE_URL = "https://i.imgur.com/vk4uQWN.jpg";
+
     public User() {
     }
 
