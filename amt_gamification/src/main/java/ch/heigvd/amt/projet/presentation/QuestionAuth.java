@@ -30,7 +30,7 @@ public class QuestionAuth extends HttpServlet {
         int questionID = userDAO.RetrieveSecretQuestion(email);
         List<Question> questions = userDAO.getAllQuestions();
         req.setAttribute("questions", questions);
-        String question = questions.get(questionID).getQuestion();
+        String question = questions.get(questionID - 1).getQuestion();
         req.setAttribute("question", question);
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }

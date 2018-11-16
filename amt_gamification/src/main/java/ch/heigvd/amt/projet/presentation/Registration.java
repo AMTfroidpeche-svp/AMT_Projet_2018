@@ -40,7 +40,7 @@ public class Registration extends javax.servlet.http.HttpServlet {
         String email                = req.getParameter("email");
         String password             = req.getParameter("password");
         String passwordConfirmation = req.getParameter("passwordConfirmation");
-        int secretQuestionID     = Integer.parseInt(req.getParameter("secretQuestion")) - 1; // TODO ID QUESTION AND NOT TEXT
+        int secretQuestionID     = Integer.parseInt(req.getParameter("secretQuestion")); // TODO ID QUESTION AND NOT TEXT
         String secretAnswer         = req.getParameter("secretAnswer");
 
         // check that passwords matches
