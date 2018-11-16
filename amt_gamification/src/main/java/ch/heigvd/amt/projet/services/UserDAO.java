@@ -1,14 +1,11 @@
 package ch.heigvd.amt.projet.services;
 
 import ch.heigvd.amt.projet.business.CipherUtil;
-import ch.heigvd.amt.projet.model.Application;
 import ch.heigvd.amt.projet.model.EmailUtility;
 import ch.heigvd.amt.projet.model.Question;
 import ch.heigvd.amt.projet.model.User;
 
 import javax.annotation.Resource;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.mail.MessagingException;
 import javax.sql.DataSource;
 import javax.ejb.Stateless;
