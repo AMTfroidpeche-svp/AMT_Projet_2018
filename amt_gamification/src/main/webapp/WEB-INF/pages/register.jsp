@@ -31,7 +31,7 @@
             <input class="loginInput" type="email" name="email" id="emailField" placeholder="Email Address" required><br />
             <input class="loginInput" type="password" name="password" id="passwordField" placeholder="Password" required><br />
             <input class="loginInput" type="password" name="passwordConfirmation" id="passwordConfirmationField" placeholder="Confirm Password" required><br />
-            <select class="loginInput" name="secretQuestion" id="secretQuestionField" required>
+            <select class="loginInput" id="select" name="secretQuestion" id="secretQuestionField" required>
                 <c:forEach items="${questions}" var="i" varStatus="loop">
                     <option value=${i.id}>${i.question}</option>
                 </c:forEach>

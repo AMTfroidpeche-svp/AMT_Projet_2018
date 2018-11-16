@@ -17,6 +17,7 @@
       <%}%>
 
       <img id="loginLogo" src="https://i.imgur.com/G1ZirjI.png">
+      <h3 id="loginTitle">AMTfroidpeche</h3>
     <form action="login" method="post">
         <div class="loginFieldset">
             <!--<img src="AMTpeche.bmp" alt="AMTpeche">-->
