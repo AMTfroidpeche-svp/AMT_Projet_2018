@@ -6,7 +6,7 @@ use amt_project;
 SET FOREIGN_KEY_CHECKS=0;
 
 create table users(
-	email varch	ar(60), 
+	email varchar(60), 
     hashPass varchar(64) NOT NULL, 
     firstName varchar(60) NOT NULL,
     lastName varchar(60) NOT NULL,
