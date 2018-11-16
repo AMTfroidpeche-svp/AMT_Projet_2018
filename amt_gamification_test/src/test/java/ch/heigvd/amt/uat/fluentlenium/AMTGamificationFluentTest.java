@@ -18,6 +18,12 @@ public class AMTGamificationFluentTest extends FluentTest {
 
   private final String baseUrl = "http://localhost:8080/AMT_Projet_2018";
   private final String driverPath = "C:\\chromedriver.exe";
+  private final String firstName = "firstname";
+  private final String lastName = "lastname";
+  private final String email = "firstname.lastname@test.test";
+  private final String password = "password";
+  private final String response = "response";
+  private final int MAX_APP = 25;
 
   @Page
   public ApplicationPage appPage;
@@ -48,15 +54,44 @@ public class AMTGamificationFluentTest extends FluentTest {
   public void itShouldBePossibleToRegister() {
     goTo(baseUrl + registerPage.getUrl());
     registerPage.isAt();
-    registerPage.typeFirstName("firstName");
-    registerPage.typeLastName("lastname");
-    registerPage.typeEmail("firstname.lastname@test.test");
-    registerPage.typePassword("password");
-    registerPage.typeConfirmPassword("password");
+    registerPage.typeFirstName(firstName);
+    registerPage.typeLastName(lastName);
+    registerPage.typeEmail(email);
+    registerPage.typePassword(password);
+    registerPage.typeConfirmPassword(password);
     registerPage.typeQuestion(1);
-    registerPage.typeAnswer("yverdon");
+    registerPage.typeAnswer(response);
     registerPage.clickRegister();
   }
+
+    @Test
+    @ProbeTest(tags = "WebUI")
+    public void itShouldNotBePossibleToRegisterIfWeDontFillAllField() {
+        goTo(baseUrl + registerPage.getUrl());
+        registerPage.isAt();
+        registerPage.typeFirstName(firstName);
+        registerPage.typeEmail(email);
+        registerPage.typePassword(password);
+        registerPage.typeConfirmPassword(password);
+        registerPage.typeQuestion(1);
+        registerPage.typeAnswer(response);
+        registerPage.clickRegister();
+    }
+
+    @Test
+    @ProbeTest(tags = "WebUI")
+    public void itShouldNotBePossibleToRegisterIfPasswordsAreDifferent() {
+        goTo(baseUrl + registerPage.getUrl());
+        registerPage.isAt();
+        registerPage.typeFirstName(firstName);
+        registerPage.typeLastName(lastName);
+        registerPage.typeEmail(email);
+        registerPage.typePassword(password);
+        registerPage.typeConfirmPassword(password + "fail");
+        registerPage.typeQuestion(1);
+        registerPage.typeAnswer(response);
+        registerPage.clickRegister();
+    }
 
 
   @Test
@@ -73,19 +108,10 @@ public class AMTGamificationFluentTest extends FluentTest {
   @Test
   @ProbeTest(tags = "WebUI")
   public void basicScenario() {
-    goTo(baseUrl + registerPage.getUrl());
-    registerPage.typeFirstName("toto");
-    registerPage.typeLastName("tata");
-    registerPage.typeEmail("toto@tata.tutu");
-    registerPage.typePassword("tutu");
-    registerPage.typeConfirmPassword("tutu");
-    registerPage.typeQuestion(1);
-    registerPage.typeAnswer("response");
-    registerPage.clickRegister();
     goTo(baseUrl + loginPage.getUrl());
     loginPage.isAt();
-    loginPage.typeEmail("toto@tata.tutu");
-    loginPage.typePassword("tutu");
+    loginPage.typeEmail(email);
+    loginPage.typePassword(password);
     loginPage.clickSignin();
     appPage.isAt();
     for(int i = 0; i < 25; i++){
