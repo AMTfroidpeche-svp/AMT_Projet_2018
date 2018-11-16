@@ -44,6 +44,8 @@ public class AdminUsersManagement extends HttpServlet {
         req.setAttribute("appsPerPage", APPS_PER_PAGE);
         req.setAttribute("apps", apps);
 
+        session.removeAttribute("error");
+
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
@@ -54,17 +56,21 @@ public class AdminUsersManagement extends HttpServlet {
         String userEmail = req.getParameter("user");
         String changeActive = req.getParameter("changeUserAccountActivity");
 
+
         /***** Set 'isActive' of the account in DB *****/
         if(changeActive != null) {
             if (changeActive.equals("Enable Account")) {
+                session.setAttribute("success", "User account enabled.");
                 userDAO.setActive(userEmail, 1);
             } else {
+                session.setAttribute("success", "User account disabled.");
                 userDAO.setActive(userEmail, 0);
             }
         }
 
         /***** Reset user password and force him to set a new one *****/
         if(req.getParameter("resetUserPassword") != null) {
+            session.setAttribute("success", "User password reset.");
             userDAO.changePasswordAdmin(userEmail);
         }
 

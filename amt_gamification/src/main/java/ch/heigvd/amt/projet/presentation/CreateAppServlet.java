@@ -30,6 +30,9 @@ public class CreateAppServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession sesion = req.getSession();
 
+        sesion.removeAttribute("error");
+        sesion.removeAttribute("success");
+
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
@@ -45,6 +48,7 @@ public class CreateAppServlet extends HttpServlet {
 
         Application app = new Application(appOwner, appName, appDescr);
         if(appDAO.createApp(app)) {
+            session.setAttribute("success", "Your application has been successfully added !");
             resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
         }
         else {

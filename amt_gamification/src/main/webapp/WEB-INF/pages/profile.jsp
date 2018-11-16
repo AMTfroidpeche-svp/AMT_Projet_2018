@@ -1,5 +1,7 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/WEB-INF/header.jsp" %>
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -11,6 +13,18 @@
 <body>
 
 <div class="flex-container">
+    <c:if test="${sessionScope.error ne null}">
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        ${sessionScope.error}
+    </div>
+    </c:if>
+    <c:if test="${sessionScope.success ne null}">
+    <div class="success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        ${sessionScope.success}
+    </div>
+    </c:if>
     <h1>Profile </h1>
     <div class="user-info">
         <div id="img-profile">

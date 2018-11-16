@@ -17,6 +17,12 @@
 
 
 <div class="flex-container">
+    <c:if test="${sessionScope.success ne null}">
+        <div class="success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                ${sessionScope.success}
+        </div>
+    </c:if>
     <h1>Applications </h1>
     <fmt:parseNumber var="page" type="number" value="${param['page']}"/>
     <c:forEach items="${apps}" var="i" varStatus="loop">

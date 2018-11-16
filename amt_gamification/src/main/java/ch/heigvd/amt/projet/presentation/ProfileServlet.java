@@ -34,20 +34,26 @@ public class ProfileServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
 
         User user = (User)session.getAttribute(USER_SESSION);
         String newDescription = req.getParameter("userDescr");
         String newImageUrl = req.getParameter("profilePictureLink");
 
+        session.removeAttribute("error");
+        session.removeAttribute("success");
+
+
         if(newDescription != null) {
             /*** the new description is too big ! ***/
             if (newDescription.length() >= SIZE_MAX_DESCR) {
+                session.setAttribute("error", "The description is too big ! (max " + SIZE_MAX_DESCR + " characters)");
                 resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
             } else {
                 userDAO.setDescription(user.getEmail(), newDescription);
                 ((User) session.getAttribute(USER_SESSION)).setDescription(newDescription);
+                session.setAttribute("success", "The description has been successfully updated !");
                 resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
             }
         }
@@ -56,7 +62,9 @@ public class ProfileServlet extends HttpServlet {
             // todo: security checks
             userDAO.updateImage(user.getEmail(), newImageUrl);
             ((User) session.getAttribute(USER_SESSION)).setImageUrl(newImageUrl);
+            session.setAttribute("success", "Your new profile picture has been saved !");
             resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
         }
     }
+
 }

@@ -18,7 +18,12 @@
 
 
 <div class="flex-container">
-
+    <c:if test="${sessionScope.success ne null}">
+        <div class="success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                ${sessionScope.success}
+        </div>
+    </c:if>
     <h1>Profile </h1>
 
     <div class="profile-container">
