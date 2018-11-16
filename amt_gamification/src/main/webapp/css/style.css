@@ -36,7 +36,7 @@ nav > a:hover {
     margin-bottom: 25px;
 }
 
-#select {
+#secretQuestionField {
     width: 100px;
     max-width: 100px;
     text-overflow: ellipsis;
