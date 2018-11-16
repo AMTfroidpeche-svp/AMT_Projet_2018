@@ -50,7 +50,7 @@
                     </c:choose>
                 </form>
             </div>
-            <div>
+            <div class="activity">
                 <form action="adminUsersManagement" method="post">
                     <input type="hidden" name="user" value="${requestScope.user.email}">
                     <input type="submit" class="adminButton" name="resetUserPassword" value="Reset user password">
