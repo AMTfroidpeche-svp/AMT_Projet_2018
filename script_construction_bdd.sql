@@ -37,6 +37,17 @@ create table questions(
     primary key (ID)
 );
 
-insert into questions(question) values ("Q1"),("Q2"),("Q3"),("Q4"),("Q5"),("Q6"),("Q7"),("Q8"),("Q9"),("Q10"),("Q11");
+insert into questions(question) values ("What Is your favorite book?"),("What is the name of the road you grew up on?"),("What is your mother’s maiden name?"),("What was the name of your first/current/favorite pet?"),("What was the first company that you worked for?"),("Where did you meet your spouse?"),("Where did you go to high school/college?"),("What is your favorite food?"),("What city were you born in?"),("Where is your favorite place to vacation?");
 
 SET FOREIGN_KEY_CHECKS=1;
+
+    What Is your favorite book?
+    What is the name of the road you grew up on?
+    What is your mother’s maiden name?
+    What was the name of your first/current/favorite pet?
+    What was the first company that you worked for?
+    Where did you meet your spouse?
+    Where did you go to high school/college?
+    What is your favorite food?
+    What city were you born in?
+    Where is your favorite place to vacation?

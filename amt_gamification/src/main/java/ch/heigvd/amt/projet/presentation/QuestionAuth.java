@@ -1,5 +1,6 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.model.Question;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
 
 import javax.ejb.EJB;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class QuestionAuth extends HttpServlet {
     public static final String VIEW = "WEB-INF/pages/questionAuth.jsp";
@@ -26,14 +28,9 @@ public class QuestionAuth extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         email = req.getParameter("email");
         int questionID = userDAO.RetrieveSecretQuestion(email);
-        String question = "";
-        switch(questionID){
-            case 1:
-                question = "TAMERE";
-                break;
-            default:
-                question = "ALLO";
-        }
+        List<Question> questions = userDAO.getAllQuestions();
+        req.setAttribute("questions", questions);
+        String question = questions.get(questionID).getQuestion();
         req.setAttribute("question", question);
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }

@@ -1,5 +1,6 @@
 package ch.heigvd.amt.projet.presentation;
 
+import ch.heigvd.amt.projet.model.Question;
 import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
 
@@ -9,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Registration extends javax.servlet.http.HttpServlet {
 
@@ -25,6 +28,8 @@ public class Registration extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Question> questions = userDAO.getAllQuestions();
+        req.setAttribute("questions", questions);
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
@@ -35,7 +40,7 @@ public class Registration extends javax.servlet.http.HttpServlet {
         String email                = req.getParameter("email");
         String password             = req.getParameter("password");
         String passwordConfirmation = req.getParameter("passwordConfirmation");
-        String secretQuestionID     = req.getParameter("secretQuestion"); // TODO ID QUESTION AND NOT TEXT
+        int secretQuestionID     = Integer.parseInt(req.getParameter("secretQuestion")) - 1; // TODO ID QUESTION AND NOT TEXT
         String secretAnswer         = req.getParameter("secretAnswer");
 
         // check that passwords matches
@@ -44,7 +49,7 @@ public class Registration extends javax.servlet.http.HttpServlet {
             // TODO: add some textfield validations
 
             // add new dev account in DB
-            User user = new User(firstName, lastName, password, email, 1, secretAnswer);
+            User user = new User(firstName, lastName, password, email, secretQuestionID, secretAnswer);
             if(userDAO.addUser(user)) {
                 // user successfully added
                 resp.sendRedirect(req.getContextPath() + LOGIN_VIEW);

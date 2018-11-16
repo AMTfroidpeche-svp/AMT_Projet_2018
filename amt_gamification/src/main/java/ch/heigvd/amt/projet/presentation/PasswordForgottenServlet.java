@@ -1,7 +1,9 @@
 package ch.heigvd.amt.projet.presentation;
 
 import ch.heigvd.amt.projet.model.User;
+import ch.heigvd.amt.projet.services.UserDAOLocal;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,9 @@ import java.io.IOException;
 
 public class PasswordForgottenServlet extends HttpServlet {
     public static final String VIEW = "WEB-INF/pages/passwordForgotten.jsp";
+
+    @EJB
+    UserDAOLocal userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -26,7 +31,7 @@ public class PasswordForgottenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /************** LOGIN **************/
-        if (req.getParameter("email") != null) {
+        if (req.getParameter("email") != null && userDAO.getUser(req.getParameter("email")) != null) {
             resp.sendRedirect(req.getContextPath() + "/questionAuth?email=" + req.getParameter("email"));
         }
         else {

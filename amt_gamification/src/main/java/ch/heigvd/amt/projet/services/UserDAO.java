@@ -3,6 +3,7 @@ package ch.heigvd.amt.projet.services;
 import ch.heigvd.amt.projet.business.CipherUtil;
 import ch.heigvd.amt.projet.model.Application;
 import ch.heigvd.amt.projet.model.EmailUtility;
+import ch.heigvd.amt.projet.model.Question;
 import ch.heigvd.amt.projet.model.User;
 
 import javax.annotation.Resource;
@@ -309,6 +310,35 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             }
             else{
                 return resultSet.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cleanUp(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Question> getAllQuestions() {
+        String sql = "SELECT * FROM questions;";
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement    = null;
+
+        try (Connection connection = dataSource.getConnection()){
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()) {
+                return null;
+            }
+            else{
+                resultSet.beforeFirst();
+                ArrayList<Question> ret = new ArrayList<>();
+                while (resultSet.next()){
+                    ret.add(new Question(resultSet.getString("question"), resultSet.getInt("ID")));
+                }
+                return ret;
             }
 
         } catch (SQLException e) {

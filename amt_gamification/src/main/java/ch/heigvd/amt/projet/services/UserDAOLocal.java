@@ -1,5 +1,6 @@
 package ch.heigvd.amt.projet.services;
 
+import ch.heigvd.amt.projet.model.Question;
 import ch.heigvd.amt.projet.model.User;
 
 import java.util.List;
@@ -29,4 +30,6 @@ public interface UserDAOLocal {
     public boolean setActive(String email, int isActive);
 
     public boolean setDescription(String email, String description);
+
+    public List<Question> getAllQuestions();
 }
