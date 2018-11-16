@@ -50,6 +50,8 @@ public class Registration extends javax.servlet.http.HttpServlet {
             User user = new User(firstName, lastName, password, email, secretQuestionID, secretAnswer);
             if(userDAO.addUser(user)) {
                 // user successfully added
+                List<Question> questions = userDAO.getAllQuestions();
+                req.setAttribute("questions", questions);
                 req.setAttribute("success", "Dev account successfully created !");
                 req.getRequestDispatcher(VIEW).forward(req, resp);
             }
