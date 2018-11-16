@@ -54,11 +54,12 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 preparedStatementAdd.setString(3, user.getFirstName());
                 preparedStatementAdd.setString(4, user.getLastName());
                 preparedStatementAdd.setInt(5, user.getPermissionLevel());
-                preparedStatementAdd.setInt(6, user.getIDQuestion());
+                preparedStatementAdd.setInt(6, user.getIDQuestion()+1); // +1 because idQuestion starts from 0 in jsp
                 preparedStatementAdd.setString(7, user.getResponseQuestion());
                 preparedStatementAdd.setBoolean(8, user.getIsActive());
                 preparedStatementAdd.setBoolean(9, user.hasToChangedPassword());
                 preparedStatementAdd.setString(10, User.DEFAULT_IMAGE_URL);
+
                 preparedStatementAdd.executeUpdate();
 
                 result = true;

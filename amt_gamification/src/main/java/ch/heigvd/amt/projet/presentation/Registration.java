@@ -52,18 +52,20 @@ public class Registration extends javax.servlet.http.HttpServlet {
             User user = new User(firstName, lastName, password, email, secretQuestionID, secretAnswer);
             if(userDAO.addUser(user)) {
                 // user successfully added
-                resp.sendRedirect(req.getContextPath() + LOGIN_VIEW);
+                //resp.sendRedirect(req.getContextPath() + LOGIN_VIEW);
+                req.setAttribute("success", "Dev account successfully created !");
+                req.getRequestDispatcher(VIEW).forward(req, resp);
             }
             else {
                 // error when adding user
-                req.setAttribute("error", "Could not add user!");
+                req.setAttribute("error", "Could not add user !");
                 req.getRequestDispatcher(VIEW).forward(req, resp);
             }
 
 
         }
         else {
-            req.setAttribute("error", "Passwords need to match!");
+            req.setAttribute("error", "Passwords need to match !");
             req.getRequestDispatcher(VIEW).forward(req, resp);
         }
     }

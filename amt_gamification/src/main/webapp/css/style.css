@@ -82,6 +82,13 @@ nav > a:hover {
     margin-bottom: 15px;
 }
 
+.success {
+    padding: 20px;
+    background-color: #009900; /* Green */
+    color: white;
+    margin-bottom: 15px;
+}
+
 /* The close button */
 .closebtn {
     margin-left: 15px;

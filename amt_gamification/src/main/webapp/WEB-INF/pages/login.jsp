@@ -15,6 +15,7 @@
           <%=request.getAttribute("error")%>
       </div>
       <%}%>
+
       <img id="loginLogo" src="https://i.imgur.com/G1ZirjI.png">
     <form action="login" method="post">
         <div class="loginFieldset">

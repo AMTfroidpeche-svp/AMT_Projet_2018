@@ -17,6 +17,12 @@
           <%=request.getAttribute("error")%>
       </div>
       <%}%>
+      <% if(request.getAttribute("success") != null) {%>
+      <div class="success">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          <%=request.getAttribute("success")%>
+      </div>
+      <%}%>
     <form action="registration" method="post">
         <div class="loginFieldset">
             <p>Register a dev account</p>
