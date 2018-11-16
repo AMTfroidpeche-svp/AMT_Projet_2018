@@ -26,6 +26,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     private final static String sqlAddUser = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion, isActive, hasToChangePassword, imageUrl) VALUES(?,?,?,?,?,?,?,?,?,?);";
     private final static String sqlSelectUser = "SELECT email FROM users WHERE email = ?;";
     private final static String sqlSelectAllUser = "SELECT * FROM users WHERE email = ?;";
+    private final static String sqlSelectUsers = "SELECT email FROM users;";
     private final static String sqlSetOfUser = "SELECT * FROM users ORDER BY email LIMIT 11 OFFSET ?;";
     private final static String sqlChangePermission = "UPDATE users SET permissionLevel = ? WHERE email = ?;";
     private final static String sqlSelectToken = "SELECT TOKEN, tokenDate FROM users WHERE email = ?;";
@@ -122,7 +123,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         PreparedStatement preparedStatementDel = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            preparedStatement = connection.prepareStatement(sqlSelectUser);
+            preparedStatement = connection.prepareStatement(sqlSelectUsers);
             resultSet = preparedStatement.executeQuery();
             int numberOfApp = 0;
             if (resultSet.last()) {
