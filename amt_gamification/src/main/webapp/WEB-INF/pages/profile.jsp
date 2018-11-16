@@ -31,7 +31,7 @@
     <h2>My Description</h2>
     <form action="profile" method="post">
         <textarea class="loginInput" name="userDescr" cols="100" rows="10">${sessionScope.userSession.description}</textarea>
-        <input type="submit" name="saveDescription" value="Save Changes">
+        <input type="submit" name="saveDescription" value="Save description">
     </form>
 </div>
 

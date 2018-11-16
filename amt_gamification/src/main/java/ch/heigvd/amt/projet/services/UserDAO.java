@@ -47,7 +47,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
             resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
-                String sqlAdd = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion, isActive, hasToChangePassword) VALUES(?,?,?,?,?,?,?,?,?);";
+                String sqlAdd = "INSERT INTO users(email, hashPass, firstName, lastName, permissionLevel, IDQuestion, responseQuestion, isActive, hasToChangePassword, imageUrl) VALUES(?,?,?,?,?,?,?,?,?,?);";
                 preparedStatementAdd = connection.prepareStatement(sqlAdd);
                 preparedStatementAdd.setString(1, user.getEmail());
                 preparedStatementAdd.setString(2, user.getPassword());
@@ -58,6 +58,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
                 preparedStatementAdd.setString(7, user.getResponseQuestion());
                 preparedStatementAdd.setBoolean(8, user.getIsActive());
                 preparedStatementAdd.setBoolean(9, user.hasToChangedPassword());
+                preparedStatementAdd.setString(10, User.DEFAULT_IMAGE_URL);
                 preparedStatementAdd.executeUpdate();
 
                 result = true;
