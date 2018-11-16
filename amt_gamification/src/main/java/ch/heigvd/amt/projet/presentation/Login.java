@@ -13,13 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class Login extends HttpServlet {
-
-    private static final String CREATE_ACCOUNT_VIEW = "WEB-INF/pages/register.jsp";
     private static final String LOGIN_VIEW = "WEB-INF/pages/login.jsp";
-    private static final String PASSWORD_FORGOTTEN_VIEW = "WEB-INF/pages/.jsp";
-    private static final String HOMEPAGE_VIEW = "/app";
-    private static final String ADMIN_VIEW = "/adminPanel";
-    private static final String CHANGE_PASSWORD_VIEW = "/changePassword";
     private static final String USER_SESSION = "userSession";
 
     @EJB
@@ -53,13 +47,13 @@ public class Login extends HttpServlet {
 
                     session.setAttribute(USER_SESSION, user);
                     if(user.hasToChangedPassword()) {
-                        resp.sendRedirect(req.getContextPath() + CHANGE_PASSWORD_VIEW);
+                        resp.sendRedirect(req.getContextPath() + PrensentationUrls.CHANGE_PASSWORD_URL);
                     }
                     else if(user.getPermissionLevel() == 1) {
-                        resp.sendRedirect(req.getContextPath() + ADMIN_VIEW + "?page=1");
+                        resp.sendRedirect(req.getContextPath() + PrensentationUrls.ADMIN_PANEL_URL + "?page=1");
                     }
                     else {
-                        resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW + "?page=1");
+                        resp.sendRedirect(req.getContextPath() + PrensentationUrls.APP_URL + "?page=1");
                     }
                 }
 

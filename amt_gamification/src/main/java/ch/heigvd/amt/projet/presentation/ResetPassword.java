@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class ResetPassword extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/resetPassword.jsp";
-    private static final String LOGIN_VIEW = "/login";
     private String email;
 
     @EJB
@@ -39,7 +38,7 @@ public class ResetPassword extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login.jsp");
         }
         else {
-            req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
+            req.getRequestDispatcher(PrensentationUrls.LOGIN_URL).forward(req, resp);
         }
     }
 }

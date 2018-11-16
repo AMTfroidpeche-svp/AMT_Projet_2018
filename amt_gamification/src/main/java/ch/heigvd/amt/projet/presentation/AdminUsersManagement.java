@@ -4,6 +4,7 @@ import ch.heigvd.amt.projet.model.Application;
 import ch.heigvd.amt.projet.model.User;
 import ch.heigvd.amt.projet.services.ApplicationDaoLocal;
 import ch.heigvd.amt.projet.services.UserDAOLocal;
+import ch.heigvd.amt.projet.presentation.PrensentationUrls;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
@@ -17,7 +18,6 @@ import java.util.List;
 
 public class AdminUsersManagement extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/admin/adminManageUser.jsp";
-    private static final String ADMIN_USERS_MANAGEMENT_VIEW = "/adminUsersManagement";
     private static final int    APPS_PER_PAGE = 10;
 
     @EJB
@@ -74,6 +74,6 @@ public class AdminUsersManagement extends HttpServlet {
             userDAO.changePasswordAdmin(userEmail);
         }
 
-        resp.sendRedirect(req.getContextPath() + ADMIN_USERS_MANAGEMENT_VIEW + "?user=" + userEmail + "&page=1");
+        resp.sendRedirect(req.getContextPath() + PrensentationUrls.ADMIN_USERS_MANAGEMENT_URL + "?user=" + userEmail + "&page=1");
     }
 }

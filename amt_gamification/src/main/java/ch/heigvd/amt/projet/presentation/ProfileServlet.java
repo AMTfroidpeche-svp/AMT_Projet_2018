@@ -14,7 +14,6 @@ import java.io.IOException;
 
 public class ProfileServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/profile.jsp";
-    private static final String PROFILE_VIEW = "/profile";
     private static final String USER_SESSION = "userSession";
     private static final int    SIZE_MAX_DESCR = 300;
 
@@ -49,12 +48,12 @@ public class ProfileServlet extends HttpServlet {
             /*** the new description is too big ! ***/
             if (newDescription.length() >= SIZE_MAX_DESCR) {
                 session.setAttribute("error", "The description is too big ! (max " + SIZE_MAX_DESCR + " characters)");
-                resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+                resp.sendRedirect(req.getContextPath() + PrensentationUrls.PROFILE_URL);
             } else {
                 userDAO.setDescription(user.getEmail(), newDescription);
                 ((User) session.getAttribute(USER_SESSION)).setDescription(newDescription);
                 session.setAttribute("success", "The description has been successfully updated !");
-                resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+                resp.sendRedirect(req.getContextPath() + PrensentationUrls.PROFILE_URL);
             }
         }
 
@@ -63,7 +62,7 @@ public class ProfileServlet extends HttpServlet {
             userDAO.updateImage(user.getEmail(), newImageUrl);
             ((User) session.getAttribute(USER_SESSION)).setImageUrl(newImageUrl);
             session.setAttribute("success", "Your new profile picture has been saved !");
-            resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+            resp.sendRedirect(req.getContextPath() + PrensentationUrls.PROFILE_URL);
         }
     }
 

@@ -14,10 +14,7 @@ import java.io.IOException;
 
 public class ChangePassword extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/changePassword.jsp";
-    private static final String APP_VIEW = "/app";
-    private static final String ADMIN_VIEW = "/adminPanel";
     private static final String USER_SESSION = "userSession";
-    private static final String LOGOUT = "/logout";
 
     @EJB
     UserDAOLocal userDAO;
@@ -34,7 +31,7 @@ public class ChangePassword extends HttpServlet {
         User user = (User)session.getAttribute(USER_SESSION);
 
         if(!user.hasToChangedPassword()) {
-            resp.sendRedirect(req.getContextPath() + LOGOUT);
+            resp.sendRedirect(req.getContextPath() + PrensentationUrls.LOGOUT_URL);
         }
         else {
             req.getRequestDispatcher(VIEW).forward(req, resp);
@@ -57,10 +54,10 @@ public class ChangePassword extends HttpServlet {
         else {
             userDAO.changePasswordWithoutToken(user.getEmail(), oldPassowrd, password1);
             if(user.getPermissionLevel() == 1) {
-                resp.sendRedirect(req.getContextPath() + ADMIN_VIEW + "?page=1");
+                resp.sendRedirect(req.getContextPath() + PrensentationUrls.ADMIN_PANEL_URL + "?page=1");
             }
             else {
-                resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
+                resp.sendRedirect(req.getContextPath() + PrensentationUrls.APP_URL + "?page=1");
             }
         }
     }

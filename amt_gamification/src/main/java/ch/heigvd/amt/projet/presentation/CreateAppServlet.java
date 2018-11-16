@@ -15,7 +15,6 @@ import java.io.IOException;
 
 public class CreateAppServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/createApplication.jsp";
-    private static final String APP_VIEW = "/app";
     private static final String USER_SESSION = "userSession";
 
     @EJB
@@ -49,7 +48,7 @@ public class CreateAppServlet extends HttpServlet {
         Application app = new Application(appOwner, appName, appDescr);
         if(appDAO.createApp(app)) {
             session.setAttribute("success", "Your application has been successfully added !");
-            resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
+            resp.sendRedirect(req.getContextPath() + PrensentationUrls.APP_URL + "?page=1");
         }
         else {
             req.setAttribute("error", "Could not create app!");

@@ -15,7 +15,6 @@ import java.io.IOException;
 
 public class EditAppServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/editApplication.jsp";
-    private static final String APP_VIEW = "/app";
     private static final String USER_SESSION = "userSession";
 
     @EJB
@@ -54,7 +53,7 @@ public class EditAppServlet extends HttpServlet {
 
         /***** App updated successfully *****/
         if(appDAO.updateApp(appToken, newAppName, newAppDescr, user.getEmail())) {
-            resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
+            resp.sendRedirect(req.getContextPath() + PrensentationUrls.APP_URL + "?page=1");
         }
 
         /***** App update failed *****/

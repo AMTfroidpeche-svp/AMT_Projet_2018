@@ -17,8 +17,6 @@ import java.util.List;
 
 public class ApplicationServlet extends HttpServlet {
     private static final String VIEW = "WEB-INF/pages/applications.jsp";
-    private static final String EDIT_VIEW = "/editApp";
-    private static final String APP_VIEW = "/app";
     private static final String USER_SESSION = "userSession";
     private static final int    APPS_PER_PAGE = 10;
 
@@ -57,14 +55,14 @@ public class ApplicationServlet extends HttpServlet {
 
         /***** Edit an APP *****/
         if(buttonEffect.equals("edit")) {
-            resp.sendRedirect(req.getContextPath() + EDIT_VIEW + "?appToken=" + buttonName);
+            resp.sendRedirect(req.getContextPath() + PrensentationUrls.EDIT_APP_URL + "?appToken=" + buttonName);
         }
 
         /***** Delete an APP *****/
         else if(buttonEffect.equals("delete")) {
             /** Delete OK **/
             if(appDAO.deleteApp(buttonName, user.getEmail())) {
-                resp.sendRedirect(req.getContextPath() + APP_VIEW + "?page=1");
+                resp.sendRedirect(req.getContextPath() + PrensentationUrls.APP_URL + "?page=1");
             }
             /** Delete failed **/
             else {
