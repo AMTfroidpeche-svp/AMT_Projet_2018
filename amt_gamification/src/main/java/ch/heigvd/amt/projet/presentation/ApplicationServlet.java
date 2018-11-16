@@ -38,13 +38,8 @@ public class ApplicationServlet extends HttpServlet {
 
         User user = (User)session.getAttribute(USER_SESSION);
         List<Application> apps = appDAO.retrieveApp(user.getEmail(), user.getPermissionLevel());
-        int begin = (pageNumber - 1) * APPS_PER_PAGE;
-        int end = (pageNumber - 1) * APPS_PER_PAGE + APPS_PER_PAGE + 1;
-        if(end > apps.size())
-            end = apps.size();
-        apps = new ArrayList<>(apps.subList(begin, end));
 
-        req.setAttribute("appsPerPage", APPS_PER_PAGE);
+        req.setAttribute("appsPerPage", apps.size());
         req.setAttribute("apps", apps);
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
