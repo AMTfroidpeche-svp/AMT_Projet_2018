@@ -24,7 +24,7 @@
     <div class="profile-container">
         <div class="user-info">
             <div id="img-profile">
-                <img src="profile.jpg" alt="profile image" width="150px" height="150px" style="float:left;">
+                <img src="${requestScope.user.imageUrl}" alt="profile.jpg" width="150px" height="150px" style="float:left;">
             </div>
             <div>
                 <h2 id="fullName">Full
@@ -48,7 +48,7 @@
             <div>
                 <form action="adminUsersManagement" method="post">
                     <input type="hidden" name="user" value="${requestScope.user.email}">
-                    <input type="submit" class="adminResetButton" name="resetUserPassword">Reset Password</input>
+                    <input type="submit" class="adminResetButton" name="resetUserPassword" value="Reset user password">
                 </form>
                 <br/>
             </div>

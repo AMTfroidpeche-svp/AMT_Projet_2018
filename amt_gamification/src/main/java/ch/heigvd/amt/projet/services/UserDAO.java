@@ -349,6 +349,27 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
     }
 
     @Override
+    public boolean updateImage(String email, String url) {
+        String sql = "UPDATE users SET imageUrl = ? WHERE email = ?;";
+        PreparedStatement preparedStatement    = null;
+
+        try (Connection connection = dataSource.getConnection()){
+            preparedStatement = connection.prepareStatement(sql);
+
+            String newPassword = UUID.randomUUID().toString();
+            preparedStatement.setString(1, url);
+            preparedStatement.setString(2, email);
+            preparedStatement.executeUpdate();
+            return sendEmailPassword(email, newPassword);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cleanUp(preparedStatement);
+        }
+    }
+
+    @Override
     public boolean resetPassword(String email, String response) {
        if(!checkResponse(email, response) || !updateToken(email, true)) {
            return false;
@@ -483,6 +504,7 @@ public class UserDAO extends DatabaseUtils implements UserDAOLocal {
         user.setActive(resultSet.getBoolean("isActive"));
         user.setHasToChangedPassword(resultSet.getBoolean("hasToChangePassword"));
         user.setDescription(resultSet.getString("description"));
+        user.setImageUrl(resultSet.getString("imageUrl"));
         return user;
     }
 

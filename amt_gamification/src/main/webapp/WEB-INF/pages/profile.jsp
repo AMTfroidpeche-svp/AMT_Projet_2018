@@ -14,7 +14,13 @@
     <h1>Profile </h1>
     <div class="user-info">
         <div id="img-profile">
-            <img src="profile.jpg" alt="profile.jpg" width="200px" height="200px" style="float:left;">
+            <img src="${sessionScope.userSession.imageUrl}" alt="profile.jpg" width="200px" height="200px" style="float:left;">
+            <br/>
+            <form action="profile" method="post">
+                <label>url to your profile picture:</label>
+                <input type="url" name="profilePictureLink" placeholder="max: 200x200px" value="${sessionScope.userSession.imageUrl}">
+                <input type="submit" name="profilePictureButton" value="Save image">
+            </form>
         </div>
         <div>
             <h2 id="fullName">Full name: ${sessionScope.userSession.firstName} ${sessionScope.userSession.lastName}</h2>

@@ -32,4 +32,6 @@ public interface UserDAOLocal {
     public boolean setDescription(String email, String description);
 
     public List<Question> getAllQuestions();
+
+    public boolean updateImage(String email, String url);
 }

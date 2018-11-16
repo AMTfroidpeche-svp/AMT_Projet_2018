@@ -17,6 +17,7 @@ public class User {
     private boolean isActive = true;
     private boolean hasToChangedPassword = true;
     private String description;
+    private String imageUrl;
 
     public User() {
     }
@@ -78,6 +79,8 @@ public class User {
 
     public String getDescription() { return description; }
 
+    public String getImageUrl() { return imageUrl; }
+
     public boolean hasToChangedPassword() {
         return hasToChangedPassword;
     }
@@ -121,4 +124,6 @@ public class User {
     }
 
     public void setDescription(String description) { this.description = description; }
+
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

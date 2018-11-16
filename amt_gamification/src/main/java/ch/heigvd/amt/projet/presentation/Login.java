@@ -43,33 +43,35 @@ public class Login extends HttpServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-            User user;
+            User user = userDAO.checkPassword(email, password);
             // Verify in DB if email/password are valid
             /**** IF VALID ****/
-            if ((user = userDAO.checkPassword(email, password)) != null && user.getIsActive()) {
+            if (user != null) {
                 // Create a session
-                HttpSession session = req.getSession();
+                if(user.getIsActive()) {
+                    HttpSession session = req.getSession();
 
-                session.setAttribute(USER_SESSION, user);
-                if(user.hasToChangedPassword()) {
-                    resp.sendRedirect(req.getContextPath() + CHANGE_PASSWORD_VIEW);
+                    session.setAttribute(USER_SESSION, user);
+                    if(user.hasToChangedPassword()) {
+                        resp.sendRedirect(req.getContextPath() + CHANGE_PASSWORD_VIEW);
+                    }
+                    else if(user.getPermissionLevel() == 1) {
+                        resp.sendRedirect(req.getContextPath() + ADMIN_VIEW + "?page=1");
+                    }
+                    else {
+                        resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW + "?page=1");
+                    }
                 }
-                else if(user.getPermissionLevel() == 1) {
-                    resp.sendRedirect(req.getContextPath() + ADMIN_VIEW + "?page=1");
-                }
+
+                /*** ACCOUNT HAS BEEN DISABLED ***/
                 else {
-                    resp.sendRedirect(req.getContextPath() + HOMEPAGE_VIEW + "?page=1");
+                    req.setAttribute("error", "An administrator disabled your account. Please contact the support. (amtfroidpeche@gmail.com)");
+                    req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
                 }
-            }
-
-            /*** ACCOUNT HAS BEEN DISABLED ***/
-            else if (!user.getIsActive()) {
-                req.setAttribute("error", "An administrator disabled your account. Please contact the support. (amtfroidpeche@gmail.com)");
-                req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }
 
             /*** IF HAS TO CHANGE PASSWORD ***/
-            else if ((userDAO.getUser(email)) != null && user.hasToChangedPassword()) {
+            else if ((user = userDAO.getUser(email)) != null && user.hasToChangedPassword()) {
                 req.setAttribute("error", "An administrator requested a password change. Please check your email inbox.");
                 req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
             }

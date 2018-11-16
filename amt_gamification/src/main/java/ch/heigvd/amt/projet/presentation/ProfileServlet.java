@@ -29,6 +29,8 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+        System.out.println("URL = " + ((User)session.getAttribute(USER_SESSION)).getImageUrl());
+        System.out.println("DES = " + ((User)session.getAttribute(USER_SESSION)).getDescription());
 
         req.getRequestDispatcher(VIEW).forward(req, resp);
     }
@@ -39,14 +41,23 @@ public class ProfileServlet extends HttpServlet {
 
         User user = (User)session.getAttribute(USER_SESSION);
         String newDescription = req.getParameter("userDescr");
+        String newImageUrl = req.getParameter("profilePictureLink");
 
-        /*** the new description is too big ! ***/
-        if(newDescription.length() >= SIZE_MAX_DESCR) {
-            resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+        if(newDescription != null) {
+            /*** the new description is too big ! ***/
+            if (newDescription.length() >= SIZE_MAX_DESCR) {
+                resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+            } else {
+                userDAO.setDescription(user.getEmail(), newDescription);
+                ((User) session.getAttribute(USER_SESSION)).setDescription(newDescription);
+                resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
+            }
         }
-        else {
-            userDAO.setDescription(user.getEmail(), newDescription);
-            ((User)session.getAttribute(USER_SESSION)).setDescription(newDescription);
+
+        else if(newImageUrl != null) {
+            // todo: security checks
+            userDAO.updateImage(user.getEmail(), newImageUrl);
+            ((User) session.getAttribute(USER_SESSION)).setImageUrl(newImageUrl);
             resp.sendRedirect(req.getContextPath() + PROFILE_VIEW);
         }
     }
