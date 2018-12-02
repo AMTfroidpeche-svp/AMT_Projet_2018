@@ -1,0 +1,250 @@
+swagger: '2.0'
+info:
+  version: '0.1.0'
+  title: gamification API
+  description: An API to gamify application
+host: localhost:8080
+basePath: /api
+schemes:
+- http
+paths:
+  /events:
+    post:
+      description: generate an event
+      operationId: generateEvent
+      consumes:
+      - application/json
+      parameters:
+      - name: event
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Event'
+      responses:
+        '201':
+          description: success
+          schema:
+            type: object
+  /badges:
+    post:
+      description: create a badge
+      operationId: createBadge
+      consumes:
+      - application/json
+      parameters:
+      - name: badge
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Badge'
+      responses:
+        '201':
+          description: created
+          schema:
+            type: object
+    get:
+      description: get the list of badges of a user or all available badges
+      operationId: getBadges
+      produces:
+      - application/json
+      parameters:
+      - name: infos
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Infos'
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Badge'
+  /PointScales:
+    post:
+      description: create a pointScale
+      operationId: createPointScale
+      consumes:
+      - application/json
+      parameters:
+      - name: pointScale
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/PointScale'
+      responses:
+        '201':
+          description: created
+          schema:
+            type: object
+    get:
+      description: get the pointScales of a user or all available pointScales
+      operationId: getPointScales
+      produces:
+      - application/json
+      parameters:
+      - name: infos
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Infos'
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PointScale'
+  /rules:
+    post:
+      description: create a rule
+      operationId: createRules
+      consumes:
+      - application/json
+      parameters:
+      - name: rule
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Rule'
+      responses:
+        '201':
+          description: created
+          schema:
+            type: object
+    get:
+      description: get the list of all rules
+      operationId: getRules
+      produces:
+      - application/json
+      parameters:
+      - name: infos
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/AppId'
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Rule'
+definitions:
+  Event:
+    type: object
+    properties:
+      token:
+        type: string
+      idUser:
+        type: string
+      eventName:
+        type: string
+      property:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            value:
+              type: integer
+          required:
+          - name
+          - value
+    required:
+    - token
+    - idUser
+    - eventName
+
+  Badge:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      name:
+        type: string
+      userId:
+        type: string
+    required:
+    - apiToken
+    - name
+
+  PointScale:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      name:
+        type: string
+      value:
+        type: integer
+    required:
+    - apiToken
+    - name
+    - value
+
+  Rule:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      awards:
+        type: array
+        items:
+          type: object
+          properties:
+            badge:
+              type: string
+            point:
+              type: array
+              items:
+                type: object
+                properties:
+                  pointScale:
+                    type: string
+                  amount:
+                    type: integer
+      eventName:
+        type: string
+      property:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            ruleType:
+              type: string
+            compare:
+              type: string
+            value:
+              type: integer
+          required:
+          - name
+          - ruleType
+          - compare
+          - value
+    required:
+    - apiToken
+    - awards
+    - amount
+    - eventName
+
+  Infos:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      userId:
+        type: string
+    required:
+    - apiToken
+
+  AppId:
+    type: object
+    properties:
+      apiToken:
+        type: string
+    required:
+    - apiToken
