@@ -98,7 +98,7 @@ paths:
   /rules:
     post:
       description: create a rule
-      operationId: createRules
+      operationId: createRule
       consumes:
       - application/json
       parameters:
@@ -176,6 +176,8 @@ definitions:
       apiToken:
         type: string
       name:
+        type: string
+      userId:
         type: string
       value:
         type: integer

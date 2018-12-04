@@ -12,39 +12,44 @@ import java.io.Serializable;
 @Entity
 public class PointScaleEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String apiToken = null;
+    private String name = null;
+    private String userId = "";
+    private int value;
 
-    private String kind;
-    private String size;
-    private String colour;
-
-    public long getId() {
-        return id;
+    public String getId() {
+        return apiToken+userId;
     }
 
-    public String getKind() {
-        return kind;
+    public String getApiToken() {
+        return apiToken;
     }
 
-    public void setKind(String kind) {
-        this.kind = kind;
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
     }
 
-    public String getSize() {
-        return size;
+    public String getName() {
+        return name;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getColour() {
-        return colour;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setColour(String colour) {
-        this.colour = colour;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

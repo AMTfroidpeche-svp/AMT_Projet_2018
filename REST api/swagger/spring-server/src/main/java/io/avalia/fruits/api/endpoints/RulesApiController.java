@@ -1,5 +1,11 @@
 package io.avalia.fruits.api.endpoints;
 
+import io.avalia.fruits.api.RulesApi;
+import io.avalia.fruits.api.model.AppId;
+import io.avalia.fruits.api.model.Infos;
+import io.avalia.fruits.api.model.Rule;
+import io.avalia.fruits.entities.RuleEntity;
+import io.avalia.fruits.repositories.RuleRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,55 +21,50 @@ import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-26T19:36:34.802Z")
 
 @Controller
-public class RulesApiController implements FruitsApi {
+public class RulesApiController implements RulesApi {
 
     @Autowired
-    FruitRepository fruitRepository;
+    io.avalia.fruits.repositories.RuleRepository RuleRepository;
 
-    public ResponseEntity<Object> createFruit(@ApiParam(value = "", required = true) @Valid @RequestBody Fruit fruit) {
-        FruitEntity newFruitEntity = toFruitEntity(fruit);
-        fruitRepository.save(newFruitEntity);
-        Long id = newFruitEntity.getId();
+    @Override
+    public ResponseEntity<Object> createRule(@ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
+        RuleEntity newRuleEntity = toRuleEntity(Rule);
+        RuleRepository.save(newRuleEntity);
+        Long id = newRuleEntity.getId();
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newFruitEntity.getId()).toUri();
+                .buildAndExpand(newRuleEntity.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
-
-    public ResponseEntity<List<Fruit>> getFruits() {
-        List<Fruit> fruits = new ArrayList<>();
-        for (FruitEntity fruitEntity : fruitRepository.findAll()) {
-            fruits.add(toFruit(fruitEntity));
+    @Override
+    public ResponseEntity<List<Rule>> getRules(AppId infos) {
+        List<Rule> Rules = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
+        ids.add(infos.getApiToken());
+        for (RuleEntity RuleEntity : RuleRepository.findAll(ids)) {
+            Rules.add(toRule(RuleEntity));
         }
-        /*
-        Fruit staticFruit = new Fruit();
-        staticFruit.setColour("red");
-        staticFruit.setKind("banana");
-        staticFruit.setSize("medium");
-        List<Fruit> fruits = new ArrayList<>();
-        fruits.add(staticFruit);
-        */
-        return ResponseEntity.ok(fruits);
+        return ResponseEntity.ok(Rules);
     }
 
 
-    private FruitEntity toFruitEntity(Fruit fruit) {
-        FruitEntity entity = new FruitEntity();
-        entity.setColour(fruit.getColour());
-        entity.setKind(fruit.getKind());
-        entity.setSize(fruit.getSize());
+    private RuleEntity toRuleEntity(Rule Rule) {
+        RuleEntity entity = new RuleEntity();
+        entity.setColour(Rule.getColour());
+        entity.setKind(Rule.getKind());
+        entity.setSize(Rule.getSize());
         return entity;
     }
 
-    private Fruit toFruit(FruitEntity entity) {
-        Fruit fruit = new Fruit();
-        fruit.setColour(entity.getColour());
-        fruit.setKind(entity.getKind());
-        fruit.setSize(entity.getSize());
-        return fruit;
+    private Rule toRule(RuleEntity entity) {
+        Rule Rule = new Rule();
+        Rule.setColour(entity.getColour());
+        Rule.setKind(entity.getKind());
+        Rule.setSize(entity.getSize());
+        return Rule;
     }
 
 }
