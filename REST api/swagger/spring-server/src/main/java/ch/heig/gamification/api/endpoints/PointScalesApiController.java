@@ -40,9 +40,7 @@ public class PointScalesApiController implements PointScalesApi {
     @Override
     public ResponseEntity<List<PointScale>> getPointScales(Infos infos) {
         List<PointScale> PointScales = new ArrayList<>();
-        List<String> ids = new ArrayList<>();
-        ids.add(infos.getApiToken() + infos.getUserId());
-        for (PointScaleEntity PointScaleEntity : PointScaleRepository.findAll(ids)) {
+        for (PointScaleEntity PointScaleEntity : PointScaleRepository.findAll()) {
             PointScales.add(toPointScale(PointScaleEntity));
         }
         return ResponseEntity.ok(PointScales);

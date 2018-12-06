@@ -40,9 +40,7 @@ public class BadgesApiController implements BadgesApi {
     @Override
     public ResponseEntity<List<Badge>> getBadges(Infos infos) {
         List<Badge> badges = new ArrayList<>();
-        List<String> ids = new ArrayList<>();
-        ids.add(infos.getApiToken() + infos.getUserId());
-        for (BadgeEntity badgeEntity : badgeRepository.findAll(ids)) {
+        for (BadgeEntity badgeEntity : badgeRepository.findAll()) {
             badges.add(toBadge(badgeEntity));
         }
         return ResponseEntity.ok(badges);

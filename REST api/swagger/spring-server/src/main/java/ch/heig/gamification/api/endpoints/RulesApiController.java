@@ -40,9 +40,7 @@ public class RulesApiController implements RulesApi {
     @Override
     public ResponseEntity<List<Rule>> getRules(Infos infos) {
         List<Rule> Rules = new ArrayList<>();
-        List<String> ids = new ArrayList<>();
-        ids.add(infos.getApiToken());
-        for (RuleEntity RuleEntity : RuleRepository.findAll(ids)) {
+        for (RuleEntity RuleEntity : RuleRepository.findAll()) {
             Rules.add(toRule(RuleEntity));
         }
         return ResponseEntity.ok(Rules);

@@ -2,8 +2,9 @@ package ch.heig.gamification.entities;
 
 import io.avalia.gamification.api.model.EventProperties;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,17 @@ public class EventEntity implements Serializable {
     private String appToken;
     private String userId;
     private String name;
-    private List<EventProperties> properties;
+
+    @ElementCollection(targetClass=EventProperties.class)
+    private List<EventProperties> properties = new ArrayList<>();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    public long getId() {
+        return id;
+    }
 
     public String getAppToken() {
         return appToken;
