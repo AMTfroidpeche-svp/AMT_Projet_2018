@@ -3,9 +3,6 @@ package ch.heig.gamification.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Olivier Liechti on 26/07/17.
- */
 @Entity
 @Table(name="POINTSCALE")
 public class PointScaleEntity implements Serializable {
@@ -20,10 +17,10 @@ public class PointScaleEntity implements Serializable {
     private int value;
 
     @Id
-    @Column(name="ID")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
@@ -32,7 +29,6 @@ public class PointScaleEntity implements Serializable {
     }
 
     public void setApiToken(String apiToken) {
-        this.id = apiToken+userId;
         this.apiToken = apiToken;
     }
 
@@ -49,7 +45,6 @@ public class PointScaleEntity implements Serializable {
     }
 
     public void setUserId(String userId) {
-        this.id = apiToken + userId;
         this.userId = userId;
     }
 

@@ -200,8 +200,7 @@ definitions:
             type: array
             items:
               type: object
-              schema:
-                $ref: '#/definitions/Badge'
+              $ref: '#/definitions/Badge'
           point:
             type: array
             items:
@@ -209,8 +208,7 @@ definitions:
               properties:
                 pointScale:
                   type: object
-                  schema:
-                    $ref: '#/definitions/PointScale'
+                  $ref: '#/definitions/PointScale'
                 amount:
                   type: integer
       properties:

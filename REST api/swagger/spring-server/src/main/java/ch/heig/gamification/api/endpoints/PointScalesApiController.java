@@ -28,7 +28,7 @@ public class PointScalesApiController implements PointScalesApi {
     public ResponseEntity<Object> createPointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale PointScale) {
         PointScaleEntity newPointScaleEntity = toPointScaleEntity(PointScale);
         PointScaleRepository.save(newPointScaleEntity);
-        String id = newPointScaleEntity.getId();
+        long id = newPointScaleEntity.getId();
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

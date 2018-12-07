@@ -7,9 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Olivier Liechti on 26/07/17.
- */
 @Entity
 public class EventEntity implements Serializable {
 
@@ -17,8 +14,8 @@ public class EventEntity implements Serializable {
     private String userId;
     private String name;
 
-    @ElementCollection(targetClass=EventProperties.class)
-    private List<EventProperties> properties = new ArrayList<>();
+    @OneToMany
+    private List<EventPropertiesEntity> properties = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,11 +49,11 @@ public class EventEntity implements Serializable {
         this.name = name;
     }
 
-    public List<EventProperties> getProperties() {
+    public List<EventPropertiesEntity> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<EventProperties> properties) {
+    public void setProperties(List<EventPropertiesEntity> properties) {
         this.properties = properties;
     }
 

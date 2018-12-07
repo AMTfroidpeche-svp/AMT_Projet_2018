@@ -28,7 +28,7 @@ public class BadgesApiController implements BadgesApi {
     public ResponseEntity<Object> createBadge(@ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
         BadgeEntity newBadgeEntity = toBadgeEntity(badge);
         badgeRepository.save(newBadgeEntity);
-        String id = newBadgeEntity.getId();
+        long id = newBadgeEntity.getId();
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
