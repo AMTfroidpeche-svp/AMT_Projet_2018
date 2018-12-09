@@ -16,13 +16,13 @@ public class UserEntity implements Serializable {
     @EmbeddedId
     private CompositeId id;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<BadgeEntity> badges = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<PointScaleEntity> pointScales = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<UserPointScaleEntity> userPointScaleEntities = new ArrayList<>();
 
     public UserEntity() {

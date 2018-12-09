@@ -9,10 +9,10 @@ import java.util.List;
 @Table(name = "RULEAWARDS")
 public class RuleAwardsEntity implements Serializable {
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<BadgeEntity> badge = new ArrayList<BadgeEntity>();
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<PointScaleEntity> point = new ArrayList<>();
 
     private String amountofPoint;

@@ -27,9 +27,6 @@ import java.util.List;
 public class BadgesApiController implements BadgesApi {
 
     @Autowired
-    BadgeRepository badgeRepository;
-
-    @Autowired
     ApplicationRepository applicationRepository;
 
     public ResponseEntity<Object> createBadge(@ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
@@ -47,7 +44,6 @@ public class BadgesApiController implements BadgesApi {
             }
         }
         app.addBadge(newBadgeEntity);
-        badgeRepository.save(newBadgeEntity);
         applicationRepository.save(app);
         CompositeId id = newBadgeEntity.getId();
         URI location = ServletUriComponentsBuilder

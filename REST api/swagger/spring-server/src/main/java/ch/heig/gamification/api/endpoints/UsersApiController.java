@@ -29,9 +29,6 @@ public class UsersApiController implements UsersApi {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    ApplicationRepository applicationRepository;
-
     @Override
     public ResponseEntity<User> getUser(UserInfos infos) {
         UserEntity user = userRepository.findById(new CompositeId(infos.getApiToken(), infos.getName()));

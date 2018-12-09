@@ -1,9 +1,7 @@
 package ch.heig.gamification.api.endpoints;
 
 import ch.heig.gamification.entities.*;
-import ch.heig.gamification.repositories.ApplicationRepository;
-import ch.heig.gamification.repositories.RuleRepository;
-import ch.heig.gamification.repositories.UserRepository;
+import ch.heig.gamification.repositories.*;
 import io.avalia.gamification.api.RulesApi;
 import io.avalia.gamification.api.model.AppInfos;
 import io.avalia.gamification.api.model.PointScale;
@@ -24,9 +22,6 @@ import java.util.List;
 
 @Controller
 public class RulesApiController implements RulesApi {
-
-    @Autowired
-    ch.heig.gamification.repositories.RuleRepository RuleRepository;
 
     @Autowired
     ApplicationRepository applicationRepository;
@@ -66,11 +61,9 @@ public class RulesApiController implements RulesApi {
                 app.addPointScale(pointScales.get(i));
                 for (UserEntity u: users) {
                     u.addPointScale(pointScales.get(i));
-                    userRepository.save(u);
                 }
             }
         }
-        RuleRepository.save(newRuleEntity);
         applicationRepository.save(app);
         CompositeId id = newRuleEntity.getId();
         URI location = ServletUriComponentsBuilder

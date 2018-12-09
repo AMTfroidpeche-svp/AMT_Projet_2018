@@ -26,9 +26,6 @@ import java.util.List;
 public class PointScalesApiController implements PointScalesApi {
 
     @Autowired
-    PointScaleRepository PointScaleRepository;
-
-    @Autowired
     ApplicationRepository applicationRepository;
 
     @Autowired
@@ -49,11 +46,9 @@ public class PointScalesApiController implements PointScalesApi {
             }
         }
         app.addPointScale(newPointScaleEntity);
-        PointScaleRepository.save(newPointScaleEntity);
         for (UserEntity user : app.getUsers()) {
             UserEntity u = userRepository.findById(user.getId());
             u.addPointScale(newPointScaleEntity);
-            userRepository.save(u);
         }
         applicationRepository.save(app);
         CompositeId id = newPointScaleEntity.getId();

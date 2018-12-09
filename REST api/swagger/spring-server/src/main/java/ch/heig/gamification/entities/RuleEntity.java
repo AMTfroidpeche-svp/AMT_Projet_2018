@@ -22,10 +22,10 @@ public class RuleEntity implements Serializable {
         this.id = id;
     }
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private RuleAwardsEntity awards;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<RulePropertiesEntity> propreties = new ArrayList<>();
 
     public RuleEntity(){}

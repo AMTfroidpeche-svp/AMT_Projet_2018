@@ -14,16 +14,16 @@ public class ApplicationEntity implements Serializable {
     @Id
     private String apiToken;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<BadgeEntity> badges = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<PointScaleEntity> pointScales = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<RuleEntity> rules = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<UserEntity> users = new ArrayList<>();
 
     public ApplicationEntity(){}
