@@ -1,8 +1,13 @@
 package ch.heig.gamification.repositories;
 
 import ch.heig.gamification.entities.BadgeEntity;
+import ch.heig.gamification.entities.CompositeId;
 import org.springframework.data.repository.CrudRepository;
 
-public interface BadgeRepository extends CrudRepository<BadgeEntity, String>{
+import java.util.List;
+
+public interface BadgeRepository extends CrudRepository<BadgeEntity, CompositeId>{
+
+    public BadgeEntity findById(CompositeId id);
 
 }

@@ -11,11 +11,16 @@ import io.avalia.gamification.api.model.RuleProperties;
 @Table(name="RULE")
 public class RuleEntity implements Serializable {
 
-    @Column(name="APITOKEN")
-    private String apiToken;
+    @EmbeddedId
+    private CompositeId id;
 
-    @Column(name="NAME")
-    private String name;
+    public CompositeId getId() {
+        return id;
+    }
+
+    public void setId(CompositeId id) {
+        this.id = id;
+    }
 
     @OneToOne
     private RuleAwardsEntity awards;
@@ -23,28 +28,10 @@ public class RuleEntity implements Serializable {
     @OneToMany
     private List<RulePropertiesEntity> propreties = new ArrayList<>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    public RuleEntity(){}
 
-    public long getId() {
-        return id;
-    }
-
-    public void setApiToken(String apiToken) {
-        this.apiToken = apiToken;
-    }
-
-    public String getApiToken() {
-        return apiToken;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    public RuleEntity(CompositeId id){
+        this.id = id;
     }
 
     public void setAwards(RuleAwardsEntity awards) {

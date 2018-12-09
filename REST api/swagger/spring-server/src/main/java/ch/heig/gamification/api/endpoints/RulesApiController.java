@@ -1,10 +1,13 @@
 package ch.heig.gamification.api.endpoints;
 
 import ch.heig.gamification.entities.*;
+import ch.heig.gamification.repositories.ApplicationRepository;
+import ch.heig.gamification.repositories.RuleRepository;
+import ch.heig.gamification.repositories.UserRepository;
 import io.avalia.gamification.api.RulesApi;
-import io.avalia.gamification.api.model.Infos;
+import io.avalia.gamification.api.model.AppInfos;
+import io.avalia.gamification.api.model.PointScale;
 import io.avalia.gamification.api.model.Rule;
-import io.avalia.gamification.api.model.RuleAwardsPoint;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,23 +28,67 @@ public class RulesApiController implements RulesApi {
     @Autowired
     ch.heig.gamification.repositories.RuleRepository RuleRepository;
 
-    @Override
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     public ResponseEntity<Object> createRule(@ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
         RuleEntity newRuleEntity = toRuleEntity(Rule);
-        RuleRepository.save(newRuleEntity);
-        long id = newRuleEntity.getId();
+        ApplicationEntity app = applicationRepository.findByApiToken(Rule.getApiToken());
+        if (app == null) {
+            app = new ApplicationEntity(Rule.getApiToken());
+        } else {
+            List<RuleEntity> Rules = app.getRules();
+            for (int i = 0; i < Rules.size(); i++) {
+                if (Rules.get(i).getId().equals(newRuleEntity.getId())) {
+                    return ResponseEntity.status(304).build();
+                }
+            }
+        }
+        app.addRule(newRuleEntity);
 
+        //check if the badges awarded by the rule exits, if they don't create them
+        List<BadgeEntity> badges = newRuleEntity.getAwards().getBadge();
+        for(int i = 0; i < badges.size(); i++){
+            if(app.getBadges().indexOf(badges.get(i)) == -1){
+                app.addBadge(badges.get(i));
+            }
+        }
+
+        //check if the PointScales concerned by the rule exist, of they don't create them
+        List<PointScaleEntity> pointScales = newRuleEntity.getAwards().getPoint();
+        List<UserEntity> users = userRepository.findByIdApiToken(Rule.getApiToken());
+        for(int i = 0; i < pointScales.size(); i++){
+            //if the pointScale doesn't exist, we have to add it and to instantiate it for each user of the app
+            if(app.getPointScales().indexOf(pointScales.get(i)) == -1){
+                app.addPointScale(pointScales.get(i));
+                for (UserEntity u: users) {
+                    u.addPointScale(pointScales.get(i));
+                    userRepository.save(u);
+                }
+            }
+        }
+        RuleRepository.save(newRuleEntity);
+        applicationRepository.save(app);
+        CompositeId id = newRuleEntity.getId();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newRuleEntity.getId()).toUri();
+                .buildAndExpand(newRuleEntity.getId().getApiToken() + newRuleEntity.getId().getName()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
     @Override
-    public ResponseEntity<List<Rule>> getRules(Infos infos) {
+    public ResponseEntity<List<Rule>> getRules(AppInfos infos) {
+        ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
+        if(app == null){
+            return ResponseEntity.notFound().build();
+        }
+        List<RuleEntity> RuleEntities = app.getRules();
         List<Rule> Rules = new ArrayList<>();
-        for (RuleEntity RuleEntity : RuleRepository.findAll()) {
+        for (RuleEntity RuleEntity : RuleEntities) {
             Rules.add(toRule(RuleEntity));
         }
         return ResponseEntity.ok(Rules);
@@ -49,38 +96,25 @@ public class RulesApiController implements RulesApi {
 
 
     private RuleEntity toRuleEntity(Rule Rule) {
-        RuleEntity entity = new RuleEntity();
-        entity.setApiToken(Rule.getApiToken());
-        entity.setName(Rule.getName());
+        RuleEntity entity = new RuleEntity(new CompositeId(Rule.getApiToken(), Rule.getName()));
 
         RuleAwardsEntity rae = new RuleAwardsEntity();
-        List<BadgeEntity> badges = new ArrayList<>();
-        List<RuleAwardsPointEntity> points = new ArrayList<>();
+        List<BadgeEntity> Badges = new ArrayList<>();
+        List<PointScaleEntity> points = new ArrayList<>();
 
         for (io.avalia.gamification.api.model.Badge b : Rule.getAwards().getBadge()) {
-            BadgeEntity badgeEntity = new BadgeEntity();
-            badgeEntity.setApiToken(b.getApiToken());
-            badgeEntity.setName(b.getName());
-            badgeEntity.setUserId(b.getUserId());
-            badges.add(badgeEntity);
+            BadgeEntity BadgeEntity = new BadgeEntity(new CompositeId(b.getApiToken(), b.getName()));
+            Badges.add(BadgeEntity);
         }
 
-        for (io.avalia.gamification.api.model.RuleAwardsPoint p : Rule.getAwards().getPoint()) {
-            RuleAwardsPointEntity RuleAwardsPointEntity = new RuleAwardsPointEntity();
-
-            io.avalia.gamification.api.model.PointScale pointScale = p.getPointScale();
-            PointScaleEntity pointScaleEntity = new PointScaleEntity();
-            pointScaleEntity.setApiToken(pointScale.getApiToken());
-            pointScaleEntity.setName(pointScale.getName());
-            pointScaleEntity.setUserId(pointScale.getUserId());
-            pointScaleEntity.setValue(pointScale.getValue());
-
-            RuleAwardsPointEntity.setPointScaleEntity(pointScaleEntity);
-            RuleAwardsPointEntity.setValue(p.getAmount());
-            points.add(RuleAwardsPointEntity);
+        for (io.avalia.gamification.api.model.PointScale p : Rule.getAwards().getPoint()) {
+            PointScaleEntity pointScaleEntity = new PointScaleEntity(new CompositeId(p.getApiToken(), p.getName()));
+            points.add(pointScaleEntity);
         }
-        rae.setBadge(badges);
+        rae.setBadge(Badges);
         rae.setPoint(points);
+        rae.setAmountofPoint(Rule.getAwards().getAmountofPoint());
+
         entity.setAwards(rae);
 
         List<RulePropertiesEntity> properties = new ArrayList<>();
@@ -98,38 +132,30 @@ public class RulesApiController implements RulesApi {
 
     private Rule toRule(RuleEntity entity) {
         Rule Rule = new Rule();
-        Rule.setApiToken(entity.getApiToken());
-        Rule.setName(entity.getName());
+        Rule.setApiToken(entity.getId().getApiToken());
+        Rule.setName(entity.getId().getName());
 
 
         io.avalia.gamification.api.model.RuleAwards ra = new io.avalia.gamification.api.model.RuleAwards();
-        List<io.avalia.gamification.api.model.Badge> badges = new ArrayList<>();
-        List<io.avalia.gamification.api.model.RuleAwardsPoint> points = new ArrayList<>();
+        List<io.avalia.gamification.api.model.Badge> Badges = new ArrayList<>();
+        List<io.avalia.gamification.api.model.PointScale> points = new ArrayList<>();
 
         for (BadgeEntity b : entity.getAwards().getBadge()) {
-            io.avalia.gamification.api.model.Badge badge = new io.avalia.gamification.api.model.Badge();
-            badge.setApiToken(b.getApiToken());
-            badge.setName(b.getName());
-            badge.setUserId(b.getUserId());
-            badges.add(badge);
+            io.avalia.gamification.api.model.Badge Badge = new io.avalia.gamification.api.model.Badge();
+            Badge.setApiToken(b.getId().getApiToken());
+            Badge.setName(b.getId().getName());
+            Badges.add(Badge);
         }
 
-        for (RuleAwardsPointEntity p : entity.getAwards().getPoint()) {
-            io.avalia.gamification.api.model.RuleAwardsPoint RuleAwardsPoint = new RuleAwardsPoint();
-
-            PointScaleEntity pointScaleEntity = p.getPointScaleEntity();
-            io.avalia.gamification.api.model.PointScale pointScale = new io.avalia.gamification.api.model.PointScale();
-            pointScale.setApiToken(pointScaleEntity.getApiToken());
-            pointScale.setName(pointScaleEntity.getName());
-            pointScale.setUserId(pointScaleEntity.getUserId());
-            pointScale.setValue(pointScaleEntity.getValue());
-
-            RuleAwardsPoint.setPointScale(pointScale);
-            RuleAwardsPoint.setAmount(p.getValue());
-            points.add(RuleAwardsPoint);
+        for (PointScaleEntity p : entity.getAwards().getPoint()) {
+            io.avalia.gamification.api.model.PointScale pointScale = new PointScale();
+            pointScale.setApiToken(p.getId().getApiToken());
+            pointScale.setName(p.getId().getName());
+            points.add(pointScale);
         }
-        ra.setBadge(badges);
+        ra.setBadge(Badges);
         ra.setPoint(points);
+        ra.setAmountofPoint(entity.getAwards().getAmountofPoint());
         Rule.setAwards(ra);
 
         List<io.avalia.gamification.api.model.RuleProperties> properties = new ArrayList<>();

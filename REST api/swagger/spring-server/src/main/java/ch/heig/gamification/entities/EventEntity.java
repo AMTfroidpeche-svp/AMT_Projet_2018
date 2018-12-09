@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "EVENT")
 public class EventEntity implements Serializable {
 
-    private String appToken;
+    private String apiToken;
     private String userId;
     private String name;
 
@@ -26,11 +27,11 @@ public class EventEntity implements Serializable {
     }
 
     public String getAppToken() {
-        return appToken;
+        return apiToken;
     }
 
-    public void setAppToken(String appToken) {
-        this.appToken = appToken;
+    public void setAppToken(String apiToken) {
+        this.apiToken = apiToken;
     }
 
     public String getUserId() {

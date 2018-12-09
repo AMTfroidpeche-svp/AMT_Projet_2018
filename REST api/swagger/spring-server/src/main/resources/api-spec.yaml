@@ -8,6 +8,23 @@ basePath: /api
 schemes:
 - http
 paths:
+  /users:
+    get:
+      description: retrieve badge and pointscale of a user
+      operationId: getUser
+      consumes:
+      - application/json
+      parameters:
+      - name: AppInfos
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UserInfos'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/User'
   /events:
     post:
       description: generate an event
@@ -43,16 +60,16 @@ paths:
           schema:
             type: object
     get:
-      description: get the list of badges of a user or all available badges
+      description: get the list of badges of an application
       operationId: getBadges
       produces:
       - application/json
       parameters:
-      - name: infos
+      - name: AppInfos
         in: body
         required: true
         schema:
-          $ref: '#/definitions/Infos'
+          $ref: '#/definitions/AppInfos'
       responses:
         '200':
           description: success
@@ -78,16 +95,16 @@ paths:
           schema:
             type: object
     get:
-      description: get the pointScales of a user or all available pointScales
+      description: get the pointScales of an application
       operationId: getPointScales
       produces:
       - application/json
       parameters:
-      - name: infos
+      - name: AppInfos
         in: body
         required: true
         schema:
-          $ref: '#/definitions/Infos'
+          $ref: '#/definitions/AppInfos'
       responses:
         '200':
           description: success
@@ -118,11 +135,11 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: infos
+      - name: AppInfos
         in: body
         required: true
         schema:
-          $ref: '#/definitions/Infos'
+          $ref: '#/definitions/AppInfos'
       responses:
         '200':
           description: success
@@ -131,6 +148,26 @@ paths:
             items:
               $ref: '#/definitions/Rule'
 definitions:
+  User:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      name:
+        type: string
+      badges:
+        type: array
+        items:
+          $ref: '#/definitions/Badge'
+      pointScales:
+        type: array
+        items:
+          $ref: '#/definitions/PointScale'
+      userPointScale:
+        type: array
+        items:
+          $ref: '#/definitions/UserPointScale'
+
   Event:
     type: object
     properties:
@@ -164,8 +201,6 @@ definitions:
         type: string
       name:
         type: string
-      userId:
-        type: string
     required:
     - apiToken
     - name
@@ -177,10 +212,6 @@ definitions:
         type: string
       name:
         type: string
-      userId:
-        type: string
-      value:
-        type: integer
     required:
     - apiToken
     - name
@@ -205,12 +236,11 @@ definitions:
             type: array
             items:
               type: object
-              properties:
-                pointScale:
-                  type: object
-                  $ref: '#/definitions/PointScale'
-                amount:
-                  type: integer
+              $ref: '#/definitions/PointScale'
+          amountofPoint:
+            type: array
+            items:
+              type: integer
       properties:
         type: array
         items:
@@ -232,12 +262,31 @@ definitions:
     - properties
     - name
 
-  Infos:
+  AppInfos:
     type: object
     properties:
       apiToken:
         type: string
-      userId:
+    required:
+    - apiToken
+
+  UserInfos:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      name:
         type: string
     required:
     - apiToken
+    - userId
+
+  UserPointScale:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      userName:
+        type: string
+      pointScaleName:
+        type: string

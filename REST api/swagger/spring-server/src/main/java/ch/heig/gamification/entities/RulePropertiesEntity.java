@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "RULEPROPERTIES")
 public class RulePropertiesEntity implements Serializable {
 
     private String type = null;

@@ -2,15 +2,13 @@ package ch.heig.gamification.entities;
 
 import io.avalia.gamification.api.model.EventProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "EVENTPROPERTIES")
 public class EventPropertiesEntity implements Serializable {
 
     private String name;
