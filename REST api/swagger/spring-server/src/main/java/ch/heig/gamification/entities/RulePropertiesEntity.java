@@ -9,6 +9,8 @@ import java.util.List;
 @Table(name = "RULEPROPERTIES")
 public class RulePropertiesEntity implements Serializable {
 
+    private String name = null;
+
     private String type = null;
 
     private String compareOperator = null;
@@ -21,6 +23,14 @@ public class RulePropertiesEntity implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {

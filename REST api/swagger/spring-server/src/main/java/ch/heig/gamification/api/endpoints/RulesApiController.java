@@ -114,6 +114,7 @@ public class RulesApiController implements RulesApi {
 
         for (io.avalia.gamification.api.model.RuleProperties p : Rule.getProperties()) {
             RulePropertiesEntity propertiesEntity = new RulePropertiesEntity();
+            propertiesEntity.setName(p.getName());
             propertiesEntity.setType(p.getType());
             propertiesEntity.setCompareOperator(p.getCompareOperator());
             propertiesEntity.setValue(p.getValue());
@@ -155,6 +156,7 @@ public class RulesApiController implements RulesApi {
 
         for (RulePropertiesEntity p : entity.getProperties()) {
             io.avalia.gamification.api.model.RuleProperties Properties = new io.avalia.gamification.api.model.RuleProperties();
+            Properties.setName(p.getName());
             Properties.setType(p.getType());
             Properties.setCompareOperator(p.getCompareOperator());
             Properties.setValue(p.getValue());

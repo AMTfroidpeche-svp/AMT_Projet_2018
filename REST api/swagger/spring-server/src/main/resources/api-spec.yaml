@@ -166,7 +166,7 @@ definitions:
       userPointScale:
         type: array
         items:
-          $ref: '#/definitions/UserPointScale'
+          $ref: '#/definitions/LinkTableId'
 
   Event:
     type: object
@@ -246,6 +246,8 @@ definitions:
         items:
           type: object
           properties:
+            name:
+              type: string
             type:
               type: string
             compareOperator:
@@ -281,12 +283,12 @@ definitions:
     - apiToken
     - userId
 
-  UserPointScale:
+  LinkTableId:
     type: object
     properties:
       apiToken:
         type: string
-      userName:
+      table1Id:
         type: string
-      pointScaleName:
+      table2Id: 
         type: string
