@@ -71,6 +71,7 @@ public class UserEntity implements Serializable {
 
     public void addPointScale(PointScaleEntity p){
         this.pointScales.add(p);
+        this.userPointScaleEntities.add(new UserPointScaleEntity(new LinkTableId(id.getApiToken(), id.getName(), p.getId().getName())));
     }
 
     public void modifyPoint(PointScaleEntity p, int amount){

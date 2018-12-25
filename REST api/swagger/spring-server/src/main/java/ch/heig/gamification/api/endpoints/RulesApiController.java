@@ -110,10 +110,11 @@ public class RulesApiController implements RulesApi {
 
 
     private RuleEntity toRuleEntity(Rule Rule) {
-        RuleEntity entity = new RuleEntity(new CompositeId(Rule.getApiToken(), Rule.getName()));
+        RuleEntity entity = new RuleEntity(new CompositeId(Rule.getApiToken(), Rule.getRuleName()));
+        entity.setEventName(Rule.getEventName());
 
         RuleAwardsEntity rae = new RuleAwardsEntity();
-        rae.setId(new CompositeId(Rule.getApiToken(), Rule.getName()));
+        rae.setId(new CompositeId(Rule.getApiToken(), Rule.getRuleName()));
         List<RuleAwardsBadgesEntity> Badges = new ArrayList<>();
         List<RuleAwardsPointScaleEntity> points = new ArrayList<>();
 
@@ -141,7 +142,7 @@ public class RulesApiController implements RulesApi {
             propertiesEntity.setType(p.getType());
             propertiesEntity.setCompareOperator(p.getCompareOperator());
             propertiesEntity.setValue(p.getValue());
-            propertiesEntity.setId(new CompositeId(Rule.getApiToken(), "ruleProperty" + Rule.getName() + String.valueOf(i)));
+            propertiesEntity.setId(new CompositeId(Rule.getApiToken(), "ruleProperty" + Rule.getRuleName() + String.valueOf(i)));
             i++;
             properties.add(propertiesEntity);
         }
@@ -152,7 +153,8 @@ public class RulesApiController implements RulesApi {
     private Rule toRule(RuleEntity entity) {
         Rule Rule = new Rule();
         Rule.setApiToken(entity.getId().getApiToken());
-        Rule.setName(entity.getId().getName());
+        Rule.setRuleName(entity.getId().getName());
+        Rule.setEventName(entity.getEventName());
 
 
         io.avalia.gamification.api.model.RuleAwards ra = new io.avalia.gamification.api.model.RuleAwards();

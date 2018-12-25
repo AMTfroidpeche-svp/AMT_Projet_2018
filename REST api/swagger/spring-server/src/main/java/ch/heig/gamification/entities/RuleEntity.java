@@ -16,13 +16,7 @@ public class RuleEntity implements Serializable {
     @EmbeddedId
     private CompositeId id;
 
-    public CompositeId getId() {
-        return id;
-    }
-
-    public void setId(CompositeId id) {
-        this.id = id;
-    }
+    private String eventName;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private RuleAwardsEntity awards;
@@ -34,6 +28,22 @@ public class RuleEntity implements Serializable {
 
     public RuleEntity(CompositeId id){
         this.id = id;
+    }
+
+    public CompositeId getId() {
+        return id;
+    }
+
+    public void setId(CompositeId id) {
+        this.id = id;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     public void setAwards(RuleAwardsEntity awards) {

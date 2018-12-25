@@ -47,7 +47,7 @@ paths:
         '201':
           description: success
           schema:
-            type: object
+            type: string
   /badges:
     post:
       description: create a badge
@@ -364,7 +364,9 @@ definitions:
     properties:
       apiToken:
         type: string
-      name:
+      ruleName:
+        type: string
+      eventName:
         type: string
       awards:
         type: object
