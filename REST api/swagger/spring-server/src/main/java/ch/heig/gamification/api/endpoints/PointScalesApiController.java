@@ -71,7 +71,13 @@ public class PointScalesApiController implements PointScalesApi {
                 UserEntity u = app.getUsers().get(i);
                 int index;
                 if((index = u.getPointScales().indexOf(pointScaleEntity)) != -1){
-                    u.getBadges().remove(index);
+                    u.getPointScales().remove(index);
+                }
+                for(int j = 0; j < u.getUserPointScaleEntities().size(); j++){
+                    if (u.getUserPointScaleEntities().get(j).getUserPointScaleId().gettable2Id().equals(pointScale.getName())){
+                        u.getUserPointScaleEntities().remove(j);
+                        j--;
+                    }
                 }
                 if((index = u.getUserPointScaleEntities().indexOf(new LinkTableId(pointScale.getApiToken(), u.getId().getName(), pointScale.getName()))) != -1){
                     u.getUserPointScaleEntities().remove(index);
@@ -91,8 +97,15 @@ public class PointScalesApiController implements PointScalesApi {
                         j--;
                     }
                 }
-                //if the rule become empty, we removed it
+                //if the rule become empty, we removed it and all event count link to it
                 if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
+                    for(UserEntity userEntity : app.getUsers()){
+                        for(int k = 0; k < userEntity.getUserGenericEventCountEntities().size(); k++){
+                            if(userEntity.getUserGenericEventCountEntities().get(k).getId().gettable2Id().equals(app.getRules().get(i).getEventName())){
+                                userEntity.getUserGenericEventCountEntities().remove(k);
+                            }
+                        }
+                    }
                     app.getRules().remove(i);
                     i--;
                 }

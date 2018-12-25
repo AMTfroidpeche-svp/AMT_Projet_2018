@@ -31,6 +31,10 @@ public class RulesApiController implements RulesApi {
 
     public ResponseEntity<Object> createRule(@ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
         RuleEntity newRuleEntity = toRuleEntity(Rule);
+        //we can't have a different number of point and point scales
+        if(newRuleEntity.getAwards().getAmountofPoint().size() != newRuleEntity.getAwards().getruleAwardsPointScaleId().size()){
+            return ResponseEntity.badRequest().build();
+        }
         ApplicationEntity app = applicationRepository.findByApiToken(Rule.getApiToken());
         if (app == null) {
             app = new ApplicationEntity(Rule.getApiToken());
@@ -89,8 +93,12 @@ public class RulesApiController implements RulesApi {
     @Override
     public ResponseEntity<Rule> updateRule(io.avalia.gamification.api.model.UpdateRule updateRule) {
         RuleEntity oldRule = new RuleEntity();
-        oldRule.setId(new CompositeId(updateRule.getNewRule().getApiToken(), updateRule.getOldName()));
         RuleEntity newRule = toRuleEntity(updateRule.getNewRule());
+        //we can't have a different number of point and point scales
+        if(newRule.getAwards().getAmountofPoint().size() != newRule.getAwards().getruleAwardsPointScaleId().size()){
+            return ResponseEntity.badRequest().build();
+        }
+        oldRule.setId(new CompositeId(updateRule.getNewRule().getApiToken(), updateRule.getOldName()));
         ApplicationEntity app = applicationRepository.findByApiToken(newRule.getId().getApiToken());
         if (app == null) {
             return ResponseEntity.notFound().build();

@@ -25,6 +25,10 @@ public class PointScaleEntity implements Serializable {
         this.id = id;
     }
 
+    public PointScaleEntity(String apiToken, String pointScaleName){
+        this(new CompositeId(apiToken, pointScaleName));
+    }
+
     @Override
     public boolean equals(Object obj) {
         return id.equals(((PointScaleEntity) obj).getId());

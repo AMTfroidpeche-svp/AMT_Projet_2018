@@ -12,7 +12,7 @@ paths:
     get:
       description: retrieve badge and pointscale of a user
       operationId: getUser
-      consumes:
+      produces:
       - application/json
       parameters:
       - name: AppInfos
@@ -286,7 +286,11 @@ definitions:
       userPointScale:
         type: array
         items:
-          $ref: '#/definitions/LinkTableId'
+          $ref: '#/definitions/UserPointScale'
+      userEventCount:
+        type: array
+        items:
+            $ref: '#/definitions/UserEventCount'
 
   Event:
     type: object
@@ -456,3 +460,25 @@ definitions:
         type: string
       table2Id:
         type: string
+
+
+  UserPointScale:
+    type: object
+    properties:
+      linkTableId:
+        type: object
+        schema:
+          $ref: '#/definitions/LinkTableId'
+      value:
+        type: integer
+
+
+  UserEventCount:
+    type: object
+    properties:
+      linkTableId:
+        type: object
+        schema:
+          $ref: '#/definitions/LinkTableId'
+      value:
+        type: integer

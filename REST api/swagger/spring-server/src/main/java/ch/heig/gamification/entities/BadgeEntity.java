@@ -26,6 +26,10 @@ public class BadgeEntity implements Serializable {
         this.id = id;
     }
 
+    public BadgeEntity(String apiToken, String badgeName){
+        this(new CompositeId(apiToken, badgeName));
+    }
+
     @Override
     public boolean equals(Object obj) {
         return id.equals(((BadgeEntity) obj).getId());

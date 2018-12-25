@@ -1,14 +1,9 @@
 package ch.heig.gamification.entities;
 
-import io.avalia.gamification.api.model.RuleAwards;
-import io.avalia.gamification.api.model.RuleProperties;
-import org.springframework.data.util.Pair;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name="USER")
@@ -17,14 +12,17 @@ public class UserEntity implements Serializable {
     @EmbeddedId
     private CompositeId id;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<BadgeEntity> badges = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<PointScaleEntity> pointScales = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<UserPointScaleEntity> userPointScaleEntities = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<UserGenericEventCountEntity> userGenericEventCountEntities = new ArrayList<>();
 
     public UserEntity() {
     }
@@ -65,6 +63,14 @@ public class UserEntity implements Serializable {
         this.userPointScaleEntities = userPointScaleEntities;
     }
 
+    public List<UserGenericEventCountEntity> getUserGenericEventCountEntities() {
+        return userGenericEventCountEntities;
+    }
+
+    public void setUserGenericEventCountEntities(List<UserGenericEventCountEntity> userGenericEventCountEntities) {
+        this.userGenericEventCountEntities = userGenericEventCountEntities;
+    }
+
     public void addBadge(BadgeEntity b){
         this.badges.add(b);
     }
@@ -72,6 +78,10 @@ public class UserEntity implements Serializable {
     public void addPointScale(PointScaleEntity p){
         this.pointScales.add(p);
         this.userPointScaleEntities.add(new UserPointScaleEntity(new LinkTableId(id.getApiToken(), id.getName(), p.getId().getName())));
+    }
+
+    public void addEventCount(UserGenericEventCountEntity event){
+        this.userGenericEventCountEntities.add(event);
     }
 
     public void modifyPoint(PointScaleEntity p, int amount){
