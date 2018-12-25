@@ -2,9 +2,6 @@ package ch.heig.gamification.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name="USERPOINTSCALE")

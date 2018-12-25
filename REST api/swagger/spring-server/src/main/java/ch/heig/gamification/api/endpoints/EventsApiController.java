@@ -3,7 +3,6 @@ package ch.heig.gamification.api.endpoints;
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.repositories.UserGenericEventCountRepository;
-import ch.heig.gamification.repositories.UserRepository;
 import io.avalia.gamification.api.EventsApi;
 import io.avalia.gamification.api.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ public class EventsApiController implements EventsApi {
 
     @Autowired
     ApplicationRepository applicationRepository;
-
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     UserGenericEventCountRepository userGenericEventCountEntity;
@@ -106,7 +102,7 @@ public class EventsApiController implements EventsApi {
             addToEventCount(r.getEventName(), userConcerned);
             //check if the properties are valid, if yes, we give the award to the user
             try {
-                if(propertyOk(r.getProperties(), eventEntity.getProperties(), userConcerned)){
+                if(propertyOk(r, eventEntity.getProperties(), userConcerned)){
                     elementAwarded.append(addAwardsToUser(r.getAwards(), userConcerned));
                 }
                 applicationRepository.save(app);
@@ -118,17 +114,23 @@ public class EventsApiController implements EventsApi {
         return ResponseEntity.ok(elementAwarded.toString());
     }
 
-    private boolean propertyOk(List<RulePropertiesEntity> rulePropertiesEntities, List<EventPropertiesEntity> eventPropertiesEntities, UserEntity userConcerned) throws ScriptException {
+    private boolean propertyOk(RuleEntity ruleEntity, List<EventPropertiesEntity> eventPropertiesEntities, UserEntity userConcerned) throws ScriptException {
         //for each property in the rule, we find the corresponding property in the event
-        for(RulePropertiesEntity rulePropertiesEntity : rulePropertiesEntities){
+        for(RulePropertiesEntity rulePropertiesEntity : ruleEntity.getProperties()){
             boolean validated = false;
             for(EventPropertiesEntity eventPropertiesEntity : eventPropertiesEntities){
                 if(rulePropertiesEntity.getPropertyName().equals(eventPropertiesEntity.getName())){
                     ScriptEngineManager mgr = new ScriptEngineManager();
                     ScriptEngine engine = mgr.getEngineByName("JavaScript");
                     if(rulePropertiesEntity.getType().equals("amount")){
-                        LinkTableId eventId = new LinkTableId(userConcerned.getId().getApiToken(), userConcerned.getId().getName(), eventPropertiesEntity.getName());
-                        UserGenericEventCountEntity eventCount = userGenericEventCountEntity.findById(eventId);
+                        LinkTableId eventId = new LinkTableId(userConcerned.getId().getApiToken(), userConcerned.getId().getName(), ruleEntity.getEventName());
+                        UserGenericEventCountEntity eventCount = null;
+                        for(UserGenericEventCountEntity eventCountEntity : userConcerned.getUserGenericEventCountEntities()){
+                            if(eventCountEntity.getId().equals(eventId)){
+                                eventCount = eventCountEntity;
+                                break;
+                            }
+                        }
                         int value = eventCount.getValue();
                         String expression = String.valueOf(value) + rulePropertiesEntity.getCompareOperator() + rulePropertiesEntity.getValue();
                         if(!((boolean)engine.eval(expression))){

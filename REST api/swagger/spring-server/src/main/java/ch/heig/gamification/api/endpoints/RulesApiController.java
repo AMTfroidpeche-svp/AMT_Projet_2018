@@ -32,7 +32,7 @@ public class RulesApiController implements RulesApi {
     public ResponseEntity<Object> createRule(@ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
         RuleEntity newRuleEntity = toRuleEntity(Rule);
         //we can't have a different number of point and point scales
-        if(newRuleEntity.getAwards().getAmountofPoint().size() != newRuleEntity.getAwards().getruleAwardsPointScaleId().size()){
+        if(newRuleEntity.getAwards().getAmountofPoint() != null && newRuleEntity.getAwards().getAmountofPoint().size() != newRuleEntity.getAwards().getruleAwardsPointScaleId().size()){
             return ResponseEntity.badRequest().build();
         }
         ApplicationEntity app = applicationRepository.findByApiToken(Rule.getApiToken());
@@ -206,23 +206,27 @@ public class RulesApiController implements RulesApi {
     private void addDependenciesForRule(ApplicationEntity app, RuleEntity r){
         //check if the badges awarded by the rule exits, if they don't create them
         List<RuleAwardsBadgesEntity> badges = r.getAwards().getRuleAwardsBadgesId();
-        for (int i = 0; i < badges.size(); i++) {
-            BadgeEntity be = new BadgeEntity(new CompositeId(badges.get(i).getRuleBadgesId().getApiToken(), badges.get(i).getRuleBadgesId().gettable2Id()));
-            if (app.getBadges().indexOf(be) == -1) {
-                app.addBadge(be);
+        if(badges != null) {
+            for (int i = 0; i < badges.size(); i++) {
+                BadgeEntity be = new BadgeEntity(new CompositeId(badges.get(i).getRuleBadgesId().getApiToken(), badges.get(i).getRuleBadgesId().gettable2Id()));
+                if (app.getBadges().indexOf(be) == -1) {
+                    app.addBadge(be);
+                }
             }
         }
 
         //check if the PointScales concerned by the rule exist, of they don't create them
         List<RuleAwardsPointScaleEntity> pointScales = r.getAwards().getruleAwardsPointScaleId();
         List<UserEntity> users = userRepository.findByIdApiToken(r.getId().getApiToken());
-        for (int i = 0; i < pointScales.size(); i++) {
-            PointScaleEntity pse = new PointScaleEntity(new CompositeId(pointScales.get(i).getRulePointScaleId().getApiToken(), pointScales.get(i).getRulePointScaleId().gettable2Id()));
-            //if the pointScale doesn't exist, we have to add it and to instantiate it for each user of the app
-            if (app.getPointScales().indexOf(pse) == -1) {
-                app.addPointScale(pse);
-                for (UserEntity u : users) {
-                    u.addPointScale(pse);
+        if(pointScales != null) {
+            for (int i = 0; i < pointScales.size(); i++) {
+                PointScaleEntity pse = new PointScaleEntity(new CompositeId(pointScales.get(i).getRulePointScaleId().getApiToken(), pointScales.get(i).getRulePointScaleId().gettable2Id()));
+                //if the pointScale doesn't exist, we have to add it and to instantiate it for each user of the app
+                if (app.getPointScales().indexOf(pse) == -1) {
+                    app.addPointScale(pse);
+                    for (UserEntity u : users) {
+                        u.addPointScale(pse);
+                    }
                 }
             }
         }

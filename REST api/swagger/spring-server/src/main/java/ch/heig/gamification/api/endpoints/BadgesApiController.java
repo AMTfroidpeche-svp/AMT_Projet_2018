@@ -77,6 +77,13 @@ public class BadgesApiController implements BadgesApi {
                 }
                 //if the rule become empty, we removed it
                 if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
+                    for(UserEntity userEntity : app.getUsers()){
+                        for(int k = 0; k < userEntity.getUserGenericEventCountEntities().size(); k++){
+                            if(userEntity.getUserGenericEventCountEntities().get(k).getId().gettable2Id().equals(app.getRules().get(i).getEventName())){
+                                userEntity.getUserGenericEventCountEntities().remove(k);
+                            }
+                        }
+                    }
                     app.getRules().remove(i);
                     i--;
                 }

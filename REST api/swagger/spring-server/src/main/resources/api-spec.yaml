@@ -295,6 +295,11 @@ definitions:
   Event:
     type: object
     properties:
+      timestamp:
+        description: 'date of the event'
+        example: 2018-12-25T24:00
+        format: date-time
+        type: string
       apiToken:
         type: string
       userId:
