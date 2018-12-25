@@ -25,6 +25,12 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/User'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
   /events:
     post:
       description: generate an event
@@ -77,6 +83,44 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Badge'
+    put:
+      description: update a badge
+      operationId: updateBadge
+      consumes:
+      - application/json
+      parameters:
+      - name: Updatebadge
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateBadge'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+    delete:
+      description: delete a badge
+      operationId: deleteBadge
+      produces:
+      - application/json
+      parameters:
+      - name: badge
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Badge'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/Badge'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
   /PointScales:
     post:
       description: create a pointScale
@@ -112,6 +156,44 @@ paths:
             type: array
             items:
               $ref: '#/definitions/PointScale'
+    put:
+      description: update a pointScale
+      operationId: updatePointScale
+      consumes:
+      - application/json
+      parameters:
+      - name: updatePointScale
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UpdatePointScale'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+    delete:
+      description: delete a pointScale
+      operationId: deletePointScale
+      produces:
+      - application/json
+      parameters:
+      - name: pointScale
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/PointScale'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/PointScale'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
   /rules:
     post:
       description: create a rule
@@ -147,6 +229,44 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Rule'
+    put:
+      description: update a rule
+      operationId: updateRule
+      consumes:
+      - application/json
+      parameters:
+      - name: updateRule
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateRule'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+    delete:
+      description: delete a rule
+      operationId: deleteRule
+      produces:
+      - application/json
+      parameters:
+      - name: rule
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/RuleInfos'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/RuleInfos'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
 definitions:
   User:
     type: object
@@ -205,6 +325,17 @@ definitions:
     - apiToken
     - name
 
+  UpdateBadge:
+    type: object
+    properties:
+      newBadge:
+        $ref: '#/definitions/Badge'
+      oldName:
+        type: string
+    required:
+    - newBadge
+    - oldName
+
   PointScale:
     type: object
     properties:
@@ -216,6 +347,17 @@ definitions:
     - apiToken
     - name
     - value
+
+  UpdatePointScale:
+    type: object
+    properties:
+      newPointScale:
+        $ref: '#/definitions/PointScale'
+      oldName:
+        type: string
+    required:
+    - newPointScale
+    - oldName
 
   Rule:
     type: object
@@ -230,13 +372,11 @@ definitions:
           badge:
             type: array
             items:
-              type: object
-              $ref: '#/definitions/Badge'
+              type: string
           point:
             type: array
             items:
-              type: object
-              $ref: '#/definitions/PointScale'
+              type: string
           amountofPoint:
             type: array
             items:
@@ -264,6 +404,17 @@ definitions:
     - properties
     - name
 
+  UpdateRule:
+    type: object
+    properties:
+      newRule:
+        $ref: '#/definitions/Rule'
+      oldName:
+        type: string
+    required:
+    - newRule
+    - oldName
+
   AppInfos:
     type: object
     properties:
@@ -283,6 +434,17 @@ definitions:
     - apiToken
     - userId
 
+  RuleInfos:
+    type: object
+    properties:
+      apiToken:
+        type: string
+      name:
+        type: string
+    required:
+    - apiToken
+    - rulename
+
   LinkTableId:
     type: object
     properties:
@@ -290,5 +452,5 @@ definitions:
         type: string
       table1Id:
         type: string
-      table2Id: 
+      table2Id:
         type: string

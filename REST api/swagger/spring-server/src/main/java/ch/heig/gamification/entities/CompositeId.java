@@ -11,9 +11,6 @@ public class CompositeId implements Serializable {
     private String apiToken = null;
     private String name = null;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     public CompositeId(){}
 
     public CompositeId(String apiToken, String name){
@@ -21,8 +18,9 @@ public class CompositeId implements Serializable {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public CompositeId(CompositeId c){
+        this.apiToken = c.getApiToken();
+        this.name = c.getName();
     }
 
     public String getApiToken() {

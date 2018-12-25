@@ -2,6 +2,7 @@ package ch.heig.gamification.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name="POINTSCALE")
@@ -22,6 +23,16 @@ public class PointScaleEntity implements Serializable {
 
     public PointScaleEntity(CompositeId id){
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return id.equals(((PointScaleEntity) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
 }

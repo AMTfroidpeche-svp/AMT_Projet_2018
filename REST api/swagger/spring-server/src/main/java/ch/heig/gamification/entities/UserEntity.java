@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="USER")
@@ -16,13 +17,13 @@ public class UserEntity implements Serializable {
     @EmbeddedId
     private CompositeId id;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     private List<BadgeEntity> badges = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     private List<PointScaleEntity> pointScales = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany
     private List<UserPointScaleEntity> userPointScaleEntities = new ArrayList<>();
 
     public UserEntity() {
@@ -75,11 +76,21 @@ public class UserEntity implements Serializable {
     public void modifyPoint(PointScaleEntity p, int amount){
         for(int i = 0; i < userPointScaleEntities.size(); i++){
             if(userPointScaleEntities.get(i).getUserPointScaleId().getApiToken().equals(p.getId().getApiToken()) &&
-                    userPointScaleEntities.get(i).getUserPointScaleId().getPointScaleName().equals(p.getId().getName())){
+                    userPointScaleEntities.get(i).getUserPointScaleId().gettable1Id().equals(p.getId().getName())){
                 userPointScaleEntities.get(i).setValue(userPointScaleEntities.get(i).getValue() + amount);
                 return;
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return id.equals(((UserEntity) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
 }

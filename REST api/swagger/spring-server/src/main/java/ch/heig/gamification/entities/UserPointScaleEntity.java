@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="USERPOINTSCALE")
@@ -16,14 +17,15 @@ public class UserPointScaleEntity implements Serializable {
     @AttributeOverrides({
             @AttributeOverride(name="id",column=@Column(name="pointScaleId")),
     })
-    private UserPointScaleId userPointScaleId;
+    //table1ID is userName, table2ID is the pointScaleID
+    private LinkTableId userPointScaleId;
 
     private int value;
 
     public UserPointScaleEntity() {
     }
 
-    public UserPointScaleEntity(UserPointScaleId userPointScaleId){
+    public UserPointScaleEntity(LinkTableId userPointScaleId){
         this.userPointScaleId = userPointScaleId;
     }
 
@@ -31,11 +33,11 @@ public class UserPointScaleEntity implements Serializable {
         return id;
     }
 
-    public UserPointScaleId getUserPointScaleId() {
+    public LinkTableId getUserPointScaleId() {
         return userPointScaleId;
     }
 
-    public void setUserPointScaleId(UserPointScaleId userPointScaleId) {
+    public void setUserPointScaleId(LinkTableId userPointScaleId) {
         this.userPointScaleId = userPointScaleId;
     }
 
@@ -47,4 +49,9 @@ public class UserPointScaleEntity implements Serializable {
         this.value = value;
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        return id == (((UserPointScaleEntity) obj).getId());
+    }
 }

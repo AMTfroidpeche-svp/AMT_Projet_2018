@@ -4,41 +4,55 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "RULEAWARDS")
 public class RuleAwardsEntity implements Serializable {
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<BadgeEntity> badge = new ArrayList<BadgeEntity>();
 
     @OneToMany(cascade = {CascadeType.ALL})
-    private List<PointScaleEntity> point = new ArrayList<>();
+    @AttributeOverrides({
+            @AttributeOverride(name="id",column=@Column(name="ruleId")),
+    })
+    //table1ID is userName, table2ID is the badgeID
+    private List<RuleAwardsBadgesEntity> ruleAwardsBadgesId;
+
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    @AttributeOverrides({
+            @AttributeOverride(name="id",column=@Column(name="pointScaleId")),
+    })
+    //table1ID is userName, table2ID is the pointScaleID
+    private List<RuleAwardsPointScaleEntity> ruleAwardsPointScaleId;
 
     private String amountofPoint;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @EmbeddedId
+    private CompositeId id;
 
-    public long getId() {
+    public CompositeId getId() {
         return id;
     }
 
-    public List<BadgeEntity> getBadge() {
-        return badge;
+    public void setId(CompositeId id) {
+        this.id = id;
     }
 
-    public void setBadge(List<BadgeEntity> badge) {
-        this.badge = badge;
+    public void setRuleAwardsBadgesId(List<RuleAwardsBadgesEntity> ruleAwardsBadgesId) {
+        this.ruleAwardsBadgesId = ruleAwardsBadgesId;
     }
 
-    public List<PointScaleEntity> getPoint() {
-        return point;
+    public List<RuleAwardsBadgesEntity> getRuleAwardsBadgesId() {
+        return ruleAwardsBadgesId;
     }
 
-    public void setPoint(List<PointScaleEntity> point) {
-        this.point = point;
+    public void setruleAwardsPointScaleId(List<RuleAwardsPointScaleEntity> ruleAwardsPointScaleId) {
+        this.ruleAwardsPointScaleId = ruleAwardsPointScaleId;
+    }
+
+    public List<RuleAwardsPointScaleEntity> getruleAwardsPointScaleId() {
+        return ruleAwardsPointScaleId;
     }
 
     public List<Integer> getAmountofPoint() {
@@ -57,4 +71,13 @@ public class RuleAwardsEntity implements Serializable {
         }
         this.amountofPoint = sb.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {return id.equals(((RuleAwardsEntity) obj).getId());}
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
 }

@@ -11,19 +11,12 @@ public class LinkTableId implements Serializable {
     private String table1Id = null;
     private String table2Id = null;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     public LinkTableId(){}
 
     public LinkTableId(String apiToken, String table1Id, String table2Id){
         this.apiToken = apiToken;
         this.table1Id = table1Id;
         this.table2Id = table2Id;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getApiToken() {

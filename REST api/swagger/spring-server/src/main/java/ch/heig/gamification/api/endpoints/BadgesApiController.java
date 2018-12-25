@@ -1,14 +1,11 @@
 package ch.heig.gamification.api.endpoints;
 
-import ch.heig.gamification.entities.ApplicationEntity;
-import ch.heig.gamification.entities.BadgeEntity;
-import ch.heig.gamification.entities.CompositeId;
+import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
-import ch.heig.gamification.repositories.BadgeRepository;
-import ch.heig.gamification.repositories.UserRepository;
 import io.avalia.gamification.api.BadgesApi;
 import io.avalia.gamification.api.model.Badge;
 import io.avalia.gamification.api.model.AppInfos;
+import io.avalia.gamification.api.model.UpdateBadge;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +29,12 @@ public class BadgesApiController implements BadgesApi {
     public ResponseEntity<Object> createBadge(@ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
         BadgeEntity newBadgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badge.getApiToken());
-        if(app == null){
+        if (app == null) {
             app = new ApplicationEntity(badge.getApiToken());
-        }
-        else{
+        } else {
             List<BadgeEntity> badges = app.getBadges();
-            for (int i = 0; i < badges.size(); i++){
-                if(badges.get(i).getId().equals(newBadgeEntity.getId())){
+            for (int i = 0; i < badges.size(); i++) {
+                if (badges.get(i).getId().equals(newBadgeEntity.getId())) {
                     return ResponseEntity.status(304).build();
                 }
             }
@@ -54,9 +50,53 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
+    public ResponseEntity<Badge> deleteBadge(Badge badge) {
+        BadgeEntity badgeEntity = toBadgeEntity(badge);
+        ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getId().getApiToken());
+        if (app == null || app.getBadges().indexOf(badgeEntity) == -1) {
+            return ResponseEntity.notFound().build();
+        } else {
+            //for each user remove the badge
+            for(int i = 0; i < app.getUsers().size(); i++){
+                UserEntity u = app.getUsers().get(i);
+                int index;
+                if((index = u.getBadges().indexOf(badgeEntity)) != -1){
+                    u.getBadges().remove(index);
+                    i--;
+                }
+            }
+            //for each rules remove the badge
+            int indexBadge = 0;
+            for(int i = 0; i < app.getRules().size(); i++){
+                RuleEntity r = app.getRules().get(i);
+                LinkTableId linkTableId = new LinkTableId(r.getId().getApiToken(), r.getId().getName(), badgeEntity.getId().getName());
+                for(int j = 0; j < r.getAwards().getRuleAwardsBadgesId().size(); j++) {
+                    if (r.getAwards().getRuleAwardsBadgesId().get(j).getRuleBadgesId().equals(linkTableId)) {
+                        r.getAwards().getRuleAwardsBadgesId().remove(indexBadge);
+                        //if the rule become empty, we removed it
+                        if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
+                            app.getRules().remove(i);
+                            i--;
+                        }
+                    }
+                }
+            }
+            //remove the badge from the app
+            for(int i = 0; i < app.getBadges().size(); i++){
+                if((indexBadge = app.getBadges().indexOf(badgeEntity)) != -1){
+                    app.getBadges().remove(indexBadge);
+                    i--;
+                }
+            }
+            applicationRepository.save(app);
+            return ResponseEntity.ok(badge);
+        }
+    }
+
+    @Override
     public ResponseEntity<List<Badge>> getBadges(AppInfos infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
-        if(app == null){
+        if (app == null) {
             return ResponseEntity.notFound().build();
         }
         List<BadgeEntity> badgeEntities = app.getBadges();
@@ -65,6 +105,11 @@ public class BadgesApiController implements BadgesApi {
             badges.add(toBadge(badgeEntity));
         }
         return ResponseEntity.ok(badges);
+    }
+
+    @Override
+    public ResponseEntity<Object> updateBadge(UpdateBadge updatebadge) {
+        return null;
     }
 
     private BadgeEntity toBadgeEntity(Badge badge) {

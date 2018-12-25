@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface UserPointScaleRepository extends CrudRepository<UserPointScaleEntity, Long>{
 
-    public UserPointScaleEntity findUserPointScaleEntitiesByUserPointScaleId(UserPointScaleId id);
+    public UserPointScaleEntity findUserPointScaleEntitiesByUserPointScaleId(LinkTableId id);
 
 }

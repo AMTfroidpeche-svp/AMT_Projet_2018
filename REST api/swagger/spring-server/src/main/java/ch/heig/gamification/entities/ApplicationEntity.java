@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="APPLICATION")
@@ -14,16 +15,16 @@ public class ApplicationEntity implements Serializable {
     @Id
     private String apiToken;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<BadgeEntity> badges = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<PointScaleEntity> pointScales = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<RuleEntity> rules = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<UserEntity> users = new ArrayList<>();
 
     public ApplicationEntity(){}
@@ -86,5 +87,13 @@ public class ApplicationEntity implements Serializable {
 
     public void addUser(UserEntity u){
         users.add(u);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ApplicationEntity)) return false;
+        ApplicationEntity that = (ApplicationEntity) o;
+        return Objects.equals(getId(), that.getId());
     }
 }

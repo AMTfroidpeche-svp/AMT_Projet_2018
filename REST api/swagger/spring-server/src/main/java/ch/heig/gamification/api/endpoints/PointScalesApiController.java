@@ -7,7 +7,7 @@ import ch.heig.gamification.repositories.UserRepository;
 import io.avalia.gamification.api.PointScalesApi;
 import io.avalia.gamification.api.model.PointScale;
 import io.avalia.gamification.api.model.AppInfos;
-import ch.heig.gamification.repositories.PointScaleRepository;
+import io.avalia.gamification.api.model.UpdatePointScale;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +60,51 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
+    public ResponseEntity<PointScale> deletePointScale(PointScale pointScale) {
+        PointScaleEntity pointScaleEntity = toPointScaleEntity(pointScale);
+        ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getId().getApiToken());
+        if (app == null || app.getPointScales().indexOf(pointScaleEntity) == -1) {
+            return ResponseEntity.notFound().build();
+        } else {
+            //for each user remove the badge
+            for(int i = 0; i < app.getUsers().size(); i++){
+                UserEntity u = app.getUsers().get(i);
+                int index;
+                if((index = u.getPointScales().indexOf(pointScaleEntity)) != -1){
+                    u.getBadges().remove(index);
+                    u.getUserPointScaleEntities().remove(index);
+                    i--;
+                }
+            }
+            //for each rules remove the badge
+            int indexPointScale = 0;
+            for(int i = 0; i < app.getRules().size(); i++){
+                RuleEntity r = app.getRules().get(i);
+                LinkTableId linkTableId = new LinkTableId(r.getId().getApiToken(), r.getId().getName(), pointScaleEntity.getId().getName());
+                for(int j = 0; j < r.getAwards().getruleAwardsPointScaleId().size(); j++) {
+                    if (r.getAwards().getruleAwardsPointScaleId().get(j).getRulePointScaleId().equals(linkTableId)) {
+                        r.getAwards().getruleAwardsPointScaleId().remove(indexPointScale);
+                        //if the rule become empty, we removed it
+                        if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
+                            app.getRules().remove(i);
+                            i--;
+                        }
+                    }
+                }
+            }
+            //remove the badge from the app
+            for(int i = 0; i < app.getPointScales().size(); i++){
+                if((indexPointScale = app.getPointScales().indexOf(pointScaleEntity)) != -1){
+                    app.getPointScales().remove(indexPointScale);
+                    i--;
+                }
+            }
+            applicationRepository.save(app);
+            return ResponseEntity.ok(pointScale);
+        }
+    }
+
+    @Override
     public ResponseEntity<List<PointScale>> getPointScales(AppInfos infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
         if(app == null){
@@ -71,6 +116,11 @@ public class PointScalesApiController implements PointScalesApi {
             PointScales.add(toPointScale(PointScaleEntity));
         }
         return ResponseEntity.ok(PointScales);
+    }
+
+    @Override
+    public ResponseEntity<Object> updatePointScale(UpdatePointScale updatePointScale) {
+        return null;
     }
 
     private PointScaleEntity toPointScaleEntity(PointScale PointScale) {

@@ -4,12 +4,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "RULEPROPERTIES")
 public class RulePropertiesEntity implements Serializable {
 
-    private String name = null;
+    private String propertyName = null;
 
     private String type = null;
 
@@ -17,20 +18,23 @@ public class RulePropertiesEntity implements Serializable {
 
     private Integer value = null;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @EmbeddedId
+    private CompositeId id;
 
-    public long getId() {
+    public CompositeId getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(CompositeId id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 
     public String getType() {
@@ -56,4 +60,16 @@ public class RulePropertiesEntity implements Serializable {
     public void setValue(Integer value) {
         this.value = value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return id.equals(((RulePropertiesEntity) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+
 }
