@@ -57,6 +57,9 @@ public class RuleAwardsEntity implements Serializable {
 
     public List<Integer> getAmountofPoint() {
         String[] stringInteger = amountofPoint.split(",");
+        if(stringInteger[0].equals("")){
+            return null;
+        }
         List<Integer> ret = new ArrayList<>();
         for(int i = 0; i < stringInteger.length; i++){
             ret.add(Integer.parseInt(stringInteger[i]));
@@ -65,6 +68,10 @@ public class RuleAwardsEntity implements Serializable {
     }
 
     public void setAmountofPoint(List<Integer> amountofPoint) {
+        if(amountofPoint == null){
+            this.amountofPoint = "";
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         for (int i : amountofPoint) {
             sb.append(i).append(",");

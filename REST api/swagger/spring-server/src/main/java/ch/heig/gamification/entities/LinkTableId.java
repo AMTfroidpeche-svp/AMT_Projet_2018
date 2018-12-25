@@ -29,6 +29,18 @@ public class LinkTableId implements Serializable {
 
     public String gettable2Id() {return table2Id;}
 
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
+
+    public void setTable1Id(String table1Id) {
+        this.table1Id = table1Id;
+    }
+
+    public void setTable2Id(String table2Id) {
+        this.table2Id = table2Id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

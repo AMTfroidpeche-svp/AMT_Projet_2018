@@ -73,12 +73,12 @@ public class BadgesApiController implements BadgesApi {
                 for(int j = 0; j < r.getAwards().getRuleAwardsBadgesId().size(); j++) {
                     if (r.getAwards().getRuleAwardsBadgesId().get(j).getRuleBadgesId().equals(linkTableId)) {
                         r.getAwards().getRuleAwardsBadgesId().remove(indexBadge);
-                        //if the rule become empty, we removed it
-                        if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
-                            app.getRules().remove(i);
-                            i--;
-                        }
                     }
+                }
+                //if the rule become empty, we removed it
+                if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
+                    app.getRules().remove(i);
+                    i--;
                 }
             }
             //remove the badge from the app
@@ -108,8 +108,38 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
-    public ResponseEntity<Object> updateBadge(UpdateBadge updatebadge) {
-        return null;
+    public ResponseEntity<Badge> updateBadge(UpdateBadge updatebadge) {
+        BadgeEntity oldBadge = new BadgeEntity();
+        oldBadge.setId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));
+        BadgeEntity newBadge = toBadgeEntity(updatebadge.getNewBadge());
+        ApplicationEntity app = applicationRepository.findByApiToken(newBadge.getId().getApiToken());
+        if(app == null){
+            return ResponseEntity.notFound().build();
+        }
+        else{
+            int index;
+            if((index = app.getBadges().indexOf(oldBadge)) != -1){
+                app.getBadges().set(index, newBadge);
+                for(RuleEntity r : app.getRules()){
+                    for(RuleAwardsBadgesEntity b : r.getAwards().getRuleAwardsBadgesId()){
+                        if(b.getRuleBadgesId().gettable2Id().equals(oldBadge.getId().getName())) {
+                            b.setRuleBadgesId(new LinkTableId(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable1Id(), newBadge.getId().getName()));
+                        }
+                    }
+                }
+
+                for (UserEntity u : app.getUsers()){
+                    for (BadgeEntity b : u.getBadges()){
+                        if(b.getId().getName().equals(oldBadge.getId().getName())){
+                            b.setId(newBadge.getId());
+                        }
+                    }
+                }
+                applicationRepository.save(app);
+                return ResponseEntity.ok(toBadge(newBadge));
+            }
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private BadgeEntity toBadgeEntity(Badge badge) {

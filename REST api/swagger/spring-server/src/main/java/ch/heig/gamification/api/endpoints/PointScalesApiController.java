@@ -72,8 +72,9 @@ public class PointScalesApiController implements PointScalesApi {
                 int index;
                 if((index = u.getPointScales().indexOf(pointScaleEntity)) != -1){
                     u.getBadges().remove(index);
+                }
+                if((index = u.getUserPointScaleEntities().indexOf(new LinkTableId(pointScale.getApiToken(), u.getId().getName(), pointScale.getName()))) != -1){
                     u.getUserPointScaleEntities().remove(index);
-                    i--;
                 }
             }
             //for each rules remove the badge
@@ -83,13 +84,17 @@ public class PointScalesApiController implements PointScalesApi {
                 LinkTableId linkTableId = new LinkTableId(r.getId().getApiToken(), r.getId().getName(), pointScaleEntity.getId().getName());
                 for(int j = 0; j < r.getAwards().getruleAwardsPointScaleId().size(); j++) {
                     if (r.getAwards().getruleAwardsPointScaleId().get(j).getRulePointScaleId().equals(linkTableId)) {
-                        r.getAwards().getruleAwardsPointScaleId().remove(indexPointScale);
-                        //if the rule become empty, we removed it
-                        if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
-                            app.getRules().remove(i);
-                            i--;
-                        }
+                        r.getAwards().getruleAwardsPointScaleId().remove(j);
+                        List<Integer> newPoint = r.getAwards().getAmountofPoint();
+                        newPoint.remove(j);
+                        r.getAwards().setAmountofPoint(newPoint);
+                        j--;
                     }
+                }
+                //if the rule become empty, we removed it
+                if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
+                    app.getRules().remove(i);
+                    i--;
                 }
             }
             //remove the badge from the app
@@ -119,8 +124,43 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
-    public ResponseEntity<Object> updatePointScale(UpdatePointScale updatePointScale) {
-        return null;
+    public ResponseEntity<PointScale> updatePointScale(UpdatePointScale updatePointScale) {
+        PointScaleEntity oldPointScale = new PointScaleEntity();
+        oldPointScale.setId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
+        PointScaleEntity newPointScale = toPointScaleEntity(updatePointScale.getNewPointScale());
+        ApplicationEntity app = applicationRepository.findByApiToken(newPointScale.getId().getApiToken());
+        if(app == null){
+            return ResponseEntity.notFound().build();
+        }
+        else{
+            int index;
+            if((index = app.getPointScales().indexOf(oldPointScale)) != -1){
+                app.getPointScales().set(index, newPointScale);
+                for(RuleEntity r : app.getRules()){
+                    for(RuleAwardsBadgesEntity b : r.getAwards().getRuleAwardsBadgesId()){
+                        if(b.getRuleBadgesId().gettable2Id().equals(oldPointScale.getId().getName())) {
+                            b.setRuleBadgesId(new LinkTableId(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable1Id(), newPointScale.getId().getName()));
+                        }
+                    }
+                }
+
+                for (UserEntity u : app.getUsers()){
+                    for (BadgeEntity b : u.getBadges()){
+                        if(b.getId().getName().equals(oldPointScale.getId().getName())){
+                            b.setId(newPointScale.getId());
+                        }
+                    }
+                    for (UserPointScaleEntity upse : u.getUserPointScaleEntities()){
+                        if(upse.getUserPointScaleId().gettable2Id().equals(oldPointScale.getId().getName())){
+                            upse.getUserPointScaleId().setTable2Id(newPointScale.getId().getName());
+                        }
+                    }
+                }
+                applicationRepository.save(app);
+                return ResponseEntity.ok(toPointScale(newPointScale));
+            }
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private PointScaleEntity toPointScaleEntity(PointScale PointScale) {

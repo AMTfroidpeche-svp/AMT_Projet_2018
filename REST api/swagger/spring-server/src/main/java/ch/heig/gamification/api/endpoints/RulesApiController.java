@@ -4,7 +4,6 @@ import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.*;
 import io.avalia.gamification.api.RulesApi;
 import io.avalia.gamification.api.model.AppInfos;
-import io.avalia.gamification.api.model.PointScale;
 import io.avalia.gamification.api.model.Rule;
 import io.avalia.gamification.api.model.RuleInfos;
 import io.swagger.annotations.ApiParam;
@@ -44,29 +43,8 @@ public class RulesApiController implements RulesApi {
             }
         }
         app.addRule(newRuleEntity);
+        addDependenciesForRule(app, newRuleEntity);
 
-        //check if the badges awarded by the rule exits, if they don't create them
-        List<RuleAwardsBadgesEntity> badges = newRuleEntity.getAwards().getRuleAwardsBadgesId();
-        for(int i = 0; i < badges.size(); i++){
-            BadgeEntity be = new BadgeEntity(new CompositeId(badges.get(i).getRuleBadgesId().getApiToken(),badges.get(i).getRuleBadgesId().gettable2Id()));
-            if(app.getBadges().indexOf(be) == -1){
-                app.addBadge(be);
-            }
-        }
-
-        //check if the PointScales concerned by the rule exist, of they don't create them
-        List<RuleAwardsPointScaleEntity> pointScales = newRuleEntity.getAwards().getruleAwardsPointScaleId();
-        List<UserEntity> users = userRepository.findByIdApiToken(Rule.getApiToken());
-        for(int i = 0; i < pointScales.size(); i++){
-            PointScaleEntity pse = new PointScaleEntity(new CompositeId(pointScales.get(i).getRulePointScaleId().getApiToken(),pointScales.get(i).getRulePointScaleId().gettable2Id()));
-            //if the pointScale doesn't exist, we have to add it and to instantiate it for each user of the app
-            if(app.getPointScales().indexOf(pse) == -1){
-                app.addPointScale(pse);
-                for (UserEntity u: users) {
-                    u.addPointScale(pse);
-                }
-            }
-        }
         applicationRepository.save(app);
         CompositeId id = newRuleEntity.getId();
         URI location = ServletUriComponentsBuilder
@@ -79,12 +57,12 @@ public class RulesApiController implements RulesApi {
     @Override
     public ResponseEntity<RuleInfos> deleteRule(RuleInfos rule) {
         ApplicationEntity app = applicationRepository.findByApiToken(rule.getApiToken());
-        if(app == null){
+        if (app == null) {
             return ResponseEntity.notFound().build();
         }
         List<RuleEntity> RuleEntities = app.getRules();
-        for(int i = 0; i < RuleEntities.size(); i++){
-            if(RuleEntities.get(i).getId().getName().equals(rule.getName())){
+        for (int i = 0; i < RuleEntities.size(); i++) {
+            if (RuleEntities.get(i).getId().getName().equals(rule.getName())) {
                 CompositeId deleted = new CompositeId(RuleEntities.get(i).getId());
                 RuleEntities.remove(i);
                 applicationRepository.save(app);
@@ -97,7 +75,7 @@ public class RulesApiController implements RulesApi {
     @Override
     public ResponseEntity<List<Rule>> getRules(AppInfos infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
-        if(app == null){
+        if (app == null) {
             return ResponseEntity.notFound().build();
         }
         List<RuleEntity> RuleEntities = app.getRules();
@@ -109,8 +87,25 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
-    public ResponseEntity<Object> updateRule(io.avalia.gamification.api.model.UpdateRule updateRule) {
-        return null;
+    public ResponseEntity<Rule> updateRule(io.avalia.gamification.api.model.UpdateRule updateRule) {
+        RuleEntity oldRule = new RuleEntity();
+        oldRule.setId(new CompositeId(updateRule.getNewRule().getApiToken(), updateRule.getOldName()));
+        RuleEntity newRule = toRuleEntity(updateRule.getNewRule());
+        ApplicationEntity app = applicationRepository.findByApiToken(newRule.getId().getApiToken());
+        if (app == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            int index;
+            if ((index = app.getRules().indexOf(oldRule)) != -1) {
+                app.getRules().set(index, newRule);
+                addDependenciesForRule(app, newRule);
+
+                applicationRepository.save(app);
+                return ResponseEntity.ok(toRule(newRule));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
     }
 
 
@@ -146,7 +141,7 @@ public class RulesApiController implements RulesApi {
             propertiesEntity.setType(p.getType());
             propertiesEntity.setCompareOperator(p.getCompareOperator());
             propertiesEntity.setValue(p.getValue());
-            propertiesEntity.setId(new CompositeId(Rule.getApiToken(),"ruleProperty" + Rule.getName() + String.valueOf(i)));
+            propertiesEntity.setId(new CompositeId(Rule.getApiToken(), "ruleProperty" + Rule.getName() + String.valueOf(i)));
             i++;
             properties.add(propertiesEntity);
         }
@@ -191,11 +186,35 @@ public class RulesApiController implements RulesApi {
         return Rule;
     }
 
-    private RuleInfos toRuleInfos(CompositeId c){
+    private RuleInfos toRuleInfos(CompositeId c) {
         RuleInfos ruleInfos = new RuleInfos();
         ruleInfos.setApiToken(c.getApiToken());
         ruleInfos.setName(c.getName());
         return ruleInfos;
     }
 
+    private void addDependenciesForRule(ApplicationEntity app, RuleEntity r){
+        //check if the badges awarded by the rule exits, if they don't create them
+        List<RuleAwardsBadgesEntity> badges = r.getAwards().getRuleAwardsBadgesId();
+        for (int i = 0; i < badges.size(); i++) {
+            BadgeEntity be = new BadgeEntity(new CompositeId(badges.get(i).getRuleBadgesId().getApiToken(), badges.get(i).getRuleBadgesId().gettable2Id()));
+            if (app.getBadges().indexOf(be) == -1) {
+                app.addBadge(be);
+            }
+        }
+
+        //check if the PointScales concerned by the rule exist, of they don't create them
+        List<RuleAwardsPointScaleEntity> pointScales = r.getAwards().getruleAwardsPointScaleId();
+        List<UserEntity> users = userRepository.findByIdApiToken(r.getId().getApiToken());
+        for (int i = 0; i < pointScales.size(); i++) {
+            PointScaleEntity pse = new PointScaleEntity(new CompositeId(pointScales.get(i).getRulePointScaleId().getApiToken(), pointScales.get(i).getRulePointScaleId().gettable2Id()));
+            //if the pointScale doesn't exist, we have to add it and to instantiate it for each user of the app
+            if (app.getPointScales().indexOf(pse) == -1) {
+                app.addPointScale(pse);
+                for (UserEntity u : users) {
+                    u.addPointScale(pse);
+                }
+            }
+        }
+    }
 }
