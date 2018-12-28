@@ -4,18 +4,20 @@ import ch.heig.gamification.entities.*;
 import ch.heig.gamification.entities.PointScaleEntity;
 import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.repositories.UserRepository;
-import io.avalia.gamification.api.PointScalesApi;
-import io.avalia.gamification.api.model.PointScale;
-import io.avalia.gamification.api.model.AppInfos;
-import io.avalia.gamification.api.model.UpdatePointScale;
+import ch.heig.gamification.api.PointScalesApi;
+import ch.heig.gamification.api.model.PointScale;
+import ch.heig.gamification.api.model.AppInfos;
+import ch.heig.gamification.api.model.UpdatePointScale;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +62,7 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
-    public ResponseEntity<PointScale> deletePointScale(PointScale pointScale) {
+    public ResponseEntity<PointScale> deletePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
         PointScaleEntity pointScaleEntity = toPointScaleEntity(pointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getId().getApiToken());
         if (app == null || app.getPointScales().indexOf(pointScaleEntity) == -1) {
@@ -123,8 +125,8 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
-    public ResponseEntity<List<PointScale>> getPointScales(AppInfos infos) {
-        ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
+    public ResponseEntity<List<PointScale>> getPointScales(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
+        ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if(app == null){
             return ResponseEntity.notFound().build();
         }
@@ -137,7 +139,7 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
-    public ResponseEntity<PointScale> updatePointScale(UpdatePointScale updatePointScale) {
+    public ResponseEntity<PointScale> updatePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
         PointScaleEntity oldPointScale = new PointScaleEntity();
         oldPointScale.setId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
         PointScaleEntity newPointScale = toPointScaleEntity(updatePointScale.getNewPointScale());

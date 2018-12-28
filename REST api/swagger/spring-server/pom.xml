@@ -49,10 +49,10 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <interfaceOnly>true</interfaceOnly>
                                 <delegatePattern>false</delegatePattern>
-                                <apiPackage>io.avalia.gamification.api</apiPackage>
-                                <configPackage>io.avalia.gamification.config</configPackage>
-                                <basePackage>io.avalia.gamification</basePackage>
-                                <modelPackage>io.avalia.gamification.api.model</modelPackage>
+                                <apiPackage>ch.heig.gamification.api</apiPackage>
+                                <configPackage>ch.heig.gamification.config</configPackage>
+                                <basePackage>ch.heig.gamification</basePackage>
+                                <modelPackage>ch.heig.gamification.api.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

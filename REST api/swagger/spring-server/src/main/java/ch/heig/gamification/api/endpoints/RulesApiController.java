@@ -2,18 +2,21 @@ package ch.heig.gamification.api.endpoints;
 
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.*;
-import io.avalia.gamification.api.RulesApi;
-import io.avalia.gamification.api.model.AppInfos;
-import io.avalia.gamification.api.model.Rule;
-import io.avalia.gamification.api.model.RuleInfos;
+import ch.heig.gamification.api.RulesApi;
+import ch.heig.gamification.api.model.AppInfos;
+import ch.heig.gamification.api.model.Rule;
+import ch.heig.gamification.api.model.RuleInfos;
+import ch.heig.gamification.api.model.UpdateRule;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +62,7 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
-    public ResponseEntity<RuleInfos> deleteRule(RuleInfos rule) {
+    public ResponseEntity<RuleInfos> deleteRule(@ApiParam(value = "", required = true) @Valid @RequestBody RuleInfos rule) {
         ApplicationEntity app = applicationRepository.findByApiToken(rule.getApiToken());
         if (app == null) {
             return ResponseEntity.notFound().build();
@@ -77,8 +80,8 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
-    public ResponseEntity<List<Rule>> getRules(AppInfos infos) {
-        ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
+    public ResponseEntity<List<Rule>> getRules(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
+        ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if (app == null) {
             return ResponseEntity.notFound().build();
         }
@@ -91,7 +94,7 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
-    public ResponseEntity<Rule> updateRule(io.avalia.gamification.api.model.UpdateRule updateRule) {
+    public ResponseEntity<Rule> updateRule(@ApiParam(value = "", required = true) @Valid @RequestBody UpdateRule updateRule) {
         RuleEntity oldRule = new RuleEntity();
         RuleEntity newRule = toRuleEntity(updateRule.getNewRule());
         //we can't have a different number of point and point scales
@@ -143,7 +146,7 @@ public class RulesApiController implements RulesApi {
 
         List<RulePropertiesEntity> properties = new ArrayList<>();
 
-        for (io.avalia.gamification.api.model.RuleProperties p : Rule.getProperties()) {
+        for (ch.heig.gamification.api.model.RuleProperties p : Rule.getProperties()) {
             int i = 1;
             RulePropertiesEntity propertiesEntity = new RulePropertiesEntity();
             propertiesEntity.setPropertyName(p.getName());
@@ -165,7 +168,7 @@ public class RulesApiController implements RulesApi {
         Rule.setEventName(entity.getEventName());
 
 
-        io.avalia.gamification.api.model.RuleAwards ra = new io.avalia.gamification.api.model.RuleAwards();
+        ch.heig.gamification.api.model.RuleAwards ra = new ch.heig.gamification.api.model.RuleAwards();
         List<String> Badges = new ArrayList<>();
         List<String> points = new ArrayList<>();
 
@@ -181,10 +184,10 @@ public class RulesApiController implements RulesApi {
         ra.setAmountofPoint(entity.getAwards().getAmountofPoint());
         Rule.setAwards(ra);
 
-        List<io.avalia.gamification.api.model.RuleProperties> properties = new ArrayList<>();
+        List<ch.heig.gamification.api.model.RuleProperties> properties = new ArrayList<>();
 
         for (RulePropertiesEntity p : entity.getProperties()) {
-            io.avalia.gamification.api.model.RuleProperties Properties = new io.avalia.gamification.api.model.RuleProperties();
+            ch.heig.gamification.api.model.RuleProperties Properties = new ch.heig.gamification.api.model.RuleProperties();
             Properties.setName(p.getPropertyName());
             Properties.setType(p.getType());
             Properties.setCompareOperator(p.getCompareOperator());

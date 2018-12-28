@@ -1,19 +1,25 @@
 package ch.heig.gamification.api.endpoints;
 
 
+import ch.heig.gamification.api.model.LinkTableId;
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.UserRepository;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import io.avalia.gamification.api.model.User;
-import io.avalia.gamification.api.model.UserInfos;
-import io.avalia.gamification.api.UsersApi;
-import io.avalia.gamification.api.model.Badge;
-import io.avalia.gamification.api.model.PointScale;
-import io.avalia.gamification.api.model.UserPointScale;
-import io.avalia.gamification.api.model.UserEventCount;
+import ch.heig.gamification.api.model.User;
+import ch.heig.gamification.api.model.UserInfos;
+import ch.heig.gamification.api.UsersApi;
+import ch.heig.gamification.api.model.Badge;
+import ch.heig.gamification.api.model.PointScale;
+import ch.heig.gamification.api.model.UserPointScale;
+import ch.heig.gamification.api.model.UserEventCount;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +32,8 @@ public class UsersApiController implements UsersApi {
     UserRepository userRepository;
 
     @Override
-    public ResponseEntity<User> getUser(UserInfos infos) {
-        UserEntity user = userRepository.findById(new CompositeId(infos.getApiToken(), infos.getName()));
+    public ResponseEntity<User> getUser(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true) String apiToken,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "userName", required = true) String userName) {
+        UserEntity user = userRepository.findById(new CompositeId(apiToken, userName));
         if(user == null){
             return ResponseEntity.notFound().build();
         }
@@ -54,13 +60,15 @@ public class UsersApiController implements UsersApi {
         }
 
         for (UserPointScale userPointScale : User.getUserPointScale()) {
-            UserPointScaleEntity userPointScaleEntity = new UserPointScaleEntity((LinkTableId)userPointScale.getLinkTableId());
+            ch.heig.gamification.entities.LinkTableId linkTableId = new ch.heig.gamification.entities.LinkTableId(userPointScale.getLinkTableId().getApiToken(), userPointScale.getLinkTableId().getTable1Id(), userPointScale.getLinkTableId().getTable2Id());
+            UserPointScaleEntity userPointScaleEntity = new UserPointScaleEntity(linkTableId);
             userPointScaleEntity.setValue(userPointScale.getValue());
             userPointScales.add(userPointScaleEntity);
         }
 
         for (UserEventCount userEventCount : User.getUserEventCount()) {
-            UserGenericEventCountEntity userGenericEventCountEntity = new UserGenericEventCountEntity((LinkTableId)userEventCount.getLinkTableId());
+            ch.heig.gamification.entities.LinkTableId linkTableId = new ch.heig.gamification.entities.LinkTableId(userEventCount.getLinkTableId().getApiToken(), userEventCount.getLinkTableId().getTable1Id(), userEventCount.getLinkTableId().getTable2Id());
+            UserGenericEventCountEntity userGenericEventCountEntity = new UserGenericEventCountEntity(linkTableId);
             userGenericEventCountEntity.setValue(userEventCount.getValue());
             userGenereicCountEvents.add(userGenericEventCountEntity);
         }
@@ -73,7 +81,7 @@ public class UsersApiController implements UsersApi {
         return entity;
     }
 
-    private io.avalia.gamification.api.model.User toUser(UserEntity entity) {
+    private ch.heig.gamification.api.model.User toUser(UserEntity entity) {
         User User = new User();
         User.setApiToken(entity.getId().getApiToken());
         User.setName(entity.getId().getName());
@@ -99,14 +107,22 @@ public class UsersApiController implements UsersApi {
 
         for (UserPointScaleEntity userPointScaleEntity : entity.getUserPointScaleEntities()) {
             UserPointScale userPointScale = new UserPointScale();
-            userPointScale.setLinkTableId((LinkTableId)userPointScaleEntity.getUserPointScaleId());
+            ch.heig.gamification.api.model.LinkTableId linkTableId = new LinkTableId();
+            linkTableId.setApiToken(userPointScaleEntity.getUserPointScaleId().getApiToken());
+            linkTableId.setTable1Id(userPointScaleEntity.getUserPointScaleId().gettable1Id());
+            linkTableId.setTable2Id(userPointScaleEntity.getUserPointScaleId().gettable2Id());
+            userPointScale.setLinkTableId(linkTableId);
             userPointScale.setValue(userPointScaleEntity.getValue());
             userPointScales.add(userPointScale);
         }
 
         for (UserGenericEventCountEntity userGenericEventCountEntity : entity.getUserGenericEventCountEntities()) {
             UserEventCount userEventCount = new UserEventCount();
-            userEventCount.setLinkTableId((LinkTableId)userGenericEventCountEntity.getId());
+            ch.heig.gamification.api.model.LinkTableId linkTableId = new LinkTableId();
+            linkTableId.setApiToken(userGenericEventCountEntity.getId().getApiToken());
+            linkTableId.setTable1Id(userGenericEventCountEntity.getId().gettable1Id());
+            linkTableId.setTable2Id(userGenericEventCountEntity.getId().gettable2Id());
+            userEventCount.setLinkTableId(linkTableId);
             userEventCount.setValue(userGenericEventCountEntity.getValue());
             userGenereicCountEvents.add(userEventCount);
         }

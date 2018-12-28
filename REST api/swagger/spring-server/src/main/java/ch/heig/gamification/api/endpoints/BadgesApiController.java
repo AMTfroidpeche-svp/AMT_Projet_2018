@@ -2,18 +2,20 @@ package ch.heig.gamification.api.endpoints;
 
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
-import io.avalia.gamification.api.BadgesApi;
-import io.avalia.gamification.api.model.Badge;
-import io.avalia.gamification.api.model.AppInfos;
-import io.avalia.gamification.api.model.UpdateBadge;
+import ch.heig.gamification.api.BadgesApi;
+import ch.heig.gamification.api.model.Badge;
+import ch.heig.gamification.api.model.AppInfos;
+import ch.heig.gamification.api.model.UpdateBadge;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +52,7 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
-    public ResponseEntity<Badge> deleteBadge(Badge badge) {
+    public ResponseEntity<Badge> deleteBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
         BadgeEntity badgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getId().getApiToken());
         if (app == null || app.getBadges().indexOf(badgeEntity) == -1) {
@@ -101,8 +103,8 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
-    public ResponseEntity<List<Badge>> getBadges(AppInfos infos) {
-        ApplicationEntity app = applicationRepository.findByApiToken(infos.getApiToken());
+    public ResponseEntity<List<Badge>> getBadges(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
+        ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if (app == null) {
             return ResponseEntity.notFound().build();
         }
@@ -115,7 +117,7 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
-    public ResponseEntity<Badge> updateBadge(UpdateBadge updatebadge) {
+    public ResponseEntity<Badge> updateBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
         BadgeEntity oldBadge = new BadgeEntity();
         oldBadge.setId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));
         BadgeEntity newBadge = toBadgeEntity(updatebadge.getNewBadge());

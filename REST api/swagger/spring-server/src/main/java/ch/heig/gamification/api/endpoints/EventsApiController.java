@@ -3,15 +3,18 @@ package ch.heig.gamification.api.endpoints;
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.repositories.UserGenericEventCountRepository;
-import io.avalia.gamification.api.EventsApi;
-import io.avalia.gamification.api.model.Event;
+import ch.heig.gamification.api.EventsApi;
+import ch.heig.gamification.api.model.Event;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class EventsApiController implements EventsApi {
         entity.setUserId(Event.getUserId());
         entity.setName(Event.getName());
         List<EventPropertiesEntity> eventProperties = new ArrayList<>();
-        for (io.avalia.gamification.api.model.EventProperties ep: Event.getProperties()) {
+        for (ch.heig.gamification.api.model.EventProperties ep: Event.getProperties()) {
             EventPropertiesEntity epe = new EventPropertiesEntity();
             epe.setName(ep.getName());
             epe.setValue(ep.getValue());
@@ -47,9 +50,9 @@ public class EventsApiController implements EventsApi {
         Event.setApiToken(entity.getAppToken());
         Event.setUserId(entity.getUserId());
         Event.setName(entity.getName());
-        List<io.avalia.gamification.api.model.EventProperties> eventProperties = new ArrayList<>();
+        List<ch.heig.gamification.api.model.EventProperties> eventProperties = new ArrayList<>();
         for (EventPropertiesEntity epe: entity.getProperties()) {
-            io.avalia.gamification.api.model.EventProperties ep = new io.avalia.gamification.api.model.EventProperties();
+            ch.heig.gamification.api.model.EventProperties ep = new ch.heig.gamification.api.model.EventProperties();
             ep.setName(epe.getName());
             ep.setValue(epe.getValue());
             eventProperties.add(ep);
@@ -59,7 +62,7 @@ public class EventsApiController implements EventsApi {
     }
 
     @Override
-    public ResponseEntity<String> generateEvent(Event event) {
+    public ResponseEntity<String> generateEvent(@ApiParam(value = "", required = true) @Valid @RequestBody Event event) {
         EventEntity eventEntity = toEventEntity(event);
         //check if the app exist and contain at least one rule
         ApplicationEntity app = applicationRepository.findByApiToken(event.getApiToken());
