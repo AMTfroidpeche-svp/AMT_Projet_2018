@@ -15,6 +15,7 @@ import ch.heig.gamification.api.model.Badge;
 import ch.heig.gamification.api.model.PointScale;
 import ch.heig.gamification.api.model.UserPointScale;
 import ch.heig.gamification.api.model.UserEventCount;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,6 +33,7 @@ public class UsersApiController implements UsersApi {
     UserRepository userRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<User> getUser(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true) String apiToken,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "userName", required = true) String userName) {
         UserEntity user = userRepository.findById(new CompositeId(apiToken, userName));
         if(user == null){

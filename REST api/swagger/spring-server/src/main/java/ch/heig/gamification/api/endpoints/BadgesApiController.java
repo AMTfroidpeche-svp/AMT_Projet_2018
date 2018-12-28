@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,6 +29,7 @@ public class BadgesApiController implements BadgesApi {
     @Autowired
     ApplicationRepository applicationRepository;
 
+    @Transactional
     public ResponseEntity<Object> createBadge(@ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
         BadgeEntity newBadgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badge.getApiToken());
@@ -42,7 +44,7 @@ public class BadgesApiController implements BadgesApi {
             }
         }
         app.addBadge(newBadgeEntity);
-        applicationRepository.save(app);
+        ApplicationEntity savedApp = applicationRepository.save(app);
         CompositeId id = newBadgeEntity.getId();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
@@ -52,6 +54,7 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Badge> deleteBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
         BadgeEntity badgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getId().getApiToken());
@@ -103,6 +106,7 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<List<Badge>> getBadges(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if (app == null) {
@@ -117,6 +121,7 @@ public class BadgesApiController implements BadgesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Badge> updateBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
         BadgeEntity oldBadge = new BadgeEntity();
         oldBadge.setId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));

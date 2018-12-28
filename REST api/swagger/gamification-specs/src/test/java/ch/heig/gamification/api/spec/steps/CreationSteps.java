@@ -85,8 +85,8 @@ public class CreationSteps {
     @Given("^I create the pointScale (.+) in the app (.+)$")
     public void i_have_a_pointScale_payload(String pointScaleName, String appName) throws Throwable {
         pointScale = new PointScale();
-        pointScale.setApiToken(pointScaleName);
-        pointScale.setName(appName);
+        pointScale.setApiToken(appName);
+        pointScale.setName(pointScaleName);
         if(!CurrentState.pointScales.contains(pointScale)) {
             CurrentState.pointScales.add(pointScale);
         }

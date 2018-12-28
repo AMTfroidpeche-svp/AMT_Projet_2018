@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,8 +31,12 @@ public class RulesApiController implements RulesApi {
     ApplicationRepository applicationRepository;
 
     @Autowired
+    RuleAwardsRepository ruleAwardsRepository;
+
+    @Autowired
     UserRepository userRepository;
 
+    @Transactional
     public ResponseEntity<Object> createRule(@ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
         RuleEntity newRuleEntity = toRuleEntity(Rule);
         //we can't have a different number of point and point scales
@@ -49,8 +54,9 @@ public class RulesApiController implements RulesApi {
                 }
             }
         }
-        app.addRule(newRuleEntity);
         addDependenciesForRule(app, newRuleEntity);
+        //ruleAwardsRepository.save(newRuleEntity.getAwards());
+        app.addRule(newRuleEntity);
 
         applicationRepository.save(app);
         CompositeId id = newRuleEntity.getId();
@@ -62,6 +68,7 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<RuleInfos> deleteRule(@ApiParam(value = "", required = true) @Valid @RequestBody RuleInfos rule) {
         ApplicationEntity app = applicationRepository.findByApiToken(rule.getApiToken());
         if (app == null) {
@@ -80,6 +87,7 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<List<Rule>> getRules(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if (app == null) {
@@ -94,6 +102,7 @@ public class RulesApiController implements RulesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Rule> updateRule(@ApiParam(value = "", required = true) @Valid @RequestBody UpdateRule updateRule) {
         RuleEntity oldRule = new RuleEntity();
         RuleEntity newRule = toRuleEntity(updateRule.getNewRule());
@@ -232,6 +241,7 @@ public class RulesApiController implements RulesApi {
                     }
                 }
             }
+            userRepository.save(users);
         }
     }
 }

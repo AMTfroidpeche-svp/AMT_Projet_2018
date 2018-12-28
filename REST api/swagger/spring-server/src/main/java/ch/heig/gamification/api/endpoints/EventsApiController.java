@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.script.ScriptEngine;
@@ -62,6 +63,7 @@ public class EventsApiController implements EventsApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> generateEvent(@ApiParam(value = "", required = true) @Valid @RequestBody Event event) {
         EventEntity eventEntity = toEventEntity(event);
         //check if the app exist and contain at least one rule
@@ -98,14 +100,14 @@ public class EventsApiController implements EventsApi {
             }
             app.addUser(userConcerned);
         }
+        //adding the event to the event count of the user
+        addToEventCount(matchingRules.get(0).getEventName(), userConcerned);
         StringBuilder elementAwarded = new StringBuilder();
         //for each rule
         for(RuleEntity r : matchingRules){
-            //adding the event to the event count of the user
-            addToEventCount(r.getEventName(), userConcerned);
             //check if the properties are valid, if yes, we give the award to the user
             try {
-                if(propertyOk(r, eventEntity.getProperties(), userConcerned)){
+                if(propertyOk(r, eventEntity, userConcerned)){
                     elementAwarded.append(addAwardsToUser(r.getAwards(), userConcerned));
                 }
                 applicationRepository.save(app);
@@ -117,48 +119,50 @@ public class EventsApiController implements EventsApi {
         return ResponseEntity.ok(elementAwarded.toString());
     }
 
-    private boolean propertyOk(RuleEntity ruleEntity, List<EventPropertiesEntity> eventPropertiesEntities, UserEntity userConcerned) throws ScriptException {
+    private boolean propertyOk(RuleEntity ruleEntity, EventEntity eventEntity, UserEntity userConcerned) throws ScriptException {
+        List<EventPropertiesEntity> eventPropertiesEntities = eventEntity.getProperties();
         //for each property in the rule, we find the corresponding property in the event
         for(RulePropertiesEntity rulePropertiesEntity : ruleEntity.getProperties()){
             boolean validated = false;
             for(EventPropertiesEntity eventPropertiesEntity : eventPropertiesEntities){
-                if(rulePropertiesEntity.getPropertyName().equals(eventPropertiesEntity.getName())){
                     ScriptEngineManager mgr = new ScriptEngineManager();
                     ScriptEngine engine = mgr.getEngineByName("JavaScript");
                     if(rulePropertiesEntity.getType().equals("amount")){
-                        LinkTableId eventId = new LinkTableId(userConcerned.getId().getApiToken(), userConcerned.getId().getName(), ruleEntity.getEventName());
-                        UserGenericEventCountEntity eventCount = null;
-                        for(UserGenericEventCountEntity eventCountEntity : userConcerned.getUserGenericEventCountEntities()){
-                            if(eventCountEntity.getId().equals(eventId)){
-                                eventCount = eventCountEntity;
+                        if(rulePropertiesEntity.getPropertyName().equals(eventEntity.getName())) {
+                            LinkTableId eventId = new LinkTableId(userConcerned.getId().getApiToken(), userConcerned.getId().getName(), ruleEntity.getEventName());
+                            UserGenericEventCountEntity eventCount = null;
+                            for (UserGenericEventCountEntity eventCountEntity : userConcerned.getUserGenericEventCountEntities()) {
+                                if (eventCountEntity.getId().equals(eventId)) {
+                                    eventCount = eventCountEntity;
+                                    break;
+                                }
+                            }
+                            int value = eventCount.getValue();
+                            String expression = String.valueOf(value) + rulePropertiesEntity.getCompareOperator() + rulePropertiesEntity.getValue();
+                            if (!((boolean) engine.eval(expression))) {
+                                return false;
+                            } else {
+                                validated = true;
                                 break;
                             }
                         }
-                        int value = eventCount.getValue();
-                        String expression = String.valueOf(value) + rulePropertiesEntity.getCompareOperator() + rulePropertiesEntity.getValue();
-                        if(!((boolean)engine.eval(expression))){
-                            return false;
-                        }
-                        else{
-                            validated = true;
-                            break;
-                        }
                     }
                     else if(rulePropertiesEntity.getType().equals("value")){
-                        String expression = eventPropertiesEntity.getValue() + rulePropertiesEntity.getCompareOperator() + rulePropertiesEntity.getValue();
-                        if(!((boolean)engine.eval(expression))){
-                            return false;
-                        }
-                        else{
-                            validated = true;
-                            break;
+                        if(rulePropertiesEntity.getPropertyName().equals(eventPropertiesEntity.getName())) {
+                            String expression = eventPropertiesEntity.getValue() + rulePropertiesEntity.getCompareOperator() + rulePropertiesEntity.getValue();
+                            if (!((boolean) engine.eval(expression))) {
+                                return false;
+                            } else {
+                                validated = true;
+                                break;
+                            }
                         }
                     }
                     //this should never happen as we are suppose to control at the creation of a rule that the type is either value or amount
                     else{
                         throw new RuntimeException("This rule can't exist");
                     }
-                }
+
             }
             if(!validated){
                 return false;

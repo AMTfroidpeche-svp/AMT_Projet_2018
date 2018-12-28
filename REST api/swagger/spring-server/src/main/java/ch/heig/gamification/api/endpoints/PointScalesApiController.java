@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,6 +34,7 @@ public class PointScalesApiController implements PointScalesApi {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     public ResponseEntity<Object> createPointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale PointScale) {
         PointScaleEntity newPointScaleEntity = toPointScaleEntity(PointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(PointScale.getApiToken());
@@ -62,6 +64,7 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<PointScale> deletePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
         PointScaleEntity pointScaleEntity = toPointScaleEntity(pointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getId().getApiToken());
@@ -101,10 +104,20 @@ public class PointScalesApiController implements PointScalesApi {
                 }
                 //if the rule become empty, we removed it and all event count link to it
                 if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
-                    for(UserEntity userEntity : app.getUsers()){
-                        for(int k = 0; k < userEntity.getUserGenericEventCountEntities().size(); k++){
-                            if(userEntity.getUserGenericEventCountEntities().get(k).getId().gettable2Id().equals(app.getRules().get(i).getEventName())){
-                                userEntity.getUserGenericEventCountEntities().remove(k);
+                    int ruleDealingWithEvent = 0;
+                    String eventName = app.getRules().get(i).getEventName();
+                    for(int k = 0; k < app.getRules().size(); k++){
+                        if(app.getRules().get(k).getEventName().equals(eventName)){
+                            ruleDealingWithEvent++;
+                        }
+                    }
+                    //with delete the event count only if this was the last rule dealing with this event
+                    if(ruleDealingWithEvent == 1) {
+                        for (UserEntity userEntity : app.getUsers()) {
+                            for (int k = 0; k < userEntity.getUserGenericEventCountEntities().size(); k++) {
+                                if (userEntity.getUserGenericEventCountEntities().get(k).getId().gettable2Id().equals(app.getRules().get(i).getEventName())) {
+                                    userEntity.getUserGenericEventCountEntities().remove(k);
+                                }
                             }
                         }
                     }
@@ -125,6 +138,7 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<List<PointScale>> getPointScales(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if(app == null){
@@ -139,6 +153,7 @@ public class PointScalesApiController implements PointScalesApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<PointScale> updatePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
         PointScaleEntity oldPointScale = new PointScaleEntity();
         oldPointScale.setId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
