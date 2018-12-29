@@ -1,5 +1,13 @@
 package ch.heig.gamification;
 
+/**
+ * File : Swagger2SpringBoot.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description :
+ */
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;

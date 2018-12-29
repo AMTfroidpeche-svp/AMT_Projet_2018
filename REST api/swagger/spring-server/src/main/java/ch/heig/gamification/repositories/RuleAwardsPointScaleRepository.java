@@ -1,7 +1,12 @@
 package ch.heig.gamification.repositories;
 
-import ch.heig.gamification.entities.CompositeId;
-import ch.heig.gamification.entities.RuleAwardsEntity;
+/**
+ * File : RuleAwardsPointScaleRepository.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ */
+
 import ch.heig.gamification.entities.RuleAwardsPointScaleEntity;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,5 +1,13 @@
 package ch.heig.gamification.api.endpoints;
 
+/**
+ * File : BadgesApiController.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This controller is used to operate CRUD operations on badges
+ */
+
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.api.BadgesApi;
@@ -29,13 +37,15 @@ public class BadgesApiController implements BadgesApi {
     ApplicationRepository applicationRepository;
 
     @Transactional
-    public ResponseEntity<Object> createBadge(@ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
+    public ResponseEntity<Object> createBadge(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
         BadgeEntity newBadgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badge.getApiToken());
+        //check if the app exist, if not we creted it
         if (app == null) {
             app = new ApplicationEntity(badge.getApiToken());
         } else {
             List<BadgeEntity> badges = app.getBadges();
+            //check if the badge already exists, if yes, return a 304 response
             for (int i = 0; i < badges.size(); i++) {
                 if (badges.get(i).getCompositeId().equals(newBadgeEntity.getCompositeId())) {
                     return ResponseEntity.status(304).build();
@@ -44,6 +54,7 @@ public class BadgesApiController implements BadgesApi {
         }
         app.addBadge(newBadgeEntity);
         ApplicationEntity savedApp = applicationRepository.save(app);
+
         CompositeId id = newBadgeEntity.getCompositeId();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
@@ -54,9 +65,10 @@ public class BadgesApiController implements BadgesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<Badge> deleteBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
+    public ResponseEntity<Badge> deleteBadge(@NotNull @ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
         BadgeEntity badgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getCompositeId().getApiToken());
+        //check if the app and if the badge exist in the app, if not, send a 404 error
         if (app == null || app.getBadges().indexOf(badgeEntity) == -1) {
             return ResponseEntity.notFound().build();
         } else {
@@ -108,9 +120,11 @@ public class BadgesApiController implements BadgesApi {
     @Transactional
     public ResponseEntity<List<Badge>> getBadges(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
+        //check if the app exists, if not we send a 404 error
         if (app == null) {
             return ResponseEntity.notFound().build();
         }
+        //retrieve the list of all badges in the app
         List<BadgeEntity> badgeEntities = app.getBadges();
         List<Badge> badges = new ArrayList<>();
         for (BadgeEntity badgeEntity : badgeEntities) {
@@ -121,18 +135,24 @@ public class BadgesApiController implements BadgesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<Badge> updateBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
+    public ResponseEntity<Badge> updateBadge(@NotNull @ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
         BadgeEntity oldBadge = new BadgeEntity();
         oldBadge.setCompositeId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));
+
         BadgeEntity newBadge = toBadgeEntity(updatebadge.getNewBadge());
         ApplicationEntity app = applicationRepository.findByApiToken(newBadge.getCompositeId().getApiToken());
+
+        //check if the app exists, if not, we send a 404 error
         if(app == null){
             return ResponseEntity.notFound().build();
         }
         else{
             int index;
+            //check if the app contains the badge we try to update, if not we send a 404 error
             if((index = app.getBadges().indexOf(oldBadge)) != -1){
+                //replace the old badge by the new one
                 app.getBadges().set(index, newBadge);
+                //for each rule of the app, we update the badge
                 for(RuleEntity r : app.getRules()){
                     for(RuleAwardsBadgesEntity b : r.getAwards().getRuleAwardsBadgesId()){
                         if(b.getRuleBadgesId().gettable2Id().equals(oldBadge.getCompositeId().getName())) {
@@ -141,6 +161,7 @@ public class BadgesApiController implements BadgesApi {
                     }
                 }
 
+                //for each user, we update the badge if he possess it
                 for (UserEntity u : app.getUsers()){
                     for (BadgeEntity b : u.getBadges()){
                         if(b.getCompositeId().getName().equals(oldBadge.getCompositeId().getName())){
@@ -155,12 +176,12 @@ public class BadgesApiController implements BadgesApi {
         }
     }
 
-    private BadgeEntity toBadgeEntity(Badge badge) {
+    private BadgeEntity toBadgeEntity(@NotNull Badge badge) {
         BadgeEntity entity = new BadgeEntity(new CompositeId(badge.getApiToken(), badge.getName()));
         return entity;
     }
 
-    private Badge toBadge(BadgeEntity entity) {
+    private Badge toBadge(@NotNull BadgeEntity entity) {
         Badge badge = new Badge();
         badge.setApiToken(entity.getCompositeId().getApiToken());
         badge.setName(entity.getCompositeId().getName());

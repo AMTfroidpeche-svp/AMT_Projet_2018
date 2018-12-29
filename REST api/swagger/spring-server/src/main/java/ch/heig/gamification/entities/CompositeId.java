@@ -1,5 +1,13 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : CompositeId.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : Embedded data used as an id to link object with the application token
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,6 +17,7 @@ import java.util.Objects;
 public class CompositeId implements Serializable {
 
     private String apiToken = null;
+    //name of the object
     private String name = null;
 
     public CompositeId(){}

@@ -1,5 +1,13 @@
 package ch.heig.gamification.api.endpoints;
 
+/**
+ * File : EventsApiController.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This controller is used to generate events on the rest API
+ */
+
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.repositories.UserGenericEventCountRepository;
@@ -16,6 +24,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +39,7 @@ public class EventsApiController implements EventsApi {
     @Autowired
     UserGenericEventCountRepository userGenericEventCountEntity;
 
-    private EventEntity toEventEntity(Event Event) {
+    private EventEntity toEventEntity(@NotNull Event Event) {
         EventEntity entity = new EventEntity();
         entity.setAppToken(Event.getApiToken());
         entity.setUserId(Event.getUserId());
@@ -46,7 +55,7 @@ public class EventsApiController implements EventsApi {
         return entity;
     }
 
-    private Event toEvent(EventEntity entity) {
+    private Event toEvent(@NotNull EventEntity entity) {
         Event Event = new Event();
         Event.setApiToken(entity.getAppToken());
         Event.setUserId(entity.getUserId());
@@ -64,7 +73,7 @@ public class EventsApiController implements EventsApi {
 
     @Override
     @Transactional
-    public ResponseEntity<String> generateEvent(@ApiParam(value = "", required = true) @Valid @RequestBody Event event) {
+    public ResponseEntity<String> generateEvent(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Event event) {
         EventEntity eventEntity = toEventEntity(event);
         //check if the app exist and contain at least one rule
         ApplicationEntity app = applicationRepository.findByApiToken(event.getApiToken());
@@ -119,7 +128,7 @@ public class EventsApiController implements EventsApi {
         return ResponseEntity.ok(elementAwarded.toString());
     }
 
-    private boolean propertyOk(RuleEntity ruleEntity, EventEntity eventEntity, UserEntity userConcerned) throws ScriptException {
+    private boolean propertyOk(@NotNull RuleEntity ruleEntity, @NotNull EventEntity eventEntity, @NotNull UserEntity userConcerned) throws ScriptException {
         List<EventPropertiesEntity> eventPropertiesEntities = eventEntity.getProperties();
         //for each property in the rule, we find the corresponding property in the event
         for(RulePropertiesEntity rulePropertiesEntity : ruleEntity.getProperties()){
@@ -171,7 +180,7 @@ public class EventsApiController implements EventsApi {
         return true;
     }
 
-    private String addAwardsToUser(RuleAwardsEntity ruleAwardsEntity, UserEntity userEntity){
+    private String addAwardsToUser(@NotNull RuleAwardsEntity ruleAwardsEntity, @NotNull UserEntity userEntity){
         //adding each badges
         for(RuleAwardsBadgesEntity b : ruleAwardsEntity.getRuleAwardsBadgesId()){
             BadgeEntity newBadge = new BadgeEntity(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable2Id());
@@ -193,7 +202,7 @@ public class EventsApiController implements EventsApi {
         return null;
     }
 
-    private void addToEventCount(String eventName, UserEntity userEntity){
+    private void addToEventCount(@NotNull String eventName, @NotNull UserEntity userEntity){
         for(UserGenericEventCountEntity event : userEntity.getUserGenericEventCountEntities()){
             if(event.getLinkTableId().gettable2Id().equals(eventName)){
                 event.incValue();

@@ -1,10 +1,18 @@
 package ch.heig.gamification.api.spec.steps;
 
+/**
+ * File : Environment.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This Class is used to retrieve objects from the REST API
+ *
+ */
+
 import ch.heig.gamification.ApiException;
 import ch.heig.gamification.ApiResponse;
 import ch.heig.gamification.api.DefaultApi;
 import ch.heig.gamification.api.dto.UserEventCount;
-import ch.heig.gamification.api.dto.AppInfos;
 import ch.heig.gamification.api.dto.UserPointScale;
 import ch.heig.gamification.api.dto.LinkTableId;
 import ch.heig.gamification.api.dto.Badge;
@@ -12,7 +20,6 @@ import ch.heig.gamification.api.dto.PointScale;
 import ch.heig.gamification.api.dto.Rule;
 import ch.heig.gamification.api.dto.User;
 import ch.heig.gamification.api.spec.helpers.Environment;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -21,20 +28,12 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Olivier Liechti on 27/07/17.
- */
 public class ReadSteps {
 
     private Environment environment;
     private DefaultApi api;
 
-    Badge badge;
-    PointScale pointScale;
-    Rule rule;
     User user;
-    AppInfos appInfos = new AppInfos();
-
 
     List<Badge> badges;
     List<PointScale> pointScales;
@@ -51,7 +50,7 @@ public class ReadSteps {
     }
 
     @When("^I GET to the /(.+) endpoint the app (.+)$")
-    public void i_GET_from_the_badges_endpoint(String endPoint, String appName) throws Throwable {
+    public void i_GET_from_the_badges_endpoint(String endPoint, String appName) {
         try {
             switch (endPoint) {
                 case "badges":
@@ -77,7 +76,7 @@ public class ReadSteps {
     }
 
     @When("^I GET the user (.+) in the app (.+)$")
-    public void i_GET_from_the_users_endpoint(String userName, String appName) throws Throwable {
+    public void i_GET_from_the_users_endpoint(String userName, String appName) {
         try {
             user = api.getUser(appName, userName);
         } catch (ApiException e) {
@@ -90,7 +89,7 @@ public class ReadSteps {
     }
 
     @Then("^I receive correct (.+)$")
-    public void i_receive_correct_objects(String type) throws Throwable {
+    public void i_receive_correct_objects(String type) {
         switch (type) {
             case "badges":
                 for(Badge b : CurrentState.badges){
@@ -114,12 +113,12 @@ public class ReadSteps {
     }
 
     @Then("^The user (.+) should have correct badges : (.+), correct pointScales : (.+) with correct ammount of points : (.+) and correct eventCount : (.+) with correct amounts : (.+)$")
-    public void check_user_infos(String userName, String badges, String pointScales, String points, String eventCounts, String eventCountsAmounts) throws Throwable {
+    public void check_user_infos(String userName, String badges, String pointScales, String points, String eventCounts, String eventCountsAmounts) {
         assertEquals(user.getName(), userName);
         List<Badge> badgesList = new ArrayList<>();
         List<PointScale> pointScaleList = new ArrayList<>();
         List<UserPointScale> userPointScaleList = new ArrayList<>();
-        List<ch.heig.gamification.api.dto.UserEventCount> userEventCountList  = new ArrayList<>();
+        List<UserEventCount> userEventCountList  = new ArrayList<>();
 
         String[] badgesTab = badges.split(";");
         String[] pointScalesTab = pointScales.split(";");

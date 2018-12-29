@@ -1,5 +1,17 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : EventEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : Event entity store in the database. Currently, the implementation doesn't effectively store them as we calculate
+ * the user information at each event.
+ *
+ * A better version would be to only store events without modifying anything to increase performance and to flush events
+ * on a time basis. This would create less concurrency access to the database.
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;

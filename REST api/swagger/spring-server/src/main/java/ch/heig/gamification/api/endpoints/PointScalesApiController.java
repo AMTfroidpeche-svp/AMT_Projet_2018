@@ -1,5 +1,13 @@
 package ch.heig.gamification.api.endpoints;
 
+/**
+ * File : PointScalesApiController.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This controller is used to operate CRUD operations on pointScales
+ */
+
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.entities.PointScaleEntity;
 import ch.heig.gamification.repositories.ApplicationRepository;
@@ -34,7 +42,7 @@ public class PointScalesApiController implements PointScalesApi {
     UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<Object> createPointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale PointScale) {
+    public ResponseEntity<Object> createPointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody PointScale PointScale) {
         PointScaleEntity newPointScaleEntity = toPointScaleEntity(PointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(PointScale.getApiToken());
         if(app == null){
@@ -64,7 +72,7 @@ public class PointScalesApiController implements PointScalesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<PointScale> deletePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
+    public ResponseEntity<PointScale> deletePointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
         PointScaleEntity pointScaleEntity = toPointScaleEntity(pointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getCompositeId().getApiToken());
         if (app == null || app.getPointScales().indexOf(pointScaleEntity) == -1) {
@@ -153,7 +161,7 @@ public class PointScalesApiController implements PointScalesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<PointScale> updatePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
+    public ResponseEntity<PointScale> updatePointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
         PointScaleEntity oldPointScale = new PointScaleEntity();
         oldPointScale.setCompositeId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
         PointScaleEntity newPointScale = toPointScaleEntity(updatePointScale.getNewPointScale());
@@ -192,12 +200,12 @@ public class PointScalesApiController implements PointScalesApi {
         }
     }
 
-    private PointScaleEntity toPointScaleEntity(PointScale PointScale) {
+    private PointScaleEntity toPointScaleEntity(@NotNull PointScale PointScale) {
         PointScaleEntity entity = new PointScaleEntity(new CompositeId(PointScale.getApiToken(), PointScale.getName()));
         return entity;
     }
 
-    private PointScale toPointScale(PointScaleEntity entity) {
+    private PointScale toPointScale(@NotNull PointScaleEntity entity) {
         PointScale PointScale = new PointScale();
         PointScale.setApiToken(entity.getCompositeId().getApiToken());
         PointScale.setName(entity.getCompositeId().getName());

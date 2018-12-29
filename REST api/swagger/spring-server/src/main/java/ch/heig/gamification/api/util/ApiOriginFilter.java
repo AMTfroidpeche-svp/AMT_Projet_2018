@@ -1,5 +1,12 @@
 package ch.heig.gamification.api.util;
 
+/**
+ * File : ApiOriginFilter.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ */
+
 import java.io.IOException;
 
 import javax.servlet.*;

@@ -1,10 +1,14 @@
 package ch.heig.gamification.repositories;
 
-import ch.heig.gamification.entities.CompositeId;
+/**
+ * File : RuleRepository.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ */
+
 import ch.heig.gamification.entities.RuleEntity;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
 
 public interface RuleRepository extends CrudRepository<RuleEntity, Long>{
 

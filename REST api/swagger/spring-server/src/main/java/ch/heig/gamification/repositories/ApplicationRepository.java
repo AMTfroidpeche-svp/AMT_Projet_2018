@@ -1,5 +1,12 @@
 package ch.heig.gamification.repositories;
 
+/**
+ * File : ApplicationRepository.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ */
+
 import ch.heig.gamification.entities.*;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.repository.CrudRepository;
@@ -12,12 +19,5 @@ public interface ApplicationRepository extends CrudRepository<ApplicationEntity,
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Transactional
-    public ApplicationEntity findByApiToken(String apiToken);
-
-    public List<PointScaleEntity> getPointScalesByApiToken(String apiToken);
-
-    public List<UserEntity> getUsersByApiToken(String apiToken);
-
-    public List<BadgeEntity> getApplicationEntitiesByApiToken(String apiToken);
-
+    ApplicationEntity findByApiToken(String apiToken);
 }

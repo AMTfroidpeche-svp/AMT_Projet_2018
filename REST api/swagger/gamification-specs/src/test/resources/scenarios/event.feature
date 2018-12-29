@@ -1,4 +1,4 @@
-Feature: full scenario testing different rule option
+Feature: full scenario testing different rule options
 
   Background:
     Given there is a Gamification server

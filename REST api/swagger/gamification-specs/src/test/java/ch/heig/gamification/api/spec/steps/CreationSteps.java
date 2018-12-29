@@ -1,5 +1,14 @@
 package ch.heig.gamification.api.spec.steps;
 
+/**
+ * File : CreationSteps.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This Class is used to create objects in the REST API
+ *
+ */
+
 import ch.heig.gamification.api.spec.helpers.Environment;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -10,21 +19,14 @@ import ch.heig.gamification.api.DefaultApi;
 import ch.heig.gamification.api.dto.Badge;
 import ch.heig.gamification.api.dto.PointScale;
 import ch.heig.gamification.api.dto.Rule;
-import ch.heig.gamification.api.dto.User;
+import ch.heig.gamification.api.dto.RuleAwards;
+import ch.heig.gamification.api.dto.RuleProperties;
 import ch.heig.gamification.api.dto.Event;
 import ch.heig.gamification.api.dto.EventProperties;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Olivier Kopp on 27/12/18.
- */
 public class CreationSteps {
 
     private Environment environment;
@@ -33,7 +35,6 @@ public class CreationSteps {
     Badge badge;
     PointScale pointScale;
     Rule rule;
-    User user;
     Event event;
 
     private ApiResponse lastApiResponse;
@@ -53,32 +54,32 @@ public class CreationSteps {
     }
 
     @Given("^I have the badge (.+) in the app (.+)$")
-    public void i_have_a_badge_payload(String badgeName, String appName) throws Throwable {
+    public void i_have_a_badge_payload(String badgeName, String appName) {
         badge = new Badge();
         badge.setApiToken(appName);
         badge.setName(badgeName);
     }
 
     @Given("^I create a badge that already exists$")
-    public void i_create_an_existing_badge() throws Throwable {
+    public void i_create_an_existing_badge() {
         badge = CurrentState.badges.get(0);
     }
 
 
     @Given("^I have the pointScale (.+) in the app (.+)$")
-    public void i_have_a_pointScale_payload(String pointScaleName, String appName) throws Throwable {
+    public void i_have_a_pointScale_payload(String pointScaleName, String appName) {
         pointScale = new PointScale();
         pointScale.setApiToken(appName);
         pointScale.setName(pointScaleName);
     }
 
     @Given("^I have the rule (.+) in (.+) application trigger by the (.+) event that give (.+) points to (.+) pointscales and the badges (.+) with (.+) properties$")
-    public void i_have_a_rule_payload(String ruleName, String appName, String eventName, String pointAwarded, String pointScalesName, String badges, String properties) throws Throwable {
+    public void i_have_a_rule_payload(String ruleName, String appName, String eventName, String pointAwarded, String pointScalesName, String badges, String properties) {
         rule = new Rule();
         rule.setApiToken(appName);
         rule.setRuleName(ruleName);
         rule.setEventName(eventName);
-        ch.heig.gamification.api.dto.RuleAwards ruleAwards = new ch.heig.gamification.api.dto.RuleAwards();
+        RuleAwards ruleAwards = new RuleAwards();
         for (String s : badges.split(";")) {
             ruleAwards.addBadgeItem(s);
         }
@@ -90,7 +91,7 @@ public class CreationSteps {
         }
         rule.setAwards(ruleAwards);
         for (String s : properties.split(";")) {
-            ch.heig.gamification.api.dto.RuleProperties ruleProperties = new ch.heig.gamification.api.dto.RuleProperties();
+            RuleProperties ruleProperties = new RuleProperties();
             String[] propertiesList = s.split(",");
             ruleProperties.setName(propertiesList[0]);
             ruleProperties.setType(propertiesList[1]);
@@ -101,7 +102,7 @@ public class CreationSteps {
     }
 
     @Given("^I generate the event (.+) in (.+) application concerning user (.+) with (.+) properties and the timestamp (.+)$")
-    public void i_have_a_event_payload(String eventName, String appName, String userName, String properties, String timeStamp) throws Throwable {
+    public void i_have_a_event_payload(String eventName, String appName, String userName, String properties, String timeStamp) {
         event = new Event();
         event.setApiToken(appName);
         event.setUserId(userName);
@@ -117,7 +118,7 @@ public class CreationSteps {
     }
 
     @When("^I POST it to the /(.+) endpoint$")
-    public void i_POST_it_to_an_endpoint(String endPoint) throws Throwable {
+    public void i_POST_it_to_an_endpoint(String endPoint) {
         try {
             switch (endPoint) {
                 case "badges":
@@ -159,7 +160,7 @@ public class CreationSteps {
 
 
     @Then("^I receive a (\\d+) status code$")
-    public void i_receive_a_status_code(int arg1) throws Throwable {
+    public void i_receive_a_status_code(int arg1) {
         assertTrue(arg1 == lastStatusCode);
     }
 

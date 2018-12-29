@@ -1,5 +1,12 @@
 package ch.heig.gamification.api.endpoints;
 
+/**
+ * File : UsersApiController.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This controller is used to retrieve infos about users stored in the database, it only allows to read data
+ */
 
 import ch.heig.gamification.api.model.LinkTableId;
 import ch.heig.gamification.entities.*;
@@ -32,7 +39,8 @@ public class UsersApiController implements UsersApi {
 
     @Override
     @Transactional
-    public ResponseEntity<User> getUser(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true) String apiToken,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "userName", required = true) String userName) {
+    public ResponseEntity<User> getUser(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true) String apiToken,
+                                        @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "userName", required = true) String userName) {
         UserEntity user = userRepository.findById(new CompositeId(apiToken, userName));
         if(user == null){
             return ResponseEntity.notFound().build();
@@ -41,7 +49,7 @@ public class UsersApiController implements UsersApi {
         return ResponseEntity.ok(toUser(user));
     }
 
-    private UserEntity toUserEntity(User User) {
+    private UserEntity toUserEntity(@NotNull User User) {
         UserEntity entity = new UserEntity(new CompositeId(User.getApiToken(), User.getName()));
 
         List<BadgeEntity> Badges = new ArrayList<>();
@@ -81,7 +89,7 @@ public class UsersApiController implements UsersApi {
         return entity;
     }
 
-    private ch.heig.gamification.api.model.User toUser(UserEntity entity) {
+    private User toUser(@NotNull UserEntity entity) {
         User User = new User();
         User.setApiToken(entity.getId().getApiToken());
         User.setName(entity.getId().getName());
@@ -107,7 +115,7 @@ public class UsersApiController implements UsersApi {
 
         for (UserPointScaleEntity userPointScaleEntity : entity.getUserPointScaleEntities()) {
             UserPointScale userPointScale = new UserPointScale();
-            ch.heig.gamification.api.model.LinkTableId linkTableId = new LinkTableId();
+            LinkTableId linkTableId = new LinkTableId();
             linkTableId.setApiToken(userPointScaleEntity.getUserPointScaleId().getApiToken());
             linkTableId.setTable1Id(userPointScaleEntity.getUserPointScaleId().gettable1Id());
             linkTableId.setTable2Id(userPointScaleEntity.getUserPointScaleId().gettable2Id());
@@ -118,7 +126,7 @@ public class UsersApiController implements UsersApi {
 
         for (UserGenericEventCountEntity userGenericEventCountEntity : entity.getUserGenericEventCountEntities()) {
             UserEventCount userEventCount = new UserEventCount();
-            ch.heig.gamification.api.model.LinkTableId linkTableId = new LinkTableId();
+            LinkTableId linkTableId = new LinkTableId();
             linkTableId.setApiToken(userGenericEventCountEntity.getLinkTableId().getApiToken());
             linkTableId.setTable1Id(userGenericEventCountEntity.getLinkTableId().gettable1Id());
             linkTableId.setTable2Id(userGenericEventCountEntity.getLinkTableId().gettable2Id());

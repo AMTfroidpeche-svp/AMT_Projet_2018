@@ -1,5 +1,13 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : RulePropertiesEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : RuleProperties entity store in the database. It contains the properties of a rule.
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 

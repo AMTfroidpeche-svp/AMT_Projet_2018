@@ -1,13 +1,17 @@
 package ch.heig.gamification.api.spec.helpers;
 
+/**
+ * File : Environment.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ */
+
 import ch.heig.gamification.api.DefaultApi;
 
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * Created by Olivier Kopp on 27.12.18.
- */
 public class Environment {
 
     private DefaultApi api = new DefaultApi();

@@ -1,4 +1,4 @@
-Feature: retrieve badges, pointScales and rules
+Feature: deletion of badges, pointScales and rules
 
   Background:
     Given there is a Gamification server

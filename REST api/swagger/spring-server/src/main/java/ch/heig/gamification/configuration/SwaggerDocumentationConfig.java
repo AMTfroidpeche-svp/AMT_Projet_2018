@@ -1,5 +1,12 @@
 package ch.heig.gamification.configuration;
 
+/**
+ * File : SwaggerDocumentationConfig.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ */
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

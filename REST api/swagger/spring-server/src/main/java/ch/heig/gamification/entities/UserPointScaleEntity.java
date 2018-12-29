@@ -1,5 +1,14 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : UserPointScaleEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : UserPointScale entity store in the database. It contains the name of a pointScale and the amount of point
+ * that a particular user got in this pointScale.
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 

@@ -1,5 +1,14 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : RuleAwardsBadgesEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : RuleAwardsBadges entity store in the database. It contains all the badges to award when an event fulfilled
+ * the rule conditions
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 

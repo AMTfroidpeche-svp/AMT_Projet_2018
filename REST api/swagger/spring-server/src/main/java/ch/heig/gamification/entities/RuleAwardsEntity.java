@@ -1,5 +1,14 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : RuleAwardsEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : RuleAwards entity store in the database. It contains all information about the awards to give to the user
+ * when an event fulfilled the rule condotions
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,6 +38,8 @@ public class RuleAwardsEntity implements Serializable {
     //table1ID is userName, table2ID is the pointScaleID
     private List<RuleAwardsPointScaleEntity> ruleAwardsPointScaleId;
 
+    //this store the number of point to award for each pointScale, the syntax is as follow :
+    // "numberOfPointForTheFirstPointScale,numberOfPointForTheSecondPointScale,..."
     private String amountofPoint;
 
     private CompositeId compositeId;

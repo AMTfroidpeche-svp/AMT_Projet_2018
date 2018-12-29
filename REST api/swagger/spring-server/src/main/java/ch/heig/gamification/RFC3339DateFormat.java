@@ -1,5 +1,13 @@
 package ch.heig.gamification;
 
+/**
+ * File : RFC3339DateFormat.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description :
+ */
+
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.databind.util.ISO8601Utils;
 

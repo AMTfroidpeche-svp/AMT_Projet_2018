@@ -1,5 +1,13 @@
 package ch.heig.gamification.api.endpoints;
 
+/**
+ * File : RulesApiController.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This controller is used to operate CRUD operations on rules
+ */
+
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.*;
 import ch.heig.gamification.api.RulesApi;
@@ -36,7 +44,7 @@ public class RulesApiController implements RulesApi {
     UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<Object> createRule(@ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
+    public ResponseEntity<Object> createRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
         RuleEntity newRuleEntity = toRuleEntity(Rule);
         //we can't have a different number of point and point scales
         if(newRuleEntity.getAwards().getAmountofPoint() != null && newRuleEntity.getAwards().getAmountofPoint().size() != newRuleEntity.getAwards().getruleAwardsPointScaleId().size()){
@@ -68,7 +76,7 @@ public class RulesApiController implements RulesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<RuleInfos> deleteRule(@ApiParam(value = "", required = true) @Valid @RequestBody RuleInfos rule) {
+    public ResponseEntity<RuleInfos> deleteRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody RuleInfos rule) {
         ApplicationEntity app = applicationRepository.findByApiToken(rule.getApiToken());
         if (app == null) {
             return ResponseEntity.notFound().build();
@@ -104,7 +112,7 @@ public class RulesApiController implements RulesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<Rule> updateRule(@ApiParam(value = "", required = true) @Valid @RequestBody UpdateRule updateRule) {
+    public ResponseEntity<Rule> updateRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody UpdateRule updateRule) {
         RuleEntity oldRule = new RuleEntity();
         RuleEntity newRule = toRuleEntity(updateRule.getNewRule());
         //we can't have a different number of point and point scales
@@ -134,7 +142,7 @@ public class RulesApiController implements RulesApi {
     }
 
 
-    private RuleEntity toRuleEntity(Rule Rule) {
+    private RuleEntity toRuleEntity(@NotNull Rule Rule) {
         RuleEntity entity = new RuleEntity(new CompositeId(Rule.getApiToken(), Rule.getRuleName()));
         entity.setEventName(Rule.getEventName());
 
@@ -175,7 +183,7 @@ public class RulesApiController implements RulesApi {
         return entity;
     }
 
-    private Rule toRule(RuleEntity entity) {
+    private Rule toRule(@NotNull RuleEntity entity) {
         Rule Rule = new Rule();
         Rule.setApiToken(entity.getCompositeId().getApiToken());
         Rule.setRuleName(entity.getCompositeId().getName());
@@ -213,14 +221,14 @@ public class RulesApiController implements RulesApi {
         return Rule;
     }
 
-    private RuleInfos toRuleInfos(CompositeId c) {
+    private RuleInfos toRuleInfos(@NotNull CompositeId c) {
         RuleInfos ruleInfos = new RuleInfos();
         ruleInfos.setApiToken(c.getApiToken());
         ruleInfos.setName(c.getName());
         return ruleInfos;
     }
 
-    private void addDependenciesForRule(ApplicationEntity app, RuleEntity r){
+    private void addDependenciesForRule(@NotNull ApplicationEntity app, @NotNull RuleEntity r){
         //check if the badges awarded by the rule exits, if they don't create them
         List<RuleAwardsBadgesEntity> badges = r.getAwards().getRuleAwardsBadgesId();
         if(badges != null) {
@@ -250,7 +258,7 @@ public class RulesApiController implements RulesApi {
         }
     }
 
-    private void removeEventCount(String eventName, ApplicationEntity app){
+    private void removeEventCount(@NotNull String eventName, @NotNull ApplicationEntity app){
         for (RuleEntity r : app.getRules()){
             //if there is still a rule trigger by this event, nothing happen
             if(r.getEventName().equals(eventName)){

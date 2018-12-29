@@ -1,5 +1,13 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : BadgeEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : Badge entity store in the database
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 

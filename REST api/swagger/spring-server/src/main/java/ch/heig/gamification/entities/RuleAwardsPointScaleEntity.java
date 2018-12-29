@@ -1,5 +1,14 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : RuleAwardsPointScaleEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : RuleAwardsPointScales entity store in the database. It contains all the pointScales to award when an event fulfilled
+ * the rule conditions
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 

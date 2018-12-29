@@ -1,5 +1,14 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : UserGenericEventCountEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : UserGenericCountEvent entity store in the database. It contain the name of an event and the amount of time
+ * that it has been triggered by a particular user
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 

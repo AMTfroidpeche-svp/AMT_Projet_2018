@@ -1,5 +1,14 @@
 package ch.heig.gamification.entities;
 
+/**
+ * File : UserEntity.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : User entity store in the database. It contains all information about the user, his badges, pointScales,
+ * points for each pointScales and the number of time he trigger an event.
+ */
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,9 +27,11 @@ public class UserEntity implements Serializable {
     @ManyToMany(cascade = {CascadeType.ALL})
     private List<PointScaleEntity> pointScales = new ArrayList<>();
 
+    //contain the value if the pointScales
     @OneToMany(cascade = {CascadeType.ALL})
     private List<UserPointScaleEntity> userPointScaleEntities = new ArrayList<>();
 
+    //contains the amount of time the event has been triggered
     @OneToMany(cascade = {CascadeType.ALL})
     private List<UserGenericEventCountEntity> userGenericEventCountEntities = new ArrayList<>();
 
@@ -82,16 +93,6 @@ public class UserEntity implements Serializable {
 
     public void addEventCount(UserGenericEventCountEntity event){
         this.userGenericEventCountEntities.add(event);
-    }
-
-    public void modifyPoint(PointScaleEntity p, int amount){
-        for(int i = 0; i < userPointScaleEntities.size(); i++){
-            if(userPointScaleEntities.get(i).getUserPointScaleId().getApiToken().equals(p.getCompositeId().getApiToken()) &&
-                    userPointScaleEntities.get(i).getUserPointScaleId().gettable1Id().equals(p.getCompositeId().getName())){
-                userPointScaleEntities.get(i).setValue(userPointScaleEntities.get(i).getValue() + amount);
-                return;
-            }
-        }
     }
 
     @Override

@@ -1,33 +1,37 @@
 package ch.heig.gamification.api.spec.steps;
 
+/**
+ * File : Environment.java
+ * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
+ * Last modified on : 29.12.2018
+ *
+ * Description : This Class is used to update objects in the REST API
+ *
+ */
+
 import ch.heig.gamification.ApiException;
 import ch.heig.gamification.ApiResponse;
 import ch.heig.gamification.api.DefaultApi;
 import ch.heig.gamification.api.dto.Badge;
 import ch.heig.gamification.api.dto.PointScale;
 import ch.heig.gamification.api.dto.Rule;
+import ch.heig.gamification.api.dto.RuleAwards;
+import ch.heig.gamification.api.dto.RuleProperties;
 import ch.heig.gamification.api.dto.UpdateBadge;
+import ch.heig.gamification.api.dto.UpdateRule;
+import ch.heig.gamification.api.dto.UpdatePointScale;
 import ch.heig.gamification.api.spec.helpers.Environment;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-/**
- * Created by Olivier Kopp on 27/12/18.
- */
 public class UpdateSteps {
 
     private Environment environment;
     private DefaultApi api;
 
-    ch.heig.gamification.api.dto.UpdateBadge badge = new UpdateBadge();
-    ch.heig.gamification.api.dto.UpdatePointScale pointScale = new ch.heig.gamification.api.dto.UpdatePointScale();
-    ch.heig.gamification.api.dto.UpdateRule rule = new ch.heig.gamification.api.dto.UpdateRule();
-    ch.heig.gamification.api.dto.User user;
-    ch.heig.gamification.api.dto.Event event;
+    UpdateBadge badge = new UpdateBadge();
+    UpdatePointScale pointScale = new UpdatePointScale();
+    UpdateRule rule = new UpdateRule();
 
     private ApiResponse lastApiResponse;
     private ApiException lastApiException;
@@ -40,11 +44,11 @@ public class UpdateSteps {
     }
 
     @Given("^I update the badge (.+) in the app (.+) with the new badge (.+)$")
-    public void i_update_a_badge(String oldBadgeName, String appName, String newBadgeName) throws Throwable {
-        ch.heig.gamification.api.dto.Badge oldBadge = new Badge();
+    public void i_update_a_badge(String oldBadgeName, String appName, String newBadgeName) {
+        Badge oldBadge = new Badge();
         oldBadge.setApiToken(appName);
         oldBadge.setName(oldBadgeName);
-        ch.heig.gamification.api.dto.Badge newBadge = new Badge();
+        Badge newBadge = new Badge();
         newBadge.setApiToken(appName);
         newBadge.setName(newBadgeName);
         badge.setOldName(oldBadgeName);
@@ -60,7 +64,7 @@ public class UpdateSteps {
     }
 
     @When("^I PUT it to the /(.+) endpoint$")
-    public void i_PUT_it_to_an_endpoint(String endPoint) throws Throwable {
+    public void i_PUT_it_to_an_endpoint(String endPoint) {
         try {
             switch (endPoint) {
                 case "badges":
@@ -89,11 +93,11 @@ public class UpdateSteps {
     }
 
     @Given("^I update the pointScale (.+) in the app (.+) with the new PointScale (.+)$")
-    public void i_update_a_pointScale(String oldPointScaleName, String appName, String newPointScaleName) throws Throwable {
-        ch.heig.gamification.api.dto.PointScale oldPointScale = new PointScale();
+    public void i_update_a_pointScale(String oldPointScaleName, String appName, String newPointScaleName) {
+        PointScale oldPointScale = new PointScale();
         oldPointScale.setApiToken(appName);
         oldPointScale.setName(oldPointScaleName);
-        ch.heig.gamification.api.dto.PointScale newPointScale = new PointScale();
+        PointScale newPointScale = new PointScale();
         newPointScale.setApiToken(appName);
         newPointScale.setName(newPointScaleName);
         pointScale.setOldName(oldPointScaleName);
@@ -109,12 +113,12 @@ public class UpdateSteps {
     }
 
     @Given("^I update the rule (.+) in (.+) application by the new rule (.+) trigger by the (.+) event that give (.+) points to (.+) pointscales and the badges (.+) with (.+) properties$")
-    public void i_update_a_rule_payload(String oldRuleName, String appName, String newRuleName, String eventName, String pointAwarded, String pointScalesName, String badges, String properties) throws Throwable {
+    public void i_update_a_rule_payload(String oldRuleName, String appName, String newRuleName, String eventName, String pointAwarded, String pointScalesName, String badges, String properties) {
         Rule newRule = new Rule();
         newRule.setApiToken(appName);
         newRule.setRuleName(newRuleName);
         newRule.setEventName(eventName);
-        ch.heig.gamification.api.dto.RuleAwards ruleAwards = new ch.heig.gamification.api.dto.RuleAwards();
+        RuleAwards ruleAwards = new RuleAwards();
         for(String s : badges.split(";")){
             ruleAwards.addBadgeItem(s);
         }
@@ -126,7 +130,7 @@ public class UpdateSteps {
         }
         newRule.setAwards(ruleAwards);
         for(String s : properties.split(";")){
-            ch.heig.gamification.api.dto.RuleProperties ruleProperties = new ch.heig.gamification.api.dto.RuleProperties();
+            RuleProperties ruleProperties = new RuleProperties();
             String[] propertiesList = s.split(",");
             ruleProperties.setName(propertiesList[0]);
             ruleProperties.setType(propertiesList[1]);
