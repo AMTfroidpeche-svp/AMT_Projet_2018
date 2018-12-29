@@ -73,7 +73,7 @@ public class EventsApiController implements EventsApi {
 
     @Override
     @Transactional
-    public ResponseEntity<String> generateEvent(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Event event) {
+    public synchronized ResponseEntity<String> generateEvent(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Event event) {
         EventEntity eventEntity = toEventEntity(event);
         //check if the app exist and contain at least one rule
         ApplicationEntity app = applicationRepository.findByApiToken(event.getApiToken());

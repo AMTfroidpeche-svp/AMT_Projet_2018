@@ -14,6 +14,7 @@ services:
       
     volumes:
         - ./docker/app/AMT_Projet_2018.war:/opt/jboss/wildfly/standalone/deployments/AMT_Projet_2018.war
+        - ./docker/app/AMT_2018_REST_API-1.0.0.war:/opt/jboss/wildfly/standalone/deployments/AMT_2018_REST_API-1.0.0.war
     depends_on:
       - db
     ports:

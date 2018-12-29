@@ -42,7 +42,7 @@ public class PointScalesApiController implements PointScalesApi {
     UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<Object> createPointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody PointScale PointScale) {
+    public synchronized ResponseEntity<Object> createPointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody PointScale PointScale) {
         PointScaleEntity newPointScaleEntity = toPointScaleEntity(PointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(PointScale.getApiToken());
         if(app == null){
@@ -72,7 +72,7 @@ public class PointScalesApiController implements PointScalesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<PointScale> deletePointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
+    public synchronized ResponseEntity<PointScale> deletePointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
         PointScaleEntity pointScaleEntity = toPointScaleEntity(pointScale);
         ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getCompositeId().getApiToken());
         if (app == null || app.getPointScales().indexOf(pointScaleEntity) == -1) {
@@ -146,7 +146,7 @@ public class PointScalesApiController implements PointScalesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<List<PointScale>> getPointScales(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
+    public synchronized ResponseEntity<List<PointScale>> getPointScales(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if(app == null){
             return ResponseEntity.notFound().build();
@@ -161,7 +161,7 @@ public class PointScalesApiController implements PointScalesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<PointScale> updatePointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
+    public synchronized ResponseEntity<PointScale> updatePointScale(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
         PointScaleEntity oldPointScale = new PointScaleEntity();
         oldPointScale.setCompositeId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
         PointScaleEntity newPointScale = toPointScaleEntity(updatePointScale.getNewPointScale());

@@ -44,7 +44,7 @@ public class RulesApiController implements RulesApi {
     UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<Object> createRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
+    public synchronized ResponseEntity<Object> createRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Rule Rule) {
         RuleEntity newRuleEntity = toRuleEntity(Rule);
         //we can't have a different number of point and point scales
         if(newRuleEntity.getAwards().getAmountofPoint() != null && newRuleEntity.getAwards().getAmountofPoint().size() != newRuleEntity.getAwards().getruleAwardsPointScaleId().size()){
@@ -76,7 +76,7 @@ public class RulesApiController implements RulesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<RuleInfos> deleteRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody RuleInfos rule) {
+    public synchronized ResponseEntity<RuleInfos> deleteRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody RuleInfos rule) {
         ApplicationEntity app = applicationRepository.findByApiToken(rule.getApiToken());
         if (app == null) {
             return ResponseEntity.notFound().build();
@@ -97,7 +97,7 @@ public class RulesApiController implements RulesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<List<Rule>> getRules(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
+    public synchronized ResponseEntity<List<Rule>> getRules(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
         if (app == null) {
             return ResponseEntity.notFound().build();
@@ -112,7 +112,7 @@ public class RulesApiController implements RulesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<Rule> updateRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody UpdateRule updateRule) {
+    public synchronized ResponseEntity<Rule> updateRule(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody UpdateRule updateRule) {
         RuleEntity oldRule = new RuleEntity();
         RuleEntity newRule = toRuleEntity(updateRule.getNewRule());
         //we can't have a different number of point and point scales

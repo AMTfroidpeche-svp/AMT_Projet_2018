@@ -37,7 +37,7 @@ public class BadgesApiController implements BadgesApi {
     ApplicationRepository applicationRepository;
 
     @Transactional
-    public ResponseEntity<Object> createBadge(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
+    public synchronized ResponseEntity<Object> createBadge(@NotNull @ApiParam(value = "", required = true) @Valid @RequestBody Badge badge) {
         BadgeEntity newBadgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badge.getApiToken());
         //check if the app exist, if not we creted it
@@ -65,7 +65,7 @@ public class BadgesApiController implements BadgesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<Badge> deleteBadge(@NotNull @ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
+    public synchronized ResponseEntity<Badge> deleteBadge(@NotNull @ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
         BadgeEntity badgeEntity = toBadgeEntity(badge);
         ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getCompositeId().getApiToken());
         //check if the app and if the badge exist in the app, if not, send a 404 error
@@ -118,7 +118,7 @@ public class BadgesApiController implements BadgesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<List<Badge>> getBadges(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
+    public synchronized ResponseEntity<List<Badge>> getBadges(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "apiToken", required = true)  String infos) {
         ApplicationEntity app = applicationRepository.findByApiToken(infos);
         //check if the app exists, if not we send a 404 error
         if (app == null) {
@@ -135,7 +135,7 @@ public class BadgesApiController implements BadgesApi {
 
     @Override
     @Transactional
-    public ResponseEntity<Badge> updateBadge(@NotNull @ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
+    public synchronized ResponseEntity<Badge> updateBadge(@NotNull @ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
         BadgeEntity oldBadge = new BadgeEntity();
         oldBadge.setCompositeId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));
 
