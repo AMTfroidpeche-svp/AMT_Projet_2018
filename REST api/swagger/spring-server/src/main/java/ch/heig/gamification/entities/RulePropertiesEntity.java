@@ -7,6 +7,10 @@ import java.io.Serializable;
 @Table(name = "RULEPROPERTIES")
 public class RulePropertiesEntity implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String propertyName = null;
 
     private String type = null;
@@ -15,15 +19,22 @@ public class RulePropertiesEntity implements Serializable {
 
     private Integer value = null;
 
-    @EmbeddedId
-    private CompositeId id;
+    private CompositeId compositeId;
 
-    public CompositeId getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(CompositeId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public CompositeId getCompositeId() {
+        return compositeId;
+    }
+
+    public void setCompositeId(CompositeId compositeId) {
+        this.compositeId = compositeId;
     }
 
     public String getPropertyName() {
@@ -60,12 +71,12 @@ public class RulePropertiesEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return id.equals(((RulePropertiesEntity) obj).getId());
+        return compositeId.equals(((RulePropertiesEntity) obj).getCompositeId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return compositeId.hashCode();
     }
 
 

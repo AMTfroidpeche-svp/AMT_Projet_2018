@@ -132,7 +132,7 @@ public class EventsApiController implements EventsApi {
                             LinkTableId eventId = new LinkTableId(userConcerned.getId().getApiToken(), userConcerned.getId().getName(), ruleEntity.getEventName());
                             UserGenericEventCountEntity eventCount = null;
                             for (UserGenericEventCountEntity eventCountEntity : userConcerned.getUserGenericEventCountEntities()) {
-                                if (eventCountEntity.getId().equals(eventId)) {
+                                if (eventCountEntity.getLinkTableId().equals(eventId)) {
                                     eventCount = eventCountEntity;
                                     break;
                                 }
@@ -195,7 +195,7 @@ public class EventsApiController implements EventsApi {
 
     private void addToEventCount(String eventName, UserEntity userEntity){
         for(UserGenericEventCountEntity event : userEntity.getUserGenericEventCountEntities()){
-            if(event.getId().gettable2Id().equals(eventName)){
+            if(event.getLinkTableId().gettable2Id().equals(eventName)){
                 event.incValue();
                 return;
             }

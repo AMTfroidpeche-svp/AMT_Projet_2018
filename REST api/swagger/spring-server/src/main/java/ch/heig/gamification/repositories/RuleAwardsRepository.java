@@ -5,7 +5,6 @@ import ch.heig.gamification.entities.RuleAwardsEntity;
 import ch.heig.gamification.entities.RuleEntity;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RuleAwardsRepository extends CrudRepository<RuleAwardsEntity, CompositeId>{
+public interface RuleAwardsRepository extends CrudRepository<RuleAwardsEntity, Long>{
 
-    public RuleAwardsEntity findById(CompositeId id);
 }

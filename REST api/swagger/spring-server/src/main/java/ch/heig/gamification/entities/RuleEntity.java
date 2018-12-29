@@ -9,8 +9,11 @@ import java.util.List;
 @Table(name="RULE")
 public class RuleEntity implements Serializable {
 
-    @EmbeddedId
-    private CompositeId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private CompositeId compositeId;
 
     private String eventName;
 
@@ -20,18 +23,26 @@ public class RuleEntity implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL})
     private List<RulePropertiesEntity> propreties = new ArrayList<>();
 
-    public RuleEntity(){}
-
-    public RuleEntity(CompositeId id){
-        this.id = id;
-    }
-
-    public CompositeId getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(CompositeId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public RuleEntity(){}
+
+    public RuleEntity(CompositeId compositeId){
+        this.compositeId = compositeId;
+    }
+
+    public CompositeId getCompositeId() {
+        return compositeId;
+    }
+
+    public void setCompositeId(CompositeId id) {
+        this.compositeId = id;
     }
 
     public String getEventName() {
@@ -60,12 +71,12 @@ public class RuleEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return id.equals(((RuleEntity) obj).getId());
+        return compositeId.equals(((RuleEntity) obj).getCompositeId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return compositeId.hashCode();
     }
 
 }

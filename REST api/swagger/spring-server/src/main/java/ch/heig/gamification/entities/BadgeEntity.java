@@ -8,21 +8,32 @@ import java.io.Serializable;
 @Table(name="BADGE")
 public class BadgeEntity implements Serializable {
 
-    @EmbeddedId
-    private CompositeId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public CompositeId getId() {
+    private CompositeId compositeId;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(CompositeId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public CompositeId getCompositeId() {
+        return compositeId;
+    }
+
+    public void setCompositeId(CompositeId compositeId) {
+        this.compositeId = compositeId;
     }
 
     public BadgeEntity(){}
 
     public BadgeEntity(CompositeId id){
-        this.id = id;
+        this.compositeId = id;
     }
 
     public BadgeEntity(String apiToken, String badgeName){
@@ -31,11 +42,11 @@ public class BadgeEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return id.equals(((BadgeEntity) obj).getId());
+        return compositeId.equals(((BadgeEntity) obj).getCompositeId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return compositeId.hashCode();
     }
 }

@@ -4,7 +4,6 @@ import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.api.BadgesApi;
 import ch.heig.gamification.api.model.Badge;
-import ch.heig.gamification.api.model.AppInfos;
 import ch.heig.gamification.api.model.UpdateBadge;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +37,17 @@ public class BadgesApiController implements BadgesApi {
         } else {
             List<BadgeEntity> badges = app.getBadges();
             for (int i = 0; i < badges.size(); i++) {
-                if (badges.get(i).getId().equals(newBadgeEntity.getId())) {
+                if (badges.get(i).getCompositeId().equals(newBadgeEntity.getCompositeId())) {
                     return ResponseEntity.status(304).build();
                 }
             }
         }
         app.addBadge(newBadgeEntity);
         ApplicationEntity savedApp = applicationRepository.save(app);
-        CompositeId id = newBadgeEntity.getId();
+        CompositeId id = newBadgeEntity.getCompositeId();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newBadgeEntity.getId().getApiToken() + newBadgeEntity.getId().getName()).toUri();
+                .buildAndExpand(newBadgeEntity.getCompositeId().getApiToken() + newBadgeEntity.getCompositeId().getName()).toUri();
 
         return ResponseEntity.created(location).build();
     }
@@ -57,7 +56,7 @@ public class BadgesApiController implements BadgesApi {
     @Transactional
     public ResponseEntity<Badge> deleteBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Badge badge) {
         BadgeEntity badgeEntity = toBadgeEntity(badge);
-        ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getId().getApiToken());
+        ApplicationEntity app = applicationRepository.findByApiToken(badgeEntity.getCompositeId().getApiToken());
         if (app == null || app.getBadges().indexOf(badgeEntity) == -1) {
             return ResponseEntity.notFound().build();
         } else {
@@ -74,7 +73,7 @@ public class BadgesApiController implements BadgesApi {
             int indexBadge = 0;
             for(int i = 0; i < app.getRules().size(); i++){
                 RuleEntity r = app.getRules().get(i);
-                LinkTableId linkTableId = new LinkTableId(r.getId().getApiToken(), r.getId().getName(), badgeEntity.getId().getName());
+                LinkTableId linkTableId = new LinkTableId(r.getCompositeId().getApiToken(), r.getCompositeId().getName(), badgeEntity.getCompositeId().getName());
                 for(int j = 0; j < r.getAwards().getRuleAwardsBadgesId().size(); j++) {
                     if (r.getAwards().getRuleAwardsBadgesId().get(j).getRuleBadgesId().equals(linkTableId)) {
                         r.getAwards().getRuleAwardsBadgesId().remove(indexBadge);
@@ -84,7 +83,7 @@ public class BadgesApiController implements BadgesApi {
                 if (r.getAwards().getRuleAwardsBadgesId().size() == 0 && r.getAwards().getruleAwardsPointScaleId().size() == 0) {
                     for(UserEntity userEntity : app.getUsers()){
                         for(int k = 0; k < userEntity.getUserGenericEventCountEntities().size(); k++){
-                            if(userEntity.getUserGenericEventCountEntities().get(k).getId().gettable2Id().equals(app.getRules().get(i).getEventName())){
+                            if(userEntity.getUserGenericEventCountEntities().get(k).getLinkTableId().gettable2Id().equals(app.getRules().get(i).getEventName())){
                                 userEntity.getUserGenericEventCountEntities().remove(k);
                             }
                         }
@@ -124,9 +123,9 @@ public class BadgesApiController implements BadgesApi {
     @Transactional
     public ResponseEntity<Badge> updateBadge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody UpdateBadge updatebadge) {
         BadgeEntity oldBadge = new BadgeEntity();
-        oldBadge.setId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));
+        oldBadge.setCompositeId(new CompositeId(updatebadge.getNewBadge().getApiToken(), updatebadge.getOldName()));
         BadgeEntity newBadge = toBadgeEntity(updatebadge.getNewBadge());
-        ApplicationEntity app = applicationRepository.findByApiToken(newBadge.getId().getApiToken());
+        ApplicationEntity app = applicationRepository.findByApiToken(newBadge.getCompositeId().getApiToken());
         if(app == null){
             return ResponseEntity.notFound().build();
         }
@@ -136,16 +135,16 @@ public class BadgesApiController implements BadgesApi {
                 app.getBadges().set(index, newBadge);
                 for(RuleEntity r : app.getRules()){
                     for(RuleAwardsBadgesEntity b : r.getAwards().getRuleAwardsBadgesId()){
-                        if(b.getRuleBadgesId().gettable2Id().equals(oldBadge.getId().getName())) {
-                            b.setRuleBadgesId(new LinkTableId(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable1Id(), newBadge.getId().getName()));
+                        if(b.getRuleBadgesId().gettable2Id().equals(oldBadge.getCompositeId().getName())) {
+                            b.setRuleBadgesId(new LinkTableId(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable1Id(), newBadge.getCompositeId().getName()));
                         }
                     }
                 }
 
                 for (UserEntity u : app.getUsers()){
                     for (BadgeEntity b : u.getBadges()){
-                        if(b.getId().getName().equals(oldBadge.getId().getName())){
-                            b.setId(newBadge.getId());
+                        if(b.getCompositeId().getName().equals(oldBadge.getCompositeId().getName())){
+                            b.setCompositeId(newBadge.getCompositeId());
                         }
                     }
                 }
@@ -163,8 +162,8 @@ public class BadgesApiController implements BadgesApi {
 
     private Badge toBadge(BadgeEntity entity) {
         Badge badge = new Badge();
-        badge.setApiToken(entity.getId().getApiToken());
-        badge.setName(entity.getId().getName());
+        badge.setApiToken(entity.getCompositeId().getApiToken());
+        badge.setName(entity.getCompositeId().getName());
         return badge;
     }
 

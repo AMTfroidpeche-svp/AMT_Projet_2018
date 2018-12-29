@@ -6,8 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface BadgeRepository extends CrudRepository<BadgeEntity, CompositeId>{
-
-    public BadgeEntity findById(CompositeId id);
+public interface BadgeRepository extends CrudRepository<BadgeEntity, Long>{
 
 }

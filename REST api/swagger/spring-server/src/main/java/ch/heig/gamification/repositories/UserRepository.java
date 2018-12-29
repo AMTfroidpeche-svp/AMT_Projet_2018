@@ -15,7 +15,4 @@ public interface UserRepository extends CrudRepository<UserEntity, CompositeId>{
 
     public List<UserEntity> findByIdApiToken(String apiToken);
 
-    public List<BadgeEntity> getBadgesById(CompositeId Id);
-
-    public List<PointScaleEntity> getPointScalesById(CompositeId Id);
 }

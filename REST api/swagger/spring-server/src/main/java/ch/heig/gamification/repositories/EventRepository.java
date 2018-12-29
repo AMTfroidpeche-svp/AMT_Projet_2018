@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface EventRepository extends CrudRepository<EventEntity, Long>{
 
-    public EventEntity findByNameAndAndApiTokenAndUserId(String name, String apiToken, String userId);
 }

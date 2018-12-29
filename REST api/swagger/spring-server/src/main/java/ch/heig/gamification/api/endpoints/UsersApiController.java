@@ -9,14 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import ch.heig.gamification.api.model.User;
-import ch.heig.gamification.api.model.UserInfos;
 import ch.heig.gamification.api.UsersApi;
 import ch.heig.gamification.api.model.Badge;
 import ch.heig.gamification.api.model.PointScale;
 import ch.heig.gamification.api.model.UserPointScale;
 import ch.heig.gamification.api.model.UserEventCount;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
@@ -95,15 +93,15 @@ public class UsersApiController implements UsersApi {
 
         for (BadgeEntity badgeEntity : entity.getBadges()) {
             Badge badge = new Badge();
-            badge.setApiToken(badgeEntity.getId().getApiToken());
-            badge.setName(badgeEntity.getId().getName());
+            badge.setApiToken(badgeEntity.getCompositeId().getApiToken());
+            badge.setName(badgeEntity.getCompositeId().getName());
             Badges.add(badge);
         }
 
         for (PointScaleEntity pointScaleEntity : entity.getPointScales()) {
             PointScale pointScale = new PointScale();
-            pointScale.setApiToken(pointScaleEntity.getId().getApiToken());
-            pointScale.setName(pointScaleEntity.getId().getName());
+            pointScale.setApiToken(pointScaleEntity.getCompositeId().getApiToken());
+            pointScale.setName(pointScaleEntity.getCompositeId().getName());
             pointScales.add(pointScale);
         }
 
@@ -121,9 +119,9 @@ public class UsersApiController implements UsersApi {
         for (UserGenericEventCountEntity userGenericEventCountEntity : entity.getUserGenericEventCountEntities()) {
             UserEventCount userEventCount = new UserEventCount();
             ch.heig.gamification.api.model.LinkTableId linkTableId = new LinkTableId();
-            linkTableId.setApiToken(userGenericEventCountEntity.getId().getApiToken());
-            linkTableId.setTable1Id(userGenericEventCountEntity.getId().gettable1Id());
-            linkTableId.setTable2Id(userGenericEventCountEntity.getId().gettable2Id());
+            linkTableId.setApiToken(userGenericEventCountEntity.getLinkTableId().getApiToken());
+            linkTableId.setTable1Id(userGenericEventCountEntity.getLinkTableId().gettable1Id());
+            linkTableId.setTable2Id(userGenericEventCountEntity.getLinkTableId().gettable2Id());
             userEventCount.setLinkTableId(linkTableId);
             userEventCount.setValue(userGenericEventCountEntity.getValue());
             userGenereicCountEvents.add(userEventCount);

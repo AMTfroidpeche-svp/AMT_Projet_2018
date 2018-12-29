@@ -7,21 +7,32 @@ import java.io.Serializable;
 @Table(name="POINTSCALE")
 public class PointScaleEntity implements Serializable {
 
-    @EmbeddedId
-    private CompositeId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public CompositeId getId() {
+    private CompositeId compositeId;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(CompositeId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public CompositeId getCompositeId() {
+        return compositeId;
+    }
+
+    public void setCompositeId(CompositeId id) {
+        this.compositeId = id;
     }
 
     public PointScaleEntity(){}
 
-    public PointScaleEntity(CompositeId id){
-        this.id = id;
+    public PointScaleEntity(CompositeId compositeId){
+        this.compositeId = compositeId;
     }
 
     public PointScaleEntity(String apiToken, String pointScaleName){
@@ -30,12 +41,12 @@ public class PointScaleEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return id.equals(((PointScaleEntity) obj).getId());
+        return compositeId.equals(((PointScaleEntity) obj).getCompositeId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return compositeId.hashCode();
     }
 
 }

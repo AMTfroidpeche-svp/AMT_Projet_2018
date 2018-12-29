@@ -7,25 +7,36 @@ import java.io.Serializable;
 @Table(name="USERGENERICEVENTCOUNT")
 public class UserGenericEventCountEntity implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     //table1ID is userName, table2ID is the EventName
-    @EmbeddedId
-    private LinkTableId id;
+    private LinkTableId linkTableId;
 
     private int value;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public UserGenericEventCountEntity() {
     }
 
-    public UserGenericEventCountEntity(LinkTableId id){
-        this.id = id;
+    public UserGenericEventCountEntity(LinkTableId linkTableId){
+        this.linkTableId = linkTableId;
     }
 
-    public LinkTableId getId() {
-        return id;
+    public LinkTableId getLinkTableId() {
+        return linkTableId;
     }
 
     public void setid(LinkTableId id) {
-        this.id = id;
+        this.linkTableId = id;
     }
 
     public int getValue() {
@@ -41,6 +52,6 @@ public class UserGenericEventCountEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return id.equals(((UserGenericEventCountEntity) obj).getId());
+        return linkTableId.equals(((UserGenericEventCountEntity) obj).getLinkTableId());
     }
 }

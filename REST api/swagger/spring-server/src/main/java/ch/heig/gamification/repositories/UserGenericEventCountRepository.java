@@ -7,6 +7,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserGenericEventCountRepository extends CrudRepository<UserGenericEventCountEntity, LinkTableId>{
 
-    public UserGenericEventCountEntity findById(LinkTableId id);
-
 }

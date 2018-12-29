@@ -9,10 +9,14 @@ import java.util.List;
 @Table(name = "RULEAWARDS")
 public class RuleAwardsEntity implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
 
     @OneToMany(cascade = {CascadeType.ALL})
     @AttributeOverrides({
-            @AttributeOverride(name="id",column=@Column(name="ruleId")),
+            @AttributeOverride(name="compositeId",column=@Column(name="ruleId")),
     })
     //table1ID is userName, table2ID is the badgeID
     private List<RuleAwardsBadgesEntity> ruleAwardsBadgesId;
@@ -20,22 +24,29 @@ public class RuleAwardsEntity implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL})
     @AttributeOverrides({
-            @AttributeOverride(name="id",column=@Column(name="pointScaleId")),
+            @AttributeOverride(name="compositeId",column=@Column(name="pointScaleId")),
     })
     //table1ID is userName, table2ID is the pointScaleID
     private List<RuleAwardsPointScaleEntity> ruleAwardsPointScaleId;
 
     private String amountofPoint;
 
-    @EmbeddedId
-    private CompositeId id;
+    private CompositeId compositeId;
 
-    public CompositeId getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(CompositeId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public CompositeId getCompositeId() {
+        return compositeId;
+    }
+
+    public void setCompositeId(CompositeId id) {
+        this.compositeId = id;
     }
 
     public void setRuleAwardsBadgesId(List<RuleAwardsBadgesEntity> ruleAwardsBadgesId) {
@@ -79,11 +90,11 @@ public class RuleAwardsEntity implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {return id.equals(((RuleAwardsEntity) obj).getId());}
+    public boolean equals(Object obj) {return compositeId.equals(((RuleAwardsEntity) obj).getCompositeId());}
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return compositeId.hashCode();
     }
 
 }

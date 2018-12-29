@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface RuleRepository extends CrudRepository<RuleEntity, CompositeId>{
+public interface RuleRepository extends CrudRepository<RuleEntity, Long>{
 
-    public RuleEntity findById(CompositeId id);
 }

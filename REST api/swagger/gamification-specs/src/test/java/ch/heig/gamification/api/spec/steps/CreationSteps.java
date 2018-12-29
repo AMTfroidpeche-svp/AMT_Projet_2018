@@ -49,16 +49,14 @@ public class CreationSteps {
     @Given("^there is a Gamification server$")
     public void there_is_a_Gamification_server() throws Throwable {
         assertNotNull(api);
+        api.dropDatabase();
     }
 
-    @Given("^I create the badge (.+) in the app (.+)$")
+    @Given("^I have the badge (.+) in the app (.+)$")
     public void i_have_a_badge_payload(String badgeName, String appName) throws Throwable {
         badge = new Badge();
         badge.setApiToken(appName);
         badge.setName(badgeName);
-        if(!CurrentState.badges.contains(badge)) {
-            CurrentState.badges.add(badge);
-        }
     }
 
     @Given("^I create a badge that already exists$")
@@ -66,67 +64,33 @@ public class CreationSteps {
         badge = CurrentState.badges.get(0);
     }
 
-    @When("^I POST it to the /badges endpoint$")
-    public void i_POST_it_to_the_badges_endpoint() throws Throwable {
-        try {
-            lastApiResponse = api.createBadgeWithHttpInfo(badge);
-            lastApiCallThrewException = false;
-            lastApiException = null;
-            lastStatusCode = lastApiResponse.getStatusCode();
-        } catch (ApiException e) {
-            lastApiCallThrewException = true;
-            lastApiResponse = null;
-            lastApiException = e;
-            lastStatusCode = lastApiException.getCode();
-        }
 
-    }
-
-    @Given("^I create the pointScale (.+) in the app (.+)$")
+    @Given("^I have the pointScale (.+) in the app (.+)$")
     public void i_have_a_pointScale_payload(String pointScaleName, String appName) throws Throwable {
         pointScale = new PointScale();
         pointScale.setApiToken(appName);
         pointScale.setName(pointScaleName);
-        if(!CurrentState.pointScales.contains(pointScale)) {
-            CurrentState.pointScales.add(pointScale);
-        }
     }
 
-    @When("^I POST it to the /pointScales endpoint$")
-    public void i_POST_it_to_the_pointScales_endpoint() throws Throwable {
-        try {
-            lastApiResponse = api.createPointScaleWithHttpInfo(pointScale);
-            lastApiCallThrewException = false;
-            lastApiException = null;
-            lastStatusCode = lastApiResponse.getStatusCode();
-        } catch (ApiException e) {
-            lastApiCallThrewException = true;
-            lastApiResponse = null;
-            lastApiException = e;
-            lastStatusCode = lastApiException.getCode();
-        }
-
-    }
-
-    @Given("^I create the rule (.+) in (.+) application trigger by the (.+) event that give (.+) points to (.+) pointscales and the badges (.+) with (.+) properties$")
+    @Given("^I have the rule (.+) in (.+) application trigger by the (.+) event that give (.+) points to (.+) pointscales and the badges (.+) with (.+) properties$")
     public void i_have_a_rule_payload(String ruleName, String appName, String eventName, String pointAwarded, String pointScalesName, String badges, String properties) throws Throwable {
         rule = new Rule();
         rule.setApiToken(appName);
         rule.setRuleName(ruleName);
         rule.setEventName(eventName);
         ch.heig.gamification.api.dto.RuleAwards ruleAwards = new ch.heig.gamification.api.dto.RuleAwards();
-        for(String s : badges.split(";")){
+        for (String s : badges.split(";")) {
             ruleAwards.addBadgeItem(s);
         }
-        for(String s : pointScalesName.split(";")){
+        for (String s : pointScalesName.split(";")) {
             ruleAwards.addPointItem(s);
         }
-        for(String s : pointAwarded.split(";")){
+        for (String s : pointAwarded.split(";")) {
             ruleAwards.addAmountofPointItem(Integer.parseInt(s));
         }
         rule.setAwards(ruleAwards);
-        ch.heig.gamification.api.dto.RuleProperties ruleProperties = new ch.heig.gamification.api.dto.RuleProperties();
-        for(String s : properties.split(";")){
+        for (String s : properties.split(";")) {
+            ch.heig.gamification.api.dto.RuleProperties ruleProperties = new ch.heig.gamification.api.dto.RuleProperties();
             String[] propertiesList = s.split(",");
             ruleProperties.setName(propertiesList[0]);
             ruleProperties.setType(propertiesList[1]);
@@ -134,36 +98,17 @@ public class CreationSteps {
             ruleProperties.setValue(Integer.parseInt(propertiesList[3]));
             rule.addPropertiesItem(ruleProperties);
         }
-        if(!CurrentState.rules.contains(rule)) {
-            CurrentState.rules.add(rule);
-        }
-    }
-
-    @When("^I POST it to the /rules endpoint$")
-    public void i_POST_it_to_the_rules_endpoint() throws Throwable {
-        try {
-            lastApiResponse = api.createRuleWithHttpInfo(rule);
-            lastApiCallThrewException = false;
-            lastApiException = null;
-            lastStatusCode = lastApiResponse.getStatusCode();
-        } catch (ApiException e) {
-            lastApiCallThrewException = true;
-            lastApiResponse = null;
-            lastApiException = e;
-            lastStatusCode = lastApiException.getCode();
-        }
-
     }
 
     @Given("^I generate the event (.+) in (.+) application concerning user (.+) with (.+) properties and the timestamp (.+)$")
-    public void i_have_a_rule_payload(String eventName, String appName, String userName, String properties, String timeStamp) throws Throwable {
+    public void i_have_a_event_payload(String eventName, String appName, String userName, String properties, String timeStamp) throws Throwable {
         event = new Event();
         event.setApiToken(appName);
         event.setUserId(userName);
         event.setName(eventName);
         event.setTimestamp(null);
         EventProperties eventProperties = new EventProperties();
-        for(String s : properties.split(";")){
+        for (String s : properties.split(";")) {
             String[] propertiesList = s.split(",");
             eventProperties.setName(propertiesList[0]);
             eventProperties.setValue(Integer.parseInt(propertiesList[1]));
@@ -171,10 +116,35 @@ public class CreationSteps {
         }
     }
 
-    @When("^I POST it to the /events endpoint$")
-    public void i_POST_it_to_the_events_endpoint() throws Throwable {
+    @When("^I POST it to the /(.+) endpoint$")
+    public void i_POST_it_to_an_endpoint(String endPoint) throws Throwable {
         try {
-            lastApiResponse = api.generateEventWithHttpInfo(event);
+            switch (endPoint) {
+                case "badges":
+                    lastApiResponse = api.createBadgeWithHttpInfo(badge);
+                    if (!CurrentState.badges.contains(badge)) {
+                        CurrentState.badges.add(badge);
+                    }
+                    break;
+                case "pointScales":
+                    lastApiResponse = api.createPointScaleWithHttpInfo(pointScale);
+                    if (!CurrentState.pointScales.contains(pointScale)) {
+                        CurrentState.pointScales.add(pointScale);
+                    }
+                    break;
+                case "rules":
+                    lastApiResponse = api.createRuleWithHttpInfo(rule);
+                    if (!CurrentState.rules.contains(rule)) {
+                        CurrentState.rules.add(rule);
+                    }
+                    break;
+                case "events":
+                    lastApiResponse = api.generateEventWithHttpInfo(event);
+                    break;
+                default:
+                    break;
+
+            }
             lastApiCallThrewException = false;
             lastApiException = null;
             lastStatusCode = lastApiResponse.getStatusCode();
@@ -187,9 +157,10 @@ public class CreationSteps {
 
     }
 
+
     @Then("^I receive a (\\d+) status code$")
     public void i_receive_a_status_code(int arg1) throws Throwable {
-        assertTrue(arg1 == lastStatusCode || lastStatusCode == 304);
+        assertTrue(arg1 == lastStatusCode);
     }
 
 }

@@ -6,7 +6,6 @@ import ch.heig.gamification.repositories.ApplicationRepository;
 import ch.heig.gamification.repositories.UserRepository;
 import ch.heig.gamification.api.PointScalesApi;
 import ch.heig.gamification.api.model.PointScale;
-import ch.heig.gamification.api.model.AppInfos;
 import ch.heig.gamification.api.model.UpdatePointScale;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class PointScalesApiController implements PointScalesApi {
         else{
             List<PointScaleEntity> PointScales = app.getPointScales();
             for (int i = 0; i < PointScales.size(); i++){
-                if(PointScales.get(i).getId().equals(newPointScaleEntity.getId())){
+                if(PointScales.get(i).getCompositeId().equals(newPointScaleEntity.getCompositeId())){
                     return ResponseEntity.status(304).build();
                 }
             }
@@ -55,10 +54,10 @@ public class PointScalesApiController implements PointScalesApi {
             u.addPointScale(newPointScaleEntity);
         }
         applicationRepository.save(app);
-        CompositeId id = newPointScaleEntity.getId();
+        CompositeId id = newPointScaleEntity.getCompositeId();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newPointScaleEntity.getId().getApiToken() + newPointScaleEntity.getId().getName()).toUri();
+                .buildAndExpand(newPointScaleEntity.getCompositeId().getApiToken() + newPointScaleEntity.getCompositeId().getName()).toUri();
 
         return ResponseEntity.created(location).build();
     }
@@ -67,7 +66,7 @@ public class PointScalesApiController implements PointScalesApi {
     @Transactional
     public ResponseEntity<PointScale> deletePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody PointScale pointScale) {
         PointScaleEntity pointScaleEntity = toPointScaleEntity(pointScale);
-        ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getId().getApiToken());
+        ApplicationEntity app = applicationRepository.findByApiToken(pointScaleEntity.getCompositeId().getApiToken());
         if (app == null || app.getPointScales().indexOf(pointScaleEntity) == -1) {
             return ResponseEntity.notFound().build();
         } else {
@@ -92,7 +91,7 @@ public class PointScalesApiController implements PointScalesApi {
             int indexPointScale = 0;
             for(int i = 0; i < app.getRules().size(); i++){
                 RuleEntity r = app.getRules().get(i);
-                LinkTableId linkTableId = new LinkTableId(r.getId().getApiToken(), r.getId().getName(), pointScaleEntity.getId().getName());
+                LinkTableId linkTableId = new LinkTableId(r.getCompositeId().getApiToken(), r.getCompositeId().getName(), pointScaleEntity.getCompositeId().getName());
                 for(int j = 0; j < r.getAwards().getruleAwardsPointScaleId().size(); j++) {
                     if (r.getAwards().getruleAwardsPointScaleId().get(j).getRulePointScaleId().equals(linkTableId)) {
                         r.getAwards().getruleAwardsPointScaleId().remove(j);
@@ -115,7 +114,7 @@ public class PointScalesApiController implements PointScalesApi {
                     if(ruleDealingWithEvent == 1) {
                         for (UserEntity userEntity : app.getUsers()) {
                             for (int k = 0; k < userEntity.getUserGenericEventCountEntities().size(); k++) {
-                                if (userEntity.getUserGenericEventCountEntities().get(k).getId().gettable2Id().equals(app.getRules().get(i).getEventName())) {
+                                if (userEntity.getUserGenericEventCountEntities().get(k).getLinkTableId().gettable2Id().equals(app.getRules().get(i).getEventName())) {
                                     userEntity.getUserGenericEventCountEntities().remove(k);
                                 }
                             }
@@ -156,9 +155,9 @@ public class PointScalesApiController implements PointScalesApi {
     @Transactional
     public ResponseEntity<PointScale> updatePointScale(@ApiParam(value = "", required = true) @Valid @RequestBody UpdatePointScale updatePointScale) {
         PointScaleEntity oldPointScale = new PointScaleEntity();
-        oldPointScale.setId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
+        oldPointScale.setCompositeId(new CompositeId(updatePointScale.getNewPointScale().getApiToken(), updatePointScale.getOldName()));
         PointScaleEntity newPointScale = toPointScaleEntity(updatePointScale.getNewPointScale());
-        ApplicationEntity app = applicationRepository.findByApiToken(newPointScale.getId().getApiToken());
+        ApplicationEntity app = applicationRepository.findByApiToken(newPointScale.getCompositeId().getApiToken());
         if(app == null){
             return ResponseEntity.notFound().build();
         }
@@ -167,22 +166,22 @@ public class PointScalesApiController implements PointScalesApi {
             if((index = app.getPointScales().indexOf(oldPointScale)) != -1){
                 app.getPointScales().set(index, newPointScale);
                 for(RuleEntity r : app.getRules()){
-                    for(RuleAwardsBadgesEntity b : r.getAwards().getRuleAwardsBadgesId()){
-                        if(b.getRuleBadgesId().gettable2Id().equals(oldPointScale.getId().getName())) {
-                            b.setRuleBadgesId(new LinkTableId(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable1Id(), newPointScale.getId().getName()));
+                    for(RuleAwardsPointScaleEntity p : r.getAwards().getruleAwardsPointScaleId()){
+                        if(p.getRulePointScaleId().gettable2Id().equals(oldPointScale.getCompositeId().getName())) {
+                            p.setRulePointScaleId(new LinkTableId(p.getRulePointScaleId().getApiToken(), p.getRulePointScaleId().gettable1Id(), newPointScale.getCompositeId().getName()));
                         }
                     }
                 }
 
                 for (UserEntity u : app.getUsers()){
-                    for (BadgeEntity b : u.getBadges()){
-                        if(b.getId().getName().equals(oldPointScale.getId().getName())){
-                            b.setId(newPointScale.getId());
+                    for (PointScaleEntity p : u.getPointScales()){
+                        if(p.getCompositeId().getName().equals(oldPointScale.getCompositeId().getName())){
+                            p.setCompositeId(newPointScale.getCompositeId());
                         }
                     }
                     for (UserPointScaleEntity upse : u.getUserPointScaleEntities()){
-                        if(upse.getUserPointScaleId().gettable2Id().equals(oldPointScale.getId().getName())){
-                            upse.getUserPointScaleId().setTable2Id(newPointScale.getId().getName());
+                        if(upse.getUserPointScaleId().gettable2Id().equals(oldPointScale.getCompositeId().getName())){
+                            upse.getUserPointScaleId().setTable2Id(newPointScale.getCompositeId().getName());
                         }
                     }
                 }
@@ -200,8 +199,8 @@ public class PointScalesApiController implements PointScalesApi {
 
     private PointScale toPointScale(PointScaleEntity entity) {
         PointScale PointScale = new PointScale();
-        PointScale.setApiToken(entity.getId().getApiToken());
-        PointScale.setName(entity.getId().getName());
+        PointScale.setApiToken(entity.getCompositeId().getApiToken());
+        PointScale.setName(entity.getCompositeId().getName());
         return PointScale;
     }
 

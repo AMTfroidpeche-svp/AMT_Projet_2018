@@ -77,7 +77,7 @@ public class UserEntity implements Serializable {
 
     public void addPointScale(PointScaleEntity p){
         this.pointScales.add(p);
-        this.userPointScaleEntities.add(new UserPointScaleEntity(new LinkTableId(id.getApiToken(), id.getName(), p.getId().getName())));
+        this.userPointScaleEntities.add(new UserPointScaleEntity(new LinkTableId(id.getApiToken(), id.getName(), p.getCompositeId().getName())));
     }
 
     public void addEventCount(UserGenericEventCountEntity event){
@@ -86,8 +86,8 @@ public class UserEntity implements Serializable {
 
     public void modifyPoint(PointScaleEntity p, int amount){
         for(int i = 0; i < userPointScaleEntities.size(); i++){
-            if(userPointScaleEntities.get(i).getUserPointScaleId().getApiToken().equals(p.getId().getApiToken()) &&
-                    userPointScaleEntities.get(i).getUserPointScaleId().gettable1Id().equals(p.getId().getName())){
+            if(userPointScaleEntities.get(i).getUserPointScaleId().getApiToken().equals(p.getCompositeId().getApiToken()) &&
+                    userPointScaleEntities.get(i).getUserPointScaleId().gettable1Id().equals(p.getCompositeId().getName())){
                 userPointScaleEntities.get(i).setValue(userPointScaleEntities.get(i).getValue() + amount);
                 return;
             }

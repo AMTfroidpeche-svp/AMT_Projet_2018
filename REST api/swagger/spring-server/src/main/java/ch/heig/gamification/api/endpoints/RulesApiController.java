@@ -3,7 +3,6 @@ package ch.heig.gamification.api.endpoints;
 import ch.heig.gamification.entities.*;
 import ch.heig.gamification.repositories.*;
 import ch.heig.gamification.api.RulesApi;
-import ch.heig.gamification.api.model.AppInfos;
 import ch.heig.gamification.api.model.Rule;
 import ch.heig.gamification.api.model.RuleInfos;
 import ch.heig.gamification.api.model.UpdateRule;
@@ -59,10 +58,10 @@ public class RulesApiController implements RulesApi {
         app.addRule(newRuleEntity);
 
         applicationRepository.save(app);
-        CompositeId id = newRuleEntity.getId();
+        CompositeId id = newRuleEntity.getCompositeId();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newRuleEntity.getId().getApiToken() + newRuleEntity.getId().getName()).toUri();
+                .buildAndExpand(newRuleEntity.getCompositeId().getApiToken() + newRuleEntity.getCompositeId().getName()).toUri();
 
         return ResponseEntity.created(location).build();
     }
@@ -76,9 +75,11 @@ public class RulesApiController implements RulesApi {
         }
         List<RuleEntity> RuleEntities = app.getRules();
         for (int i = 0; i < RuleEntities.size(); i++) {
-            if (RuleEntities.get(i).getId().getName().equals(rule.getName())) {
-                CompositeId deleted = new CompositeId(RuleEntities.get(i).getId());
+            if (RuleEntities.get(i).getCompositeId().getName().equals(rule.getName())) {
+                CompositeId deleted = new CompositeId(RuleEntities.get(i).getCompositeId());
+                String eventName = RuleEntities.get(i).getEventName();
                 RuleEntities.remove(i);
+                removeEventCount(eventName, app);
                 applicationRepository.save(app);
                 return ResponseEntity.ok(toRuleInfos(deleted));
             }
@@ -110,8 +111,8 @@ public class RulesApiController implements RulesApi {
         if(newRule.getAwards().getAmountofPoint().size() != newRule.getAwards().getruleAwardsPointScaleId().size()){
             return ResponseEntity.badRequest().build();
         }
-        oldRule.setId(new CompositeId(updateRule.getNewRule().getApiToken(), updateRule.getOldName()));
-        ApplicationEntity app = applicationRepository.findByApiToken(newRule.getId().getApiToken());
+        oldRule.setCompositeId(new CompositeId(updateRule.getNewRule().getApiToken(), updateRule.getOldName()));
+        ApplicationEntity app = applicationRepository.findByApiToken(newRule.getCompositeId().getApiToken());
         if (app == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -119,6 +120,10 @@ public class RulesApiController implements RulesApi {
             if ((index = app.getRules().indexOf(oldRule)) != -1) {
                 app.getRules().set(index, newRule);
                 addDependenciesForRule(app, newRule);
+                //if the event concerned by the new rule is different, we have to check if the old rule event is still active
+                if(!newRule.getEventName().equals(oldRule.getEventName())){
+                    removeEventCount(oldRule.getEventName(), app);
+                }
 
                 applicationRepository.save(app);
                 return ResponseEntity.ok(toRule(newRule));
@@ -134,18 +139,18 @@ public class RulesApiController implements RulesApi {
         entity.setEventName(Rule.getEventName());
 
         RuleAwardsEntity rae = new RuleAwardsEntity();
-        rae.setId(new CompositeId(Rule.getApiToken(), Rule.getRuleName()));
+        rae.setCompositeId(new CompositeId(Rule.getApiToken(), Rule.getRuleName()));
         List<RuleAwardsBadgesEntity> Badges = new ArrayList<>();
         List<RuleAwardsPointScaleEntity> points = new ArrayList<>();
 
         for (String badgeName : Rule.getAwards().getBadge()) {
             BadgeEntity BadgeEntity = new BadgeEntity(new CompositeId(Rule.getApiToken(), badgeName));
-            Badges.add(new RuleAwardsBadgesEntity(new LinkTableId(Rule.getApiToken(), rae.getId().getName(), BadgeEntity.getId().getName())));
+            Badges.add(new RuleAwardsBadgesEntity(new LinkTableId(Rule.getApiToken(), rae.getCompositeId().getName(), BadgeEntity.getCompositeId().getName())));
         }
 
         for (String pointScaleName : Rule.getAwards().getPoint()) {
             PointScaleEntity pointScaleEntity = new PointScaleEntity(new CompositeId(Rule.getApiToken(), pointScaleName));
-            points.add(new RuleAwardsPointScaleEntity(new LinkTableId(Rule.getApiToken(), rae.getId().getName(), pointScaleEntity.getId().getName())));
+            points.add(new RuleAwardsPointScaleEntity(new LinkTableId(Rule.getApiToken(), rae.getCompositeId().getName(), pointScaleEntity.getCompositeId().getName())));
         }
         rae.setRuleAwardsBadgesId(Badges);
         rae.setruleAwardsPointScaleId(points);
@@ -154,16 +159,16 @@ public class RulesApiController implements RulesApi {
         entity.setAwards(rae);
 
         List<RulePropertiesEntity> properties = new ArrayList<>();
+        int propertyNumber = 1;
 
         for (ch.heig.gamification.api.model.RuleProperties p : Rule.getProperties()) {
-            int i = 1;
             RulePropertiesEntity propertiesEntity = new RulePropertiesEntity();
             propertiesEntity.setPropertyName(p.getName());
             propertiesEntity.setType(p.getType());
             propertiesEntity.setCompareOperator(p.getCompareOperator());
             propertiesEntity.setValue(p.getValue());
-            propertiesEntity.setId(new CompositeId(Rule.getApiToken(), "ruleProperty" + Rule.getRuleName() + String.valueOf(i)));
-            i++;
+            propertiesEntity.setCompositeId(new CompositeId(Rule.getApiToken(), "ruleProperty" + Rule.getRuleName() + String.valueOf(propertyNumber)));
+            propertyNumber++;
             properties.add(propertiesEntity);
         }
         entity.setProperties(properties);
@@ -172,8 +177,8 @@ public class RulesApiController implements RulesApi {
 
     private Rule toRule(RuleEntity entity) {
         Rule Rule = new Rule();
-        Rule.setApiToken(entity.getId().getApiToken());
-        Rule.setRuleName(entity.getId().getName());
+        Rule.setApiToken(entity.getCompositeId().getApiToken());
+        Rule.setRuleName(entity.getCompositeId().getName());
         Rule.setEventName(entity.getEventName());
 
 
@@ -229,7 +234,7 @@ public class RulesApiController implements RulesApi {
 
         //check if the PointScales concerned by the rule exist, of they don't create them
         List<RuleAwardsPointScaleEntity> pointScales = r.getAwards().getruleAwardsPointScaleId();
-        List<UserEntity> users = userRepository.findByIdApiToken(r.getId().getApiToken());
+        List<UserEntity> users = userRepository.findByIdApiToken(r.getCompositeId().getApiToken());
         if(pointScales != null) {
             for (int i = 0; i < pointScales.size(); i++) {
                 PointScaleEntity pse = new PointScaleEntity(new CompositeId(pointScales.get(i).getRulePointScaleId().getApiToken(), pointScales.get(i).getRulePointScaleId().gettable2Id()));
@@ -242,6 +247,24 @@ public class RulesApiController implements RulesApi {
                 }
             }
             userRepository.save(users);
+        }
+    }
+
+    private void removeEventCount(String eventName, ApplicationEntity app){
+        for (RuleEntity r : app.getRules()){
+            //if there is still a rule trigger by this event, nothing happen
+            if(r.getEventName().equals(eventName)){
+                return;
+            }
+        }
+        //if there is no more rule trigger by this event, we delete counters on users
+        for(UserEntity u : app.getUsers()){
+            for(int i = 0; i < u.getUserGenericEventCountEntities().size(); i++){
+                if(u.getUserGenericEventCountEntities().get(i).getLinkTableId().gettable2Id().equals(eventName)){
+                    u.getUserGenericEventCountEntities().remove(i);
+                    return;
+                }
+            }
         }
     }
 }
