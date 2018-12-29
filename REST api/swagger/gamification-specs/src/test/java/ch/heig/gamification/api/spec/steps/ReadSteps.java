@@ -112,7 +112,7 @@ public class ReadSteps {
         }
     }
 
-    @Then("^The user (.+) should have correct badges : (.+), correct pointScales : (.+) with correct ammount of points : (.+) and correct eventCount : (.+) with correct amounts : (.+)$")
+    @Then("^The user (.+) should have correct badges : (.+), correct pointScales : (.+) with correct amount of points : (.+) and correct eventCount : (.+) with correct amounts : (.+)$")
     public void check_user_infos(String userName, String badges, String pointScales, String points, String eventCounts, String eventCountsAmounts) {
         assertEquals(user.getName(), userName);
         List<Badge> badgesList = new ArrayList<>();

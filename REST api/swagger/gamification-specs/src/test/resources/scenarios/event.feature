@@ -18,13 +18,13 @@ Feature: full scenario testing different rule options
     When I POST it to the /events endpoint
     Then I receive a 200 status code
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1 with correct ammount of points : 10 and correct eventCount : comment with correct amounts : 1
+    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1 with correct amount of points : 10 and correct eventCount : comment with correct amounts : 1
 
     Given I generate the event comment in app1 application concerning user user1 with chars,150 properties and the timestamp null
     When I POST it to the /events endpoint
     Then I receive a 200 status code
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1 with correct ammount of points : 20 and correct eventCount : comment with correct amounts : 2
+    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1 with correct amount of points : 20 and correct eventCount : comment with correct amounts : 2
 
     Given I have the rule numberCommentRule in app1 application trigger by the comment event that give 10 points to pointScale2 pointscales and the badges badge2 with comment,amount,>,5;chars,value,>,150 properties
     When I POST it to the /rules endpoint
@@ -35,7 +35,7 @@ Feature: full scenario testing different rule options
     Then I receive a 200 status code
 
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1;pointScale2 with correct ammount of points : 30;0 and correct eventCount : comment with correct amounts : 3
+    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1;pointScale2 with correct amount of points : 30;0 and correct eventCount : comment with correct amounts : 3
 
     Given I generate the event comment in app1 application concerning user user1 with chars,150 properties and the timestamp null
     When I POST it to the /events endpoint
@@ -50,14 +50,14 @@ Feature: full scenario testing different rule options
     Then I receive a 200 status code
 
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1;pointScale2 with correct ammount of points : 60;0 and correct eventCount : comment with correct amounts : 6
+    Then The user user1 should have correct badges : badge1, correct pointScales : pointScale1;pointScale2 with correct amount of points : 60;0 and correct eventCount : comment with correct amounts : 6
 
     Given I generate the event comment in app1 application concerning user user1 with chars,151 properties and the timestamp null
     When I POST it to the /events endpoint
     Then I receive a 200 status code
 
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge1;badge2, correct pointScales : pointScale1;pointScale2 with correct ammount of points : 70;10 and correct eventCount : comment with correct amounts : 7
+    Then The user user1 should have correct badges : badge1;badge2, correct pointScales : pointScale1;pointScale2 with correct amount of points : 70;10 and correct eventCount : comment with correct amounts : 7
 
 
 
@@ -70,7 +70,7 @@ Feature: full scenario testing different rule options
     Then I receive a 200 status code
 
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge5;badge2, correct pointScales : pointScale5;pointScale2 with correct ammount of points : 70;10 and correct eventCount : comment with correct amounts : 7
+    Then The user user1 should have correct badges : badge5;badge2, correct pointScales : pointScale5;pointScale2 with correct amount of points : 70;10 and correct eventCount : comment with correct amounts : 7
 
     When I GET to the /rules endpoint the app app1
     Then I receive correct rules
@@ -85,7 +85,7 @@ Feature: full scenario testing different rule options
     Then I receive a 200 status code
 
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge2, correct pointScales : pointScale2 with correct ammount of points : 10 and correct eventCount : comment with correct amounts : 7
+    Then The user user1 should have correct badges : badge2, correct pointScales : pointScale2 with correct amount of points : 10 and correct eventCount : comment with correct amounts : 7
 
     When I GET to the /rules endpoint the app app1
     Then I receive correct rules
@@ -102,4 +102,4 @@ Feature: full scenario testing different rule options
     Then I receive correct rules
 
     When I GET the user user1 in the app app1
-    Then The user user1 should have correct badges : badge2, correct pointScales : pointScale2 with correct ammount of points : 10 and correct eventCount : null with correct amounts : null
+    Then The user user1 should have correct badges : badge2, correct pointScales : pointScale2 with correct amount of points : 10 and correct eventCount : null with correct amounts : null

@@ -15,7 +15,11 @@
     <jodatime-version>2.9.4</jodatime-version>
     <okhttp-version>2.7.5</okhttp-version>
     <gson-version>2.6.2</gson-version>
+    <!--
     <ch.heig.gamification.server.url>http://localhost:8080/api/</ch.heig.gamification.server.url>
+    -->
+    <ch.heig.gamification.server.url>http://192.168.99.100:8080/AMT_2018_REST_API-1.0.0/</ch.heig.gamification.server.url>
+
   </properties>
   <build>
     <testResources>
