@@ -14,7 +14,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import ch.heig.gamification.ApiException;
-import ch.heig.gamification.ApiResponse;
 import ch.heig.gamification.api.DefaultApi;
 import ch.heig.gamification.api.dto.Badge;
 import ch.heig.gamification.api.dto.PointScale;
@@ -24,6 +23,7 @@ import ch.heig.gamification.api.dto.RuleProperties;
 import ch.heig.gamification.api.dto.Event;
 import ch.heig.gamification.api.dto.EventProperties;
 
+import static ch.heig.gamification.api.spec.steps.CurrentState.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -36,11 +36,6 @@ public class CreationSteps {
     PointScale pointScale;
     Rule rule;
     Event event;
-
-    private ApiResponse lastApiResponse;
-    private ApiException lastApiException;
-    private boolean lastApiCallThrewException;
-    private int lastStatusCode;
 
     public CreationSteps(Environment environment) {
         this.environment = environment;
@@ -62,7 +57,7 @@ public class CreationSteps {
 
     @Given("^I create a badge that already exists$")
     public void i_create_an_existing_badge() {
-        badge = CurrentState.badges.get(0);
+        badge = badges.get(0);
     }
 
 
@@ -123,20 +118,20 @@ public class CreationSteps {
             switch (endPoint) {
                 case "badges":
                     lastApiResponse = api.createBadgeWithHttpInfo(badge);
-                    if (!CurrentState.badges.contains(badge)) {
-                        CurrentState.badges.add(badge);
+                    if (!badges.contains(badge)) {
+                        badges.add(badge);
                     }
                     break;
                 case "pointScales":
                     lastApiResponse = api.createPointScaleWithHttpInfo(pointScale);
-                    if (!CurrentState.pointScales.contains(pointScale)) {
-                        CurrentState.pointScales.add(pointScale);
+                    if (!pointScales.contains(pointScale)) {
+                        pointScales.add(pointScale);
                     }
                     break;
                 case "rules":
                     lastApiResponse = api.createRuleWithHttpInfo(rule);
-                    if (!CurrentState.rules.contains(rule)) {
-                        CurrentState.rules.add(rule);
+                    if (!rules.contains(rule)) {
+                        rules.add(rule);
                     }
                     break;
                 case "events":

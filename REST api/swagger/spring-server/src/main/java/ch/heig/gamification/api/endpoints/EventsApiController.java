@@ -181,11 +181,15 @@ public class EventsApiController implements EventsApi {
     }
 
     private String addAwardsToUser(@NotNull RuleAwardsEntity ruleAwardsEntity, @NotNull UserEntity userEntity){
+        List<List<String>> awards = new ArrayList<>();
+        awards.add(new ArrayList<String>());
+        awards.add(new ArrayList<String>());
         //adding each badges
         for(RuleAwardsBadgesEntity b : ruleAwardsEntity.getRuleAwardsBadgesId()){
             BadgeEntity newBadge = new BadgeEntity(b.getRuleBadgesId().getApiToken(), b.getRuleBadgesId().gettable2Id());
             if(!userEntity.getBadges().contains(newBadge)){
                 userEntity.addBadge(newBadge);
+                awards.get(0).add(newBadge.getCompositeId().getName());
             }
         }
         //update all pointScales
@@ -195,11 +199,18 @@ public class EventsApiController implements EventsApi {
                 if(pointScaleEntities.get(i).getRulePointScaleId().gettable2Id().equals(userEntity.getUserPointScaleEntities().get(j).getUserPointScaleId().gettable2Id())){
                     int previousValue = userEntity.getUserPointScaleEntities().get(j).getValue();
                     userEntity.getUserPointScaleEntities().get(j).setValue(previousValue + ruleAwardsEntity.getAmountofPoint().get(i));
+                    awards.get(1).add(pointScaleEntities.get(i).getRulePointScaleId().gettable2Id() + " : " + ruleAwardsEntity.getAmountofPoint().get(i));
                     break;
                 }
             }
         }
-        return null;
+        StringBuilder ret = new StringBuilder();
+        for(List<String> stringList : awards){
+            for(String s : stringList){
+                ret.append(s).append("\n");
+            }
+        }
+        return ret.toString();
     }
 
     private void addToEventCount(@NotNull String eventName, @NotNull UserEntity userEntity){

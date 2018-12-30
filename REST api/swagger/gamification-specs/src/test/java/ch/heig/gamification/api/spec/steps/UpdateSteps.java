@@ -10,7 +10,6 @@ package ch.heig.gamification.api.spec.steps;
  */
 
 import ch.heig.gamification.ApiException;
-import ch.heig.gamification.ApiResponse;
 import ch.heig.gamification.api.DefaultApi;
 import ch.heig.gamification.api.dto.Badge;
 import ch.heig.gamification.api.dto.PointScale;
@@ -24,6 +23,8 @@ import ch.heig.gamification.api.spec.helpers.Environment;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
+import static ch.heig.gamification.api.spec.steps.CurrentState.*;
+
 public class UpdateSteps {
 
     private Environment environment;
@@ -32,11 +33,6 @@ public class UpdateSteps {
     UpdateBadge badge = new UpdateBadge();
     UpdatePointScale pointScale = new UpdatePointScale();
     UpdateRule rule = new UpdateRule();
-
-    private ApiResponse lastApiResponse;
-    private ApiException lastApiException;
-    private boolean lastApiCallThrewException;
-    private int lastStatusCode;
 
     public UpdateSteps(Environment environment) {
         this.environment = environment;
@@ -53,8 +49,8 @@ public class UpdateSteps {
         newBadge.setName(newBadgeName);
         badge.setOldName(oldBadgeName);
         badge.setNewBadge(newBadge);
-        CurrentState.badges.get(CurrentState.badges.indexOf(oldBadge)).setName(newBadgeName);
-        for(Rule r : CurrentState.rules){
+        badges.get(badges.indexOf(oldBadge)).setName(newBadgeName);
+        for(Rule r : rules){
             for(int i = 0; i < r.getAwards().getBadge().size(); i++){
                 if(r.getAwards().getBadge().get(i).equals(oldBadgeName)){
                     r.getAwards().getBadge().set(i, newBadgeName);
@@ -102,8 +98,8 @@ public class UpdateSteps {
         newPointScale.setName(newPointScaleName);
         pointScale.setOldName(oldPointScaleName);
         pointScale.setNewPointScale(newPointScale);
-        CurrentState.pointScales.set(CurrentState.pointScales.indexOf(oldPointScale),newPointScale);
-        for(Rule r : CurrentState.rules){
+        pointScales.set(pointScales.indexOf(oldPointScale),newPointScale);
+        for(Rule r : rules){
             for(int i = 0; i < r.getAwards().getPoint().size(); i++){
                 if(r.getAwards().getPoint().get(i).equals(oldPointScaleName)){
                     r.getAwards().getPoint().set(i, newPointScaleName);
@@ -140,9 +136,9 @@ public class UpdateSteps {
         }
         rule.setOldName(oldRuleName);
         rule.setNewRule(newRule);
-        for(int i = 0; i < CurrentState.rules.size(); i++){
-            if(CurrentState.rules.get(i).getApiToken().equals(appName) && CurrentState.rules.get(i).getRuleName().equals(oldRuleName)){
-                CurrentState.rules.set(i, newRule);
+        for(int i = 0; i < rules.size(); i++){
+            if(rules.get(i).getApiToken().equals(appName) && rules.get(i).getRuleName().equals(oldRuleName)){
+                rules.set(i, newRule);
             }
         }
 

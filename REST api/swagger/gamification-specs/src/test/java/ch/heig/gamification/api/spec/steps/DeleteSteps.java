@@ -10,7 +10,6 @@ package ch.heig.gamification.api.spec.steps;
  */
 
 import ch.heig.gamification.ApiException;
-import ch.heig.gamification.ApiResponse;
 import ch.heig.gamification.api.DefaultApi;
 import ch.heig.gamification.api.dto.Badge;
 import ch.heig.gamification.api.dto.PointScale;
@@ -18,6 +17,8 @@ import ch.heig.gamification.api.dto.RuleInfos;
 import ch.heig.gamification.api.spec.helpers.Environment;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+
+import static ch.heig.gamification.api.spec.steps.CurrentState.*;
 
 public class DeleteSteps {
 
@@ -28,10 +29,7 @@ public class DeleteSteps {
     PointScale pointScale;
     RuleInfos ruleInfos;
 
-    private ApiResponse lastApiResponse;
-    private ApiException lastApiException;
-    private boolean lastApiCallThrewException;
-    private int lastStatusCode;
+
 
     public DeleteSteps(Environment environment) {
         this.environment = environment;
@@ -65,12 +63,12 @@ public class DeleteSteps {
             switch (endPoint) {
                 case "badges":
                     lastApiResponse = api.deleteBadgeWithHttpInfo(badge);
-                    if (CurrentState.badges.contains(badge)) {
-                        CurrentState.badges.remove(badge);
-                        for(int i = 0; i < CurrentState.rules.size(); i++){
-                            CurrentState.rules.get(i).getAwards().getBadge().remove(badge.getName());
-                            if(CurrentState.rules.get(i).getAwards().getBadge().isEmpty() && CurrentState.rules.get(i).getAwards().getPoint().isEmpty()){
-                                CurrentState.rules.remove(i);
+                    if (badges.contains(badge)) {
+                        badges.remove(badge);
+                        for(int i = 0; i < rules.size(); i++){
+                            rules.get(i).getAwards().getBadge().remove(badge.getName());
+                            if(rules.get(i).getAwards().getBadge().isEmpty() && rules.get(i).getAwards().getPoint().isEmpty()){
+                                rules.remove(i);
                                 i--;
                             }
                         }
@@ -78,12 +76,12 @@ public class DeleteSteps {
                     break;
                 case "pointScales":
                     lastApiResponse = api.deletePointScaleWithHttpInfo(pointScale);
-                    if (CurrentState.pointScales.contains(pointScale)) {
-                        CurrentState.pointScales.remove(pointScale);
-                        for(int i = 0; i < CurrentState.rules.size(); i++){
-                            CurrentState.rules.get(i).getAwards().getPoint().remove(pointScale.getName());
-                            if(CurrentState.rules.get(i).getAwards().getBadge().isEmpty() && CurrentState.rules.get(i).getAwards().getPoint().isEmpty()){
-                                CurrentState.rules.remove(i);
+                    if (pointScales.contains(pointScale)) {
+                        pointScales.remove(pointScale);
+                        for(int i = 0; i < rules.size(); i++){
+                            rules.get(i).getAwards().getPoint().remove(pointScale.getName());
+                            if(rules.get(i).getAwards().getBadge().isEmpty() && rules.get(i).getAwards().getPoint().isEmpty()){
+                                rules.remove(i);
                                 i--;
                             }
                         }
@@ -91,9 +89,9 @@ public class DeleteSteps {
                     break;
                 case "rules":
                     lastApiResponse = api.deleteRuleWithHttpInfo(ruleInfos);
-                    for(int i = 0; i < CurrentState.rules.size(); i++){
-                        if(CurrentState.rules.get(i).getApiToken().equals(ruleInfos.getApiToken()) && CurrentState.rules.get(i).getRuleName().equals(ruleInfos.getName())){
-                            CurrentState.rules.remove(i);
+                    for(int i = 0; i < rules.size(); i++){
+                        if(rules.get(i).getApiToken().equals(ruleInfos.getApiToken()) && rules.get(i).getRuleName().equals(ruleInfos.getName())){
+                            rules.remove(i);
                         }
                     }
                     break;

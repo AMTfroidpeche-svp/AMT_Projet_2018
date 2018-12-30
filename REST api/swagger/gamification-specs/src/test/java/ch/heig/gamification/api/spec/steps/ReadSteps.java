@@ -26,6 +26,7 @@ import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.heig.gamification.api.spec.steps.CurrentState.*;
 import static org.junit.Assert.*;
 
 public class ReadSteps {
@@ -38,11 +39,6 @@ public class ReadSteps {
     List<Badge> badges;
     List<PointScale> pointScales;
     List<Rule> rules;
-
-    private ApiResponse lastApiResponse;
-    private ApiException lastApiException;
-    private boolean lastApiCallThrewException;
-    private int lastStatusCode;
 
     public ReadSteps(Environment environment) {
         this.environment = environment;
@@ -92,18 +88,18 @@ public class ReadSteps {
     public void i_receive_correct_objects(String type) {
         switch (type) {
             case "badges":
-                for(Badge b : CurrentState.badges){
+                for(Badge b : badges){
                     System.out.println(b.getApiToken() + " " + b.getName() + " " + badges.get(0).getName());
                     assertTrue(badges.contains(b));
                 }
                 break;
             case "pointScales":
-                for(PointScale p : CurrentState.pointScales){
+                for(PointScale p : pointScales){
                     assertTrue(pointScales.contains(p));
                 }
                 break;
             case "rules":
-                for(Rule r : CurrentState.rules){
+                for(Rule r : rules){
                     assertTrue(rules.contains(r));
                 }
                 break;

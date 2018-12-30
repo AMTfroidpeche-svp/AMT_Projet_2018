@@ -92,7 +92,7 @@ public class RulesApiController implements RulesApi {
                 return ResponseEntity.ok(toRuleInfos(deleted));
             }
         }
-        return ResponseEntity.ok(new RuleInfos());
+        return ResponseEntity.status(304).build();
     }
 
     @Override
