@@ -3,7 +3,7 @@ package ch.heig.gamification.api.endpoints;
 /**
  * File : PointScalesApiController.java
  * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
- * Last modified on : 29.12.2018
+ * Last modified on : 11.01.2019
  *
  * Description : This controller is used to operate CRUD operations on pointScales
  */
@@ -172,6 +172,9 @@ public class PointScalesApiController implements PointScalesApi {
         else{
             int index;
             if((index = app.getPointScales().indexOf(oldPointScale)) != -1){
+                if(app.getPointScales().contains(newPointScale)){
+                    return ResponseEntity.status(403).build();
+                }
                 app.getPointScales().set(index, newPointScale);
                 for(RuleEntity r : app.getRules()){
                     for(RuleAwardsPointScaleEntity p : r.getAwards().getruleAwardsPointScaleId()){

@@ -3,7 +3,7 @@ package ch.heig.gamification.api.endpoints;
 /**
  * File : BadgesApiController.java
  * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
- * Last modified on : 29.12.2018
+ * Last modified on : 11.01.2019
  *
  * Description : This controller is used to operate CRUD operations on badges
  */
@@ -148,8 +148,11 @@ public class BadgesApiController implements BadgesApi {
         }
         else{
             int index;
-            //check if the app contains the badge we try to update, if not we send a 404 error
+            //check if the app contains the badge we try to update and that the new badge doesn't exist, if not we send a 404 error
             if((index = app.getBadges().indexOf(oldBadge)) != -1){
+                if(app.getBadges().contains(newBadge)){
+                    return ResponseEntity.status(403).build();
+                }
                 //replace the old badge by the new one
                 app.getBadges().set(index, newBadge);
                 //for each rule of the app, we update the badge

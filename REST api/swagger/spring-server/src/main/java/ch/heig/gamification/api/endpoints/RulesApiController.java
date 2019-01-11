@@ -3,7 +3,7 @@ package ch.heig.gamification.api.endpoints;
 /**
  * File : RulesApiController.java
  * Authors : Jee Mathieu, Kopp Olivier, Schürch Loïc
- * Last modified on : 29.12.2018
+ * Last modified on : 11.01.2019
  *
  * Description : This controller is used to operate CRUD operations on rules
  */
@@ -126,6 +126,9 @@ public class RulesApiController implements RulesApi {
         } else {
             int index;
             if ((index = app.getRules().indexOf(oldRule)) != -1) {
+                if(app.getRules().contains(newRule)){
+                    return ResponseEntity.status(403).build();
+                }
                 app.getRules().set(index, newRule);
                 addDependenciesForRule(app, newRule);
                 //if the event concerned by the new rule is different, we have to check if the old rule event is still active
