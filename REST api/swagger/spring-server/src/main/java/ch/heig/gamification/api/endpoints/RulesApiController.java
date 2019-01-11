@@ -62,7 +62,6 @@ public class RulesApiController implements RulesApi {
             }
         }
         addDependenciesForRule(app, newRuleEntity);
-        //ruleAwardsRepository.save(newRuleEntity.getAwards());
         app.addRule(newRuleEntity);
 
         applicationRepository.save(app);
